@@ -1,0 +1,37 @@
+# Python virtual environment (keep at root)
+venv/
+.venv/
+
+# Build directories for each project
+*/build/
+*/bdist.win-amd64/
+
+# Egg-info directories
+*/*.egg-info/
+
+# Compiled Python files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+/dist/
+*.egg
+
+# IDE and Editor directories
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.bak
+
+# OS generated files
+.DS_Store
+Thumbs.db
