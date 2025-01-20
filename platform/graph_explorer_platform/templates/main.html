@@ -29,12 +29,11 @@
 </div>
 
 <div class="views-container">
-    <div class="tree-view" id="treeView">
+    <div class="tree-view" id="tree-view">
     </div>
-    <div class="main-view" id="mainView">
+    <div class="main-view" id="main-view">
     </div>
-    <div class="bird-view" id="birdView">
-        {% include "birdview.html" %}
+    <div class="bird-view" id="bird-view">
     </div>
 </div>
 
@@ -47,7 +46,18 @@
         background-color: #bdfab4;
         color: #333;
     }
-
+    .link {
+    stroke: #999;
+    stroke-width: 1px;
+    }
+    .node rect {
+        fill: white;
+        stroke: #666;
+        stroke-width: 1px;
+    }
+    .node text {
+        text-anchor: middle;
+    }
 
     .workspace-controls, .visualization-controls {
         display: flex;
@@ -106,18 +116,18 @@
         background-color: #fff;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         overflow: auto;
-        padding: 10px;
     }
 
     .tree-view {
         grid-row: 1 / -1;
     }
 </style>
+{% include "birdview.html" %}
 {% endblock %}
 {% block extra_js %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
 <script>
-    
+    {{ code|safe }}
 </script>
 {% endblock %}
 {% endblock content %}

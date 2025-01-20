@@ -1,11 +1,12 @@
 <script>
 
-    let miniMapLinks;
-    let miniMapNodes;
-    let miniMap;
-    let isMiniMapScaled = false;
+    var miniMapLinks;
+    var miniMapNodes;
+    var miniMap;
+    var isMiniMapScaled = false;
 
     function initializeMiniMap(links, force) {
+        d3.select("#bird-view").selectAll("svg").remove();
         miniMap = d3.select("#bird-view")
             .append("svg")
             .attr("opacity", 0)
@@ -41,23 +42,29 @@
     }
 
     function scaleAndPositionMiniMap() {
-        if (isMiniMapScaled) return;
-        isMiniMapScaled = true;
+    if (isMiniMapScaled) return;
+    isMiniMapScaled = true;
 
-        d3.select("#bird-view svg").attr("opacity", 1.0);
+    d3.select("#bird-view svg").attr("opacity", 1.0);
 
-        const containerDimensions = getDimensions("#bird-view");
-        const miniMapDimensions = getDimensions("#mini-map");
+    const containerDimensions = getDimensions("#bird-view");
+    const miniMapDimensions = getDimensions("#mini-map");
 
-        const scaleWidth = (containerDimensions.width * 0.75) / miniMapDimensions.width;
-        const scaleHeight = (containerDimensions.height * 0.75) / miniMapDimensions.height;
+    // Calculate uniform scale based on the smaller ratio (to fit within the container)
+    const scale = Math.min(
+        (containerDimensions.width * 0.75) / miniMapDimensions.width,
+        (containerDimensions.height * 0.75) / miniMapDimensions.height
+    );
 
-        const translateX = (miniMapDimensions.width - containerDimensions.width) / 2 * 1.2;
-        const translateY = (miniMapDimensions.height - containerDimensions.height) / 2 * 1.2;
+    // Calculate translation to center the mini-map within the container
+    const translateX = (containerDimensions.width - miniMapDimensions.width * scale) / 2;
+    const translateY = (containerDimensions.height - miniMapDimensions.height * scale) / 2;
 
-        const transformation = `translate(${translateX}, ${translateY}) scale(${scaleWidth}, ${scaleHeight})`;
-        d3.select("#mini-map").attr("transform", transformation);
-    }
+    // Apply the transformation
+    const transformation = `translate(${translateX}, ${translateY}) scale(${scale})`;
+    d3.select("#mini-map").attr("transform", transformation);
+}
+
 
     function getDimensions(selector) {
         const rect = d3.select(selector).node().getBoundingClientRect();
