@@ -47,88 +47,88 @@ class SimpleVisualizer(DataVisualizerBase):
             
             
             function createGraphView(container, width, height, enableZoom) {{
-             d3.select(container).selectAll("svg").remove();
-    var svg = d3.select(container)
-        .append("svg")
-        .attr("width", "100%")
-        .attr("height", "100%");
+                d3.select(container).selectAll("svg").remove();
+                var svg = d3.select(container)
+                    .append("svg")
+                    .attr("width", "100%")
+                    .attr("height", "100%");
 
-    // Create a group for zoom transformation
-    var g = svg.append("g");
+                // Create a group for zoom transformation
+                var g = svg.append("g");
 
-    // Define zoom behavior
-    if (enableZoom) {{
-        var zoom = d3.behavior.zoom()
-            .scaleExtent([0.1, 10])
-            .on("zoom", function () {{
-                g.attr("transform",
-                    "translate(" + d3.event.translate + ")" +
-                    " scale(" + d3.event.scale + ")");
-            }});
-        svg.call(zoom);
-    }}
+                // Define zoom behavior
+                if (enableZoom) {{
+                    var zoom = d3.behavior.zoom()
+                        .scaleExtent([0.1, 10])
+                        .on("zoom", function () {{
+                            g.attr("transform",
+                                "translate(" + d3.event.translate + ")" +
+                                " scale(" + d3.event.scale + ")");
+                        }});
+                    svg.call(zoom);
+                }}
 
-    var force = d3.layout.force()
-        .size([width, height])
-        .nodes(d3.values(nodes))
-        .links(links)
-        .on("tick", tick)
-        .linkDistance(container === ".bird-view" ? 150 : 300)
-        .charge(container === ".bird-view" ? -50 : -100)
-        .start();
+                var force = d3.layout.force()
+                    .size([width, height])
+                    .nodes(d3.values(nodes))
+                    .links(links)
+                    .on("tick", tick)
+                    .linkDistance(container === ".bird-view" ? 150 : 300)
+                    .charge(container === ".bird-view" ? -50 : -100)
+                    .start();
 
-    var link = g.selectAll('.link')
-        .data(force.links())
-        .enter().append('line')
-        .attr('class', 'link')
-        .style('stroke', '#999')
-        .style('stroke-width', '1px');
+                var link = g.selectAll('.link')
+                    .data(force.links())
+                    .enter().append('line')
+                    .attr('class', 'link')
+                    .style('stroke', '#999')
+                    .style('stroke-width', '1px');
 
-    var node = g.selectAll('.node')
-        .data(force.nodes())
-        .enter().append('g')
-        .attr('class', 'node')
-        .attr('id', function (d) {{
-            return container.replace('.', '') + '-node-' + d.id;
-        }})
-        .on('click', nodeClick)
-        .call(d3.behavior.drag()
-    .on("dragstart", function(d) {{
-        d3.event.sourceEvent.stopPropagation();
-        if (enableZoom) {{
-            zoom.on("zoom", null);
-        }}
-        d.fixed = true;  // Fix this specific node
-        force.resume();  // Keep the simulation running
-    }})
-    .on("drag", function(d) {{
-        d.px += d3.event.dx;
-        d.py += d3.event.dy;
-        d.x += d3.event.dx;
-        d.y += d3.event.dy;
-        force.resume();  // Keep the simulation running
-    }})
-    .on("dragend", function(d) {{
-        if (enableZoom) {{
-            zoom.on("zoom", function() {{
-                g.attr("transform",
-                    "translate(" + d3.event.translate + ")" +
-                    " scale(" + d3.event.scale + ")");
-            }});
-        }}
-        // Keep d.fixed = true to prevent the node from moving
-        d.fixed = false;
-        force.resume();  // Keep the simulation running
-    }}));
+                var node = g.selectAll('.node')
+                    .data(force.nodes())
+                    .enter().append('g')
+                    .attr('class', 'node')
+                    .attr('id', function (d) {{
+                        return container.replace('.', '') + '-node-' + d.id;
+                    }})
+                    .on('click', nodeClick)
+                    .call(d3.behavior.drag()
+                .on("dragstart", function(d) {{
+                    d3.event.sourceEvent.stopPropagation();
+                    if (enableZoom) {{
+                        zoom.on("zoom", null);
+                    }}
+                    d.fixed = true;  // Fix this specific node
+                    force.resume();  // Keep the simulation running
+                }})
+                .on("drag", function(d) {{
+                    d.px += d3.event.dx;
+                    d.py += d3.event.dy;
+                    d.x += d3.event.dx;
+                    d.y += d3.event.dy;
+                    force.resume();  // Keep the simulation running
+                }})
+                .on("dragend", function(d) {{
+                    if (enableZoom) {{
+                        zoom.on("zoom", function() {{
+                            g.attr("transform",
+                                "translate(" + d3.event.translate + ")" +
+                                " scale(" + d3.event.scale + ")");
+                        }});
+                    }}
+                    // Keep d.fixed = true to prevent the node from moving
+                    d.fixed = false;
+                    force.resume();  // Keep the simulation running
+                }}));
 
-    function nodeClick(d) {{
-        alert("ID: " + d.id);
-    }}
+                function nodeClick(d) {{
+                    alert("ID: " + d.id);
+                }}
 
-    force.nodes().forEach(function (d) {{
-        makeSimpleView(d, container);
-    }});
-                
+                force.nodes().forEach(function (d) {{
+                    makeSimpleView(d, container);
+                }});
+                            
                 function makeSimpleView(d, container) {{
                     let scale = container === ".bird-view" ? 0.5 : 1;
                     let width = 150 * scale;
@@ -166,7 +166,7 @@ class SimpleVisualizer(DataVisualizerBase):
                         .attr('stroke', 'gray')
                         .attr('stroke-width', 2 * scale);
                 }}
-                
+                    
                 function tick() {{
                     node.attr("transform", function(d) {{
                         return "translate(" + d.x + "," + d.y + ")";
@@ -183,3 +183,4 @@ class SimpleVisualizer(DataVisualizerBase):
         
         """
         return js_code
+    
