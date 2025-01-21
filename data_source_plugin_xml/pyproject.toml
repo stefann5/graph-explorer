@@ -8,8 +8,8 @@ version = "0.1"
 description = "Component for reading data from XML file."
 dependencies = ["graph-explorer-api==0.1"]
 
-[project.entry-points."graph.explorer"]
-data_source_plugin_xml = "sok.graph.explorer.data_source_plugin_xml:DataSourcePluginXml"
+[project.entry-points."graph.data_source"]
+data_source_plugin_xml = "sok.graph.explorer.data_source.data_source_plugin_xml:DataSourcePluginXml"
 
 [tool.setuptools]
-provides = ["sok.graph.explorer.data_source_plugin_xml"]
+provides = ["sok.graph.explorer.data_source.data_source_plugin_xml"]
