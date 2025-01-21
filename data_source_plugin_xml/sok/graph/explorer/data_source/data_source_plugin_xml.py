@@ -6,7 +6,6 @@ import xml.etree.ElementTree as ET
 
 class DataSourcePluginXml(DataLoaderBase):
     def __init__(self):
-        self.node_id_counter = 0
         self.element_to_id = {}
         self.processed_elements = set()
         self.parent_map = {}
@@ -23,10 +22,6 @@ class DataSourcePluginXml(DataLoaderBase):
 
     def validate_input_params(self, params: Dict[str, Any]) -> bool:
         return all(param in params for param in self.get_required_params())
-
-    def _generate_node_id(self) -> int:
-        self.node_id_counter += 1
-        return self.node_id_counter
 
     def _build_parent_map(self, element: ET.Element, parent: Optional[ET.Element] = None):
         self.parent_map[element] = parent
@@ -90,7 +85,7 @@ class DataSourcePluginXml(DataLoaderBase):
         current_path = self._create_element_path(element, parent_path)
 
         if current_path not in self.element_to_id:
-            current_id = self._generate_node_id()
+            current_id = element.attrib.get('id')
             self.element_to_id[current_path] = current_id
 
             # Store reference elements with their parent element
