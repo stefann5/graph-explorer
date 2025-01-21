@@ -1,0 +1,38 @@
+<com.example.Persons>
+    <Person id="1">
+        <name>Alice</name>
+        <address id="2">
+            <street>123 Main St</street>
+            <number>99</number>
+            <owner id="3">
+                <!--Use XPath to reference Peter as owner-->
+                <Person reference="../../../../Person[2]"/>
+                <Killer reference="../../../../Murder[1]/Killer"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Person id="4">
+        <name>Peter</name>
+        <address id="5">
+            <street>456 Second St</street>
+            <number>111</number>
+            <owner id="6">
+                <!--Use XPath to reference Alice as owner-->
+                <Person reference="../../../../Person[1]"/>
+                <Person reference="../../../../Person[2]"/>
+                <address reference="../../../../Person[1]/address"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Murder id="7">
+        <date>12/12/2023</date>
+        <Killer id="8">
+            <Person reference="../../../Person[1]"/>
+        </Killer>
+        <Victim id="9">
+            <Person reference="../../../Person[2]"/>
+        </Victim>
+    </Murder>
+</com.example.Persons>

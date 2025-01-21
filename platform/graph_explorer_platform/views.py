@@ -46,25 +46,8 @@ def index(request):
 
     # for edge in edges:
     #     graph.add_edge(edge)
-    test_data = {
-  "@id": "28dddab1-4aa7-6e2b-b0b2-7ed9096aa9bc",
-  "name": "I'm parent",
-  "children": [
-    {
-      "@id": "6616c598-0a0a-8263-7a56-fb0c0e16225a",
-      "name": "I'm first child",
-      "parent": "28dddab1-4aa7-6e2b-b0b2-7ed9096aa9bc"
-    },
-    {
-      "@id": "940e60e4-9497-7c0d-3467-297ff8bb9ef2",
-      "name": "I'm second child",
-      "parent": "28dddab1-4aa7-6e2b-b0b2-7ed9096aa9bc"
-    }
-  ]
-}
-    test_data_path = Path("test_data.json")
-    with open(test_data_path, "w", encoding="utf-8") as f:
-        json.dump(test_data, f, indent=2)
+    test_data_path = Path("test.xml")
+
     plugin = apps.get_app_config('graph_explorer_platform').data_source_plugins[0]
     params = {
         'file_path': str(test_data_path),
