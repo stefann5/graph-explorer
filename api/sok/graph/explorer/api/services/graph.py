@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List
+from typing import Any, Dict, List
 
 from ..model.graph import Graph
 
@@ -16,7 +16,7 @@ class ServiceBase(ABC):
 
 class DataLoaderBase(ServiceBase):
     @abstractmethod
-    def load_graph(self) -> Graph:
+    def load_graph(self, params: Dict[str, Any]) -> Graph:
         pass
 
 
