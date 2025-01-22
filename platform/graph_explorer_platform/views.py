@@ -4,13 +4,14 @@ import logging
 from pathlib import Path
 from django.shortcuts import render
 from django.apps.registry import apps
+from graph_explorer_platform.search import GraphSearchFilter
 from sok.graph.explorer.api.services.graph import(
     DataLoaderBase,
     DataVisualizerBase
 )
 from sok.graph.explorer.api.model.graph import Graph,Node,Edge
 import datetime
-
+from django.http import JsonResponse
 
 def index(request):
     # # Create a mock graph for demonstration
@@ -66,3 +67,37 @@ def index(request):
     graph_data["code"]=simple_visualizer.visualize_graph(graph)
     # print(graph_data['code'],apps.get_app_config('graph_explorer_platform').data_visalizer_plugins)
     return render(request, 'main.html', graph_data)
+
+def search(request):
+    if request.method == 'POST':
+        search_query = request.POST.get('query', '')
+        plugin = apps.get_app_config('graph_explorer_platform').data_source_plugins[0]
+        params = {
+            'file_path': str(Path("test.xml")),
+            'directed': True
+        }
+        graph = plugin.load_graph(params)
+        
+        filter_service = GraphSearchFilter()
+        filtered_graph = filter_service.search(graph, search_query)
+        
+        simple_visualizer = apps.get_app_config('graph_explorer_platform').data_visalizer_plugins[0]
+        graph_data = {"code": simple_visualizer.visualize_graph(filtered_graph)}
+        return JsonResponse(graph_data)
+
+def filter(request):
+    if request.method == 'POST':
+        filter_query = request.POST.get('query', '')
+        plugin = apps.get_app_config('graph_explorer_platform').data_source_plugins[0]
+        params = {
+            'file_path': str(Path("test.xml")),
+            'directed': True
+        }
+        graph = plugin.load_graph(params)
+        
+        filter_service = GraphSearchFilter()
+        filtered_graph = filter_service.filter(graph, filter_query)
+        
+        simple_visualizer = apps.get_app_config('graph_explorer_platform').data_visalizer_plugins[0]
+        graph_data = {"code": simple_visualizer.visualize_graph(filtered_graph)}
+        return JsonResponse(graph_data)
