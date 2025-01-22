@@ -10,62 +10,20 @@ from sok.graph.explorer.api.services.graph import(
     DataVisualizerBase
 )
 from sok.graph.explorer.api.model.graph import Graph,Node,Edge
-import datetime
+from datetime import datetime
 from django.http import JsonResponse
 
 def index(request):
-    # # Create a mock graph for demonstration
-    # graph = Graph()
-
-    # # Add 20 nodes to the graph
-    # for i in range(1, 21):
-    #     node = Node(i, data={"label": datetime.datetime.now()})
-    #     graph.add_node(node)
-
-    # # Add edges to connect the nodes
-    # edges = [
-    #     Edge(1, 2, ""),
-    #     Edge(2, 3, ""),
-    #     Edge(3, 4, ""),
-    #     Edge(4, 5, ""),
-    #     Edge(5, 6, ""),
-    #     Edge(6, 7,""),
-    #     Edge(7, 8, ""),
-    #     Edge(8, 9, ""),
-    #     Edge(9, 10, ""),
-    #     Edge(10, 11,""),
-    #     Edge(11, 12, ""),
-    #     Edge(12, 13, ""),
-    #     Edge(13, 14, ""),
-    #     Edge(14, 15, ""),
-    #     Edge(15, 16, ""),
-    #     Edge(16, 17, ""),
-    #     Edge(17, 18, ""),
-    #     Edge(18, 19,""),
-    #     Edge(19, 20, "") # Closing the loop
-    # ]
-
-    # for edge in edges:
-    #     graph.add_edge(edge)
-    test_data_path = Path("test.xml")
-
+    test_data_path = Path("test_data.json")
     plugin = apps.get_app_config('graph_explorer_platform').data_source_plugins[0]
     params = {
         'file_path': str(test_data_path),
         'directed': True
     }
-    graph = plugin.load_graph(params)
-
-    # Convert graph data to JSON-friendly format
-    # graph_data = {
-    #     "nodes": [{"id": node.id, "label": f"Node {node.id}"} for node in graph.nodes.values()],
-    #     "links": [{"source": edge.source, "target": edge.target, "name": edge.name} for edge in graph.edges]
-    # }
-    
+    apps.get_app_config('graph_explorer_platform').graph=plugin.load_graph(params)
     simple_visualizer=apps.get_app_config('graph_explorer_platform').data_visalizer_plugins[0]
     graph_data={"code":''}
-    graph_data["code"]=simple_visualizer.visualize_graph(graph)
-    # print(graph_data['code'],apps.get_app_config('graph_explorer_platform').data_visalizer_plugins)
+    graph_data["code"]=simple_visualizer.visualize_graph(apps.get_app_config('graph_explorer_platform').graph)
     return render(request, 'main.html', graph_data)
 
 def search(request):
@@ -73,16 +31,14 @@ def search(request):
         search_query = request.POST.get('query', '')
         plugin = apps.get_app_config('graph_explorer_platform').data_source_plugins[0]
         params = {
-            'file_path': str(Path("test.xml")),
+            'file_path': str(Path("test_data.json")),
             'directed': True
         }
-        graph = plugin.load_graph(params)
         
         filter_service = GraphSearchFilter()
-        filtered_graph = filter_service.search(graph, search_query)
-        
+        apps.get_app_config('graph_explorer_platform').graph = filter_service.search(apps.get_app_config('graph_explorer_platform').graph, search_query)
         simple_visualizer = apps.get_app_config('graph_explorer_platform').data_visalizer_plugins[0]
-        graph_data = {"code": simple_visualizer.visualize_graph(filtered_graph)}
+        graph_data = {"code": simple_visualizer.visualize_graph(apps.get_app_config('graph_explorer_platform').graph)}
         return JsonResponse(graph_data)
 
 def filter(request):
@@ -90,14 +46,13 @@ def filter(request):
         filter_query = request.POST.get('query', '')
         plugin = apps.get_app_config('graph_explorer_platform').data_source_plugins[0]
         params = {
-            'file_path': str(Path("test.xml")),
+            'file_path': str(Path("test_data.json")),
             'directed': True
         }
-        graph = plugin.load_graph(params)
         
         filter_service = GraphSearchFilter()
-        filtered_graph = filter_service.filter(graph, filter_query)
+        apps.get_app_config('graph_explorer_platform').graph = filter_service.filter(apps.get_app_config('graph_explorer_platform').graph, filter_query)
         
         simple_visualizer = apps.get_app_config('graph_explorer_platform').data_visalizer_plugins[0]
-        graph_data = {"code": simple_visualizer.visualize_graph(filtered_graph)}
+        graph_data = {"code": simple_visualizer.visualize_graph(apps.get_app_config('graph_explorer_platform').graph)}
         return JsonResponse(graph_data)

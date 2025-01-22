@@ -9,6 +9,7 @@ class GraphExplorerPlatformConfig(AppConfig):
     def ready(self):
         self.data_source_plugins = load_plugins("graph.data_source")
         self.data_visalizer_plugins = load_plugins("graph.data_visualizer")
+    graph=None
 
 def load_plugins(label):
     plugins = []

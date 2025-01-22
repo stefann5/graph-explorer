@@ -39,25 +39,27 @@
 
 {% block extra_css %}
 <style>
-  body {
-    margin: 0;
-    padding: 20px;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #bdfab4;
-    color: #333;
-  }
-  .link {
-    stroke: #999;
-    stroke-width: 1px;
-  }
-  .node rect {
-    fill: white;
-    stroke: #666;
-    stroke-width: 1px;
-  }
-  .node text {
-    text-anchor: middle;
-  }
+
+    body {
+        margin: 0;
+        padding: 20px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #bdfab4;
+        color: #333;
+    }
+    .link {
+        stroke: #999;
+        stroke-width: 1px;
+    }
+    .node rect {
+        fill: white;
+        stroke: #666;
+        stroke-width: 1px;
+    }
+    .node text {
+        text-anchor: middle;
+    }
+
 
   .workspace-controls,
   .visualization-controls {
@@ -105,13 +107,17 @@
     border-radius: 4px;
   }
 
-  .views-container {
-    display: grid;
-    grid-template-columns: 250px 1fr;
-    grid-template-rows: 1fr 200px;
-    gap: 20px;
-    height: 80vh;
-  }
+    .views-container {
+        display: grid;
+        width: 1800px;
+        grid-template-columns: 600px 1fr; /* Left column for tree-view, right column for main-view */
+        grid-template-rows: 1fr 600px; /* First row for tree-view and main-view, second row for bird-view */
+        height:750px;
+        grid-template-areas:
+            "tree-view main-view"
+            "bird-view main-view";
+    }
+
 
   .tree-view,
   .main-view,
@@ -123,18 +129,23 @@
     overflow: auto;
   }
 
-  .tree-view {
-    grid-row: 1 / -1;
-  }
+    .tree-view {
+        grid-area: tree-view;
+    }
+
+    .main-view {
+        grid-area: main-view;
+    }
+
+    .bird-view {
+        grid-area: bird-view;
+    }
+
 </style>
 {% include "birdview.html" %} {% endblock %} {% block extra_js %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
 <script>
-  {
-    {
-      code | safe;
-    }
-  }
+ {{ code|safe }}
 </script>
 <script>
   document

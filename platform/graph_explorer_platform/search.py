@@ -53,16 +53,15 @@ class GraphSearchFilter(ServiceBase):
 
         # Find matching nodes
         matching_nodes = []
-        for node_id, node in graph.nodes.items():
-            for attr_name, attr_value in node.data.items():
-                if query.lower() in str(attr_name).lower() or query.lower() in str(attr_value).lower():
-                    if not date:
-                        matching_nodes.append(node_id)
-                        break
-                if date and isinstance(attr_value, dict) and 'date' in attr_value:
-                    if str(attr_value['date']) == query:
-                        matching_nodes.append(node_id)
-                        break
+        all_nodes = graph.nodes.items()
+        for node_id, node in all_nodes:
+            for attr_name, attr_value in node.data['attributes'].items():
+                if not date and (query.lower() in str(attr_name).lower() or query.lower() in str(attr_value).lower()):
+                    matching_nodes.append(node_id)
+                    break
+                if date and isinstance(attr_value, datetime) and str(attr_value).lower() == query.lower():
+                    matching_nodes.append(node_id)
+                    break
 
         # Add matching nodes to result graph
         for node_id in matching_nodes:
