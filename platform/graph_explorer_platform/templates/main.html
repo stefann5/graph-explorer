@@ -1,10 +1,12 @@
 {% extends "base.html" %} {% load static %} {% block content %}
 <div class="workspace-controls">
   <select id="dataSourceSelect">
-    <option value="">Select Data Source</option>
+    <option value="none">Select Plugin</option>
+    <option value="xml">XML</option>
+    <option value="json">JSON</option>
   </select>
   <select id="workspaceSelect">
-    <option value="">Select Workspace</option>
+    <option value="ws">ws</option>
   </select>
   <button id="newWorkspace">New Workspace</button>
   <button id="saveWorkspace">Save Workspace</button>
@@ -148,6 +150,47 @@
  {{ code|safe }}
 </script>
 <script>
+  document
+    .getElementById("dataSourceSelect")
+    .addEventListener("change", function () {
+        const query = document
+        .getElementById("dataSourceSelect").value
+      fetch("/select-plugin/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0]
+              .value,
+          },
+        body: `query=${encodeURIComponent(query)}`,
+      })
+        .then((response) => response.text())
+        .then((html) => {
+          // Extract the graph visualization code from the response
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, "text/html");
+          const scripts = doc.getElementsByTagName("script");
+          let graphCode = "";
+
+          // Find the script containing the graph visualization code
+          for (let script of scripts) {
+            if (script.textContent.includes("var nodes =")) {
+              graphCode = script.textContent;
+              break;
+            }
+          }
+
+          // Clear existing graph and run the new visualization
+          document.querySelector(".main-view").innerHTML = "";
+          const script = document.createElement("script");
+          script.textContent = graphCode;
+          document.body.appendChild(script);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    });
+
   document
     .getElementById("clearFilters")
     .addEventListener("click", function () {
