@@ -137,39 +137,41 @@
   }
 </script>
 <script>
- document.getElementById('clearFilters').addEventListener('click', function() {
-            fetch('/', {
-                method: 'GET',
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => response.text())
-            .then(html => {
-                // Extract the graph visualization code from the response
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const scripts = doc.getElementsByTagName('script');
-                let graphCode = '';
-                
-                // Find the script containing the graph visualization code
-                for (let script of scripts) {
-                    if (script.textContent.includes('var nodes =')) {
-                        graphCode = script.textContent;
-                        break;
-                    }
-                }
+  document
+    .getElementById("clearFilters")
+    .addEventListener("click", function () {
+      fetch("/", {
+        method: "GET",
+        headers: {
+          "X-Requested-With": "XMLHttpRequest",
+        },
+      })
+        .then((response) => response.text())
+        .then((html) => {
+          // Extract the graph visualization code from the response
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, "text/html");
+          const scripts = doc.getElementsByTagName("script");
+          let graphCode = "";
 
-                // Clear existing graph and run the new visualization
-                document.querySelector('.main-view').innerHTML = '';
-                const script = document.createElement('script');
-                script.textContent = graphCode;
-                document.body.appendChild(script);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+          // Find the script containing the graph visualization code
+          for (let script of scripts) {
+            if (script.textContent.includes("var nodes =")) {
+              graphCode = script.textContent;
+              break;
+            }
+          }
+
+          // Clear existing graph and run the new visualization
+          document.querySelector(".main-view").innerHTML = "";
+          const script = document.createElement("script");
+          script.textContent = graphCode;
+          document.body.appendChild(script);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
         });
+    });
 
   document
     .getElementById("searchInput")
@@ -180,17 +182,18 @@
           method: "POST",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
-            'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value
+            "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0]
+              .value,
           },
           body: `query=${encodeURIComponent(query)}`,
         })
           .then((response) => response.json())
           .then((data) => {
-            document.querySelector('.main-view').innerHTML = '';
+            document.querySelector(".main-view").innerHTML = "";
 
-            const script = document.createElement('script');
-                script.textContent = data.code;
-                document.body.appendChild(script);
+            const script = document.createElement("script");
+            script.textContent = data.code;
+            document.body.appendChild(script);
           });
       }
     });
@@ -201,20 +204,21 @@
       if (e.key === "Enter") {
         const query = this.value;
         fetch("/filter/", {
-            method: "POST",
+          method: "POST",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
-            'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value
+            "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0]
+              .value,
           },
           body: `query=${encodeURIComponent(query)}`,
         })
           .then((response) => response.json())
           .then((data) => {
-            document.querySelector('.main-view').innerHTML = '';
+            document.querySelector(".main-view").innerHTML = "";
 
-            const script = document.createElement('script');
-                script.textContent = data.code;
-                document.body.appendChild(script);
+            const script = document.createElement("script");
+            script.textContent = data.code;
+            document.body.appendChild(script);
           });
       }
     });
