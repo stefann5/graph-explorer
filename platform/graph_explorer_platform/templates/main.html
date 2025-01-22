@@ -47,8 +47,8 @@
         color: #333;
     }
     .link {
-    stroke: #999;
-    stroke-width: 1px;
+        stroke: #999;
+        stroke-width: 1px;
     }
     .node rect {
         fill: white;
@@ -104,10 +104,13 @@
 
     .views-container {
         display: grid;
-        grid-template-columns: 250px 1fr;
-        grid-template-rows: 1fr 200px;
-        gap: 20px;
-        height: 80vh;
+        width: 1800px;
+        grid-template-columns: 600px 1fr; /* Left column for tree-view, right column for main-view */
+        grid-template-rows: 1fr 600px; /* First row for tree-view and main-view, second row for bird-view */
+        height:750px;
+        grid-template-areas:
+            "tree-view main-view"
+            "bird-view main-view";
     }
 
     .tree-view, .main-view, .bird-view {
@@ -119,7 +122,15 @@
     }
 
     .tree-view {
-        grid-row: 1 / -1;
+        grid-area: tree-view;
+    }
+
+    .main-view {
+        grid-area: main-view;
+    }
+
+    .bird-view {
+        grid-area: bird-view;
     }
 </style>
 {% include "birdview.html" %}
