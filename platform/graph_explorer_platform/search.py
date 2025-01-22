@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 from typing import Any
 from sok.graph.explorer.api.model.graph import Graph
 from sok.graph.explorer.api.services.graph import ServiceBase
