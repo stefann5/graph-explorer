@@ -98,6 +98,22 @@ class DataSourcePluginXml(DataLoaderBase):
                 if child.tag is not None:
                     self._first_pass_process(child, current_path)
 
+    def _convert_value(self, value: Any) -> Any:
+        """Convert value to appropriate type."""
+        if isinstance(value, str):
+            try:
+                return datetime.fromisoformat(value)
+            except ValueError:
+                try:
+                    return int(value)
+                except ValueError:
+                    try:
+                        return float(value)
+                    except ValueError:
+                        return value
+        return value
+
+
     def _create_graph_structure(self, element: ET.Element, graph: Graph, parent_id: Optional[int] = None,
                                 parent_path: str = "") -> None:
         current_path = self._create_element_path(element, parent_path)
@@ -114,7 +130,7 @@ class DataSourcePluginXml(DataLoaderBase):
                 if parent_node is not None:
                     # Add this element as an attribute to the parent
                     attributes = parent_node.data.get('attributes', {})
-                    attributes[element.tag] = element.text.strip() if element.text else ''
+                    attributes[element.tag] = self._convert_value(element.text) if element.text else ''
                     parent_node.data['attributes'] = attributes
             return  # Skip further processing for this element
 
