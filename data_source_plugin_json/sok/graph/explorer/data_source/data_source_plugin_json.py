@@ -44,10 +44,15 @@ class JsonDataSourcePlugin(DataLoaderBase):
             self.id_map[node_id] = node_id
             
             # Create node with non-object attributes
-            node_data = {}
+            node_data={}
             for key, value in data.items():
                 if key != "@id" and not isinstance(value, (dict, list)):
                     node_data[key] = self._convert_value(value)
+                    
+            node_data["attributes"] = {}
+            for key, value in data.items():
+                if key != "@id" and not isinstance(value, (dict, list)):
+                    node_data["attributes"][key] = self._convert_value(value)
             
             self.graph.add_node(Node(node_id, node_data))
 
