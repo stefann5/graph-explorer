@@ -29,12 +29,11 @@ class GraphExplorerPlatformConfig(AppConfig):
         for plugin in self.data_source_plugins:
             # Check class name for matching type
             class_name = plugin.__class__.__name__.lower()
-            if ('json' in class_name and plugin_type == 'json') or \
-               ('xml' in class_name and plugin_type == 'xml'):
+            if plugin_type in class_name:               
                 self.selected_plugin = plugin
-                if(plugin_type == 'json'):
+                if(plugin_type == 'jsondatasourceplugin'):
                     self.data_source = 'test.json'
-                if(plugin_type == 'xml'):
+                if(plugin_type == 'datasourcepluginxml'):
                     self.data_source = 'test.xml'
                 return True
         return False

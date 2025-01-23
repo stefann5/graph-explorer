@@ -31,10 +31,27 @@ def select_plugin(request):
     if request.method == 'POST':
         query = request.POST.get('query', 1)
         apps.get_app_config('graph_explorer_platform').set_data_source_plugin(query)
-        print(apps.get_app_config('graph_explorer_platform').selected_plugin)
 
     return index(request)
 
+
+def get_available_plugins(request):
+    app_config = apps.get_app_config('graph_explorer_platform')
+    
+    # Extract plugin names for the select options
+    data_source_plugins = [
+        {
+            'name': plugin.__class__.__name__
+        } 
+        for plugin in app_config.data_source_plugins
+    ]
+
+    context = {
+        'data_source_plugins': data_source_plugins,
+        'selected_plugin': app_config.selected_plugin.__class__.__name__ if app_config.selected_plugin else None
+    }
+
+    return JsonResponse(context)
 
 def search(request):
     if request.method == 'POST':

@@ -1,10 +1,7 @@
 {% extends "base.html" %} {% load static %} {% block content %}
 <div class="workspace-controls">
-  <select id="dataSourceSelect">
-    <option value="none">Select Plugin</option>
-    <option value="xml">XML</option>
-    <option value="json">JSON</option>
-  </select>
+    <select id="dataSourceSelect">
+    </select>
   <select id="workspaceSelect">
     <option value="ws">ws</option>
   </select>
@@ -149,7 +146,51 @@
 <script>
  {{ code|safe }}
 </script>
-<script>
+<script> 
+
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/get-installed-plugins/')
+        .then(response => response.json())
+        .then(data => {
+            // Clear any existing options
+            document
+            .getElementById("dataSourceSelect").innerHTML = '';
+            // Populate options
+            data.data_source_plugins.forEach(plugin => {
+                const option = document.createElement('option');
+                option.value = plugin.name;
+                option.textContent = plugin.name;
+                
+                // Select the current plugin if it matches
+                if (plugin.name === data.selected_plugin) {
+                    option.selected = true;
+                }
+
+                document
+            .getElementById("dataSourceSelect").appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching plugins:', error);
+        });
+    
+    // Function to get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
+
   document
     .getElementById("dataSourceSelect")
     .addEventListener("change", function () {
