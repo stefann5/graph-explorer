@@ -79,20 +79,7 @@ function createGraphView(container, width, height, enableZoom) {{
         .attr("in", "SourceGraphic");
 
     // Add gradient
-    var gradient = defs.append("linearGradient")
-        .attr("id", "node-gradient")
-        .attr("x1", "0%")
-        .attr("y1", "0%")
-        .attr("x2", "0%")
-        .attr("y2", "100%");
-
-    gradient.append("stop")
-        .attr("offset", "0%")
-        .attr("style", "stop-color:#ffffff;stop-opacity:1");
-
-    gradient.append("stop")
-        .attr("offset", "100%")
-        .attr("style", "stop-color:#f0f0f0;stop-opacity:1");
+    
 
     // Create a group for zoom transformation
     var g = svg.append("g");
@@ -239,12 +226,28 @@ function createGraphView(container, width, height, enableZoom) {{
     }});
                 
     function makeSimpleView(d, container) {{
-        let scale = container === ".bird-view" ? 0.5 : 1;
+        let scale =  1;
         let width = 180 * scale;
         let height = 60 * scale;
         let textSize = 12 * scale;
+        var gradient = defs.append("linearGradient")
+        .attr("id", "node-gradient")
+        .attr("x1", "0%")
+        .attr("y1", "0%")
+        .attr("x2", "0%")
+        .attr("y2", "100%");
+
+        gradient.append("stop")
+            .attr("offset", "0%")
+            .attr("style", "stop-color:#ffffff;stop-opacity:1");
+
+        gradient.append("stop")
+            .attr("offset", "100%")
+            .attr("style", "stop-color:#f0f0f0;stop-opacity:1");
         
         let containerId = container.replace('.', '');
+        console.log("#" + containerId + "-node-" + d.id);
+        console.log(d);
         
         d3.select("#" + containerId + "-node-" + d.id)
             .append("rect")
@@ -291,7 +294,7 @@ function createGraphView(container, width, height, enableZoom) {{
         updateMiniMap();
     }}
     
-    initializeMiniMap(links, force);
+    initializeMiniMap(links, force,makeSimpleView);
 }}
         """
         return js_code

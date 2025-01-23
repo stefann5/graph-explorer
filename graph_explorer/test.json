@@ -412,6 +412,54 @@
      ]
    },
    {
+    "@id": "div-region-6688",
+    "name": "Regional Operations",
+    "budget": 500000000,
+    "growth_rate": 15.5,
+    "parent": "corp-root-28dd",
+    "linked_divisions": ["div-sales-8811", "div-logistics-9900"],
+    "children": [
+      {
+        "@id": "region-latam-7799",
+        "name": "Latin America",
+        "revenue": 350000000,
+        "team_size": 180,
+        "parent": "div-region-6688",
+        "collaborates_with": ["region-na-2233", "region-eu-4455"],
+        "children": [
+          {
+            "@id": "team-latam-sales",
+            "name": "LATAM Sales Team",
+            "revenue": 250000000,
+            "deals_closed": 35,
+            "parent": "region-latam-7799",
+            "depends_on": ["team-cloud-1a2b", "team-support-8899"],
+            "references": ["proj-cloud-micro", "proj-mobile-app"]
+          }
+        ]
+      },
+      {
+        "@id": "region-mea-8800",
+        "name": "Middle East & Africa",
+        "revenue": 280000000,
+        "team_size": 150,
+        "parent": "div-region-6688",
+        "collaborates_with": ["region-eu-4455", "region-apac-6677"],
+        "children": [
+          {
+            "@id": "team-mea-sales",
+            "name": "MEA Sales Team",
+            "revenue": 180000000,
+            "deals_closed": 28,
+            "parent": "region-mea-8800",
+            "depends_on": ["team-cloud-1a2b", "team-support-8899"],
+            "references": ["proj-cloud-micro", "proj-ai-ml"]
+          }
+        ]
+      }
+    ]
+  },
+   {
      "@id": "div-marketing-7733",
      "name": "Marketing Division",
      "budget": 200000000,
@@ -619,6 +667,304 @@
        }
      ]
    },
+   {
+    "@id": "div-innovation-2244",
+    "name": "Innovation Division",
+    "budget": 350000000,
+    "growth_rate": 25.3,
+    "parent": "corp-root-28dd",
+    "linked_divisions": ["div-tech-6616", "div-rd-940e", "div-ai-1234"],
+    "children": [
+      {
+        "@id": "team-emerging-tech",
+        "name": "Emerging Technologies",
+        "budget": 120000000,
+        "team_size": 65,
+        "parent": "div-innovation-2244",
+        "collaborates_with": ["team-research-9876", "team-ai-1122"],
+        "children": [
+          {
+            "@id": "proj-ar-platform",
+            "name": "AR Development Platform",
+            "status": "active",
+            "progress": 45.0,
+            "start_date": "2023-11-15",
+            "parent": "team-emerging-tech",
+            "related_projects": ["proj-ai-vision", "proj-mobile-app"],
+            "team_members": ["emp-emerging-1", "emp-emerging-2", "emp-emerging-3"]
+          }
+        ]
+      }
+    ]
+  }, {
+    "@id": "div-cybersecurity-7788",
+    "name": "Cybersecurity Division",
+    "budget": 420000000,
+    "growth_rate": 35.0,
+    "parent": "corp-root-28dd",
+    "linked_divisions": ["div-tech-6616", "div-data-4466"],
+    "children": [
+      {
+        "@id": "team-threat-intel",
+        "name": "Threat Intelligence",
+        "budget": 150000000,
+        "team_size": 60,
+        "parent": "div-cybersecurity-7788",
+        "collaborates_with": ["team-security-7890", "team-cloud-1a2b"],
+        "children": [
+          {
+            "@id": "proj-threat-detection",
+            "name": "Advanced Threat Detection",
+            "status": "active",
+            "progress": 55.0,
+            "start_date": "2023-11-01",
+            "parent": "team-threat-intel",
+            "related_projects": ["proj-security-auth", "proj-ai-ml"],
+            "team_members": ["emp-601", "emp-602", "emp-603"]
+          }
+        ]
+      },
+      {
+        "@id": "team-incident-response",
+        "name": "Incident Response",
+        "budget": 120000000,
+        "team_size": 45,
+        "parent": "div-cybersecurity-7788",
+        "collaborates_with": ["team-security-7890", "team-network-4567"],
+        "children": [
+          {
+            "@id": "proj-incident-automation",
+            "name": "Response Automation Platform",
+            "status": "in_progress",
+            "progress": 30.0,
+            "start_date": "2023-12-15",
+            "parent": "team-incident-response",
+            "related_projects": ["proj-cloud-micro", "proj-ai-ml"],
+            "team_members": ["emp-604", "emp-605", "emp-606"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "@id": "div-product-8899",
+    "name": "Product Management Division",
+    "budget": 280000000,
+    "growth_rate": 22.0,
+    "parent": "corp-root-28dd",
+    "linked_divisions": ["div-tech-6616", "div-marketing-7733"],
+    "children": [
+      {
+        "@id": "team-product-strategy",
+        "name": "Product Strategy",
+        "budget": 100000000,
+        "team_size": 35,
+        "parent": "div-product-8899",
+        "collaborates_with": ["team-digital-strategy", "team-emerging-tech"],
+        "children": [
+          {
+            "@id": "proj-product-roadmap",
+            "name": "Product Roadmap 2025",
+            "status": "active",
+            "progress": 45.0,
+            "start_date": "2024-01-01",
+            "parent": "team-product-strategy",
+            "related_projects": ["proj-digital-workspace", "proj-ai-ml"],
+            "team_members": ["emp-607", "emp-608", "emp-609"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "@id": "div-customer-exp-9900",
+    "name": "Customer Experience Division",
+    "budget": 250000000,
+    "growth_rate": 20.0,
+    "parent": "corp-root-28dd",
+    "linked_divisions": ["div-sales-8811", "div-marketing-7733"],
+    "children": [
+      {
+        "@id": "team-cx-design",
+        "name": "CX Design Team",
+        "budget": 90000000,
+        "team_size": 40,
+        "parent": "div-customer-exp-9900",
+        "collaborates_with": ["team-mobile-dev", "team-digital-strategy"],
+        "children": [
+          {
+            "@id": "proj-cx-platform",
+            "name": "CX Management Platform",
+            "status": "planning",
+            "progress": 15.0,
+            "start_date": "2024-02-01",
+            "parent": "team-cx-design",
+            "related_projects": ["proj-mobile-app", "proj-cloud-micro"],
+            "team_members": ["emp-610", "emp-611", "emp-612"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "@id": "div-sustainability-3355",
+    "name": "Sustainability Division",
+    "budget": 180000000,
+    "growth_rate": 18.5,
+    "parent": "corp-root-28dd",
+    "linked_divisions": ["div-prod-3322", "div-rd-940e"],
+    "children": [
+      {
+        "@id": "team-green-initiatives",
+        "name": "Green Initiatives",
+        "budget": 75000000,
+        "team_size": 40,
+        "parent": "div-sustainability-3355",
+        "collaborates_with": ["team-research-9876"],
+        "children": [
+          {
+            "@id": "proj-carbon-tracking",
+            "name": "Carbon Footprint Tracker",
+            "status": "in_progress",
+            "progress": 35.0,
+            "start_date": "2023-12-01",
+            "parent": "team-green-initiatives",
+            "related_projects": ["proj-iot-industrial"],
+            "team_members": ["emp-green-1", "emp-green-2", "emp-green-3"]
+          }
+        ]
+      }
+    ]
+    },
+    {
+      "@id": "div-data-4466",
+      "name": "Data Analytics Division",
+      "budget": 450000000,
+      "growth_rate": 28.5,
+      "parent": "corp-root-28dd",
+      "linked_divisions": ["div-tech-6616", "div-ai-1234", "div-rd-940e"],
+      "children": [
+        {
+          "@id": "team-data-science",
+          "name": "Data Science Team",
+          "budget": 180000000,
+          "team_size": 85,
+          "parent": "div-data-4466",
+          "collaborates_with": ["team-ai-1122", "team-cloud-1a2b"],
+          "children": [
+            {
+              "@id": "proj-predictive-models",
+              "name": "Customer Behavior Prediction",
+              "status": "active",
+              "progress": 65.0,
+              "start_date": "2023-10-15",
+              "parent": "team-data-science",
+              "related_projects": ["proj-ai-ml", "proj-ai-nlp"],
+              "team_members": ["emp-501", "emp-502", "emp-503"]
+            },
+            {
+              "@id": "proj-data-platform",
+              "name": "Enterprise Data Platform",
+              "status": "in_progress",
+              "progress": 40.0,
+              "start_date": "2023-12-01",
+              "parent": "team-data-science",
+              "related_projects": ["proj-cloud-micro", "proj-ai-ml"],
+              "team_members": ["emp-504", "emp-505", "emp-506"]
+            }
+          ]
+        },
+        {
+          "@id": "team-data-engineering",
+          "name": "Data Engineering",
+          "budget": 150000000,
+          "team_size": 70,
+          "parent": "div-data-4466",
+          "collaborates_with": ["team-cloud-1a2b", "team-data-science"],
+          "children": [
+            {
+              "@id": "proj-data-pipeline",
+              "name": "Real-time Data Pipeline",
+              "status": "active",
+              "progress": 75.0,
+              "start_date": "2023-09-01",
+              "parent": "team-data-engineering",
+              "related_projects": ["proj-cloud-micro", "proj-data-platform"],
+              "team_members": ["emp-507", "emp-508", "emp-509"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "div-digital-5577",
+      "name": "Digital Transformation Division",
+      "budget": 380000000,
+      "growth_rate": 32.0,
+      "parent": "corp-root-28dd",
+      "linked_divisions": ["div-tech-6616", "div-innovation-2244"],
+      "children": [
+        {
+          "@id": "team-digital-strategy",
+          "name": "Digital Strategy",
+          "budget": 120000000,
+          "team_size": 45,
+          "parent": "div-digital-5577",
+          "collaborates_with": ["team-emerging-tech", "team-data-science"],
+          "children": [
+            {
+              "@id": "proj-digital-workspace",
+              "name": "Future Workplace Platform",
+              "status": "in_progress",
+              "progress": 35.0,
+              "start_date": "2024-01-15",
+              "parent": "team-digital-strategy",
+              "related_projects": ["proj-cloud-micro", "proj-mobile-app"],
+              "team_members": ["emp-510", "emp-511", "emp-512"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "div-global-support-1100",
+      "name": "Global Support Operations",
+      "budget": 320000000,
+      "growth_rate": 18.0,
+      "parent": "corp-root-28dd",
+      "linked_divisions": ["div-sales-8811", "div-customer-exp-9900"],
+      "children": [
+        {
+          "@id": "center-asia-2200",
+          "name": "Asian Support Center",
+          "budget": 120000000,
+          "team_size": 150,
+          "parent": "div-global-support-1100",
+          "collaborates_with": ["team-support-8899", "region-apac-6677"],
+          "children": [
+            {
+              "@id": "team-asia-support",
+              "name": "Asia Support Team",
+              "team_size": 100,
+              "parent": "center-asia-2200",
+              "collaborates_with": ["team-cloud-1a2b"],
+              "children": [
+                {
+                  "@id": "proj-asia-support-platform",
+                  "name": "Asian Market Support Platform",
+                  "status": "in_progress",
+                  "progress": 25.0,
+                  "start_date": "2024-01-15",
+                  "parent": "team-asia-support",
+                  "related_projects": ["proj-support-portal", "proj-cloud-micro"],
+                  "team_members": ["emp-613", "emp-614", "emp-615"]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
    {
  "@id": "emp-directory",
  "name": "Employee Directory",
@@ -886,7 +1232,471 @@
      "department": "team-ai-1122",
      "reports_to": "emp-111",
      "hire_date": "2020-06-01"
-   }
+   },
+   {
+    "@id": "emp-emerging-1",
+    "name": "Diana Prince",
+    "role": "AR Team Lead",
+    "department": "team-emerging-tech",
+    "reports_to": null,
+    "hire_date": "2022-05-15"
+  },
+  {
+    "@id": "emp-emerging-2",
+    "name": "Bruce Wayne",
+    "role": "Senior AR Developer",
+    "department": "team-emerging-tech",
+    "reports_to": "emp-emerging-1",
+    "hire_date": "2022-07-01"
+  },
+  {
+    "@id": "emp-emerging-3",
+    "name": "Clark Kent",
+    "role": "AR Engineer",
+    "department": "team-emerging-tech",
+    "reports_to": "emp-emerging-1",
+    "hire_date": "2022-09-15"
+  },
+  {
+    "@id": "emp-green-1",
+    "name": "Barry Allen",
+    "role": "Sustainability Lead",
+    "department": "team-green-initiatives",
+    "reports_to": null,
+    "hire_date": "2022-06-01"
+  },
+  {
+    "@id": "emp-green-2",
+    "name": "Hal Jordan",
+    "role": "Environmental Engineer",
+    "department": "team-green-initiatives",
+    "reports_to": "emp-green-1",
+    "hire_date": "2022-08-15"
+  },
+  {
+    "@id": "emp-green-3",
+    "name": "Arthur Curry",
+    "role": "Sustainability Analyst",
+    "department": "team-green-initiatives",
+    "reports_to": "emp-green-1",
+    "hire_date": "2022-10-01"
+  },
+  {
+    "@id": "emp-401",
+    "name": "Emma Frost",
+    "role": "Data Science Lead",
+    "department": "team-ai-1122",
+    "reports_to": "emp-111",
+    "hire_date": "2022-04-15"
+  },
+  {
+    "@id": "emp-402",
+    "name": "Peter Parker",
+    "role": "Machine Learning Engineer",
+    "department": "team-ai-1122",
+    "reports_to": "emp-401",
+    "hire_date": "2022-06-01"
+  },
+  {
+    "@id": "emp-403",
+    "name": "Tony Stark",
+    "role": "Senior AI Architect",
+    "department": "team-ai-1122",
+    "reports_to": "emp-111",
+    "hire_date": "2022-07-15"
+  },
+  {
+    "@id": "emp-404",
+    "name": "Natasha Romanoff",
+    "role": "Security Operations Lead",
+    "department": "team-security-7890",
+    "reports_to": "emp-321",
+    "hire_date": "2022-08-01"
+  },
+  {
+    "@id": "emp-405",
+    "name": "Steve Rogers",
+    "role": "Compliance Officer",
+    "department": "team-compliance",
+    "reports_to": null,
+    "hire_date": "2022-09-15"
+  },
+  {
+    "@id": "emp-406",
+    "name": "Wanda Maximoff",
+    "role": "UX Research Lead",
+    "department": "team-mobile-dev",
+    "reports_to": "emp-951",
+    "hire_date": "2022-10-01"
+  },
+  {
+    "@id": "emp-407",
+    "name": "T'Challa",
+    "role": "Innovation Strategist",
+    "department": "team-emerging-tech",
+    "reports_to": "emp-emerging-1",
+    "hire_date": "2022-11-15"
+  },
+  {
+    "@id": "emp-408",
+    "name": "Carol Danvers",
+    "role": "Project Manager",
+    "department": "team-cloud-1a2b",
+    "reports_to": "emp-456",
+    "hire_date": "2022-12-01"
+  },
+  {
+    "@id": "emp-409",
+    "name": "Stephen Strange",
+    "role": "Systems Architect",
+    "department": "team-cloud-1a2b",
+    "reports_to": "emp-456",
+    "hire_date": "2023-01-15"
+  },
+  {
+    "@id": "emp-410",
+    "name": "Scott Lang",
+    "role": "QA Engineer",
+    "department": "team-quality-1234",
+    "reports_to": "emp-777",
+    "hire_date": "2023-02-01"
+  },
+  {
+    "@id": "emp-411",
+    "name": "Hope van Dyne",
+    "role": "Technical Lead",
+    "department": "team-network-4567",
+    "reports_to": "emp-135",
+    "hire_date": "2023-03-15"
+  },
+  {
+    "@id": "emp-412",
+    "name": "Sam Wilson",
+    "role": "Cloud Security Specialist",
+    "department": "team-security-7890",
+    "reports_to": "emp-404",
+    "hire_date": "2023-04-01"
+  },
+  {
+    "@id": "emp-413",
+    "name": "Bucky Barnes",
+    "role": "Infrastructure Engineer",
+    "department": "team-cloud-1a2b",
+    "reports_to": "emp-456",
+    "hire_date": "2023-05-15"
+  },
+  {
+    "@id": "emp-414",
+    "name": "Shuri",
+    "role": "Innovation Engineer",
+    "department": "team-emerging-tech",
+    "reports_to": "emp-emerging-1",
+    "hire_date": "2023-06-01"
+  },
+  {
+    "@id": "emp-415",
+    "name": "Vision",
+    "role": "Data Architect",
+    "department": "team-ai-1122",
+    "reports_to": "emp-401",
+    "hire_date": "2023-07-15"
+  },
+  {
+    "@id": "emp-416",
+    "name": "James Rhodes",
+    "role": "Security Engineer",
+    "department": "team-security-7890",
+    "reports_to": "emp-404",
+    "hire_date": "2023-08-01"
+  },
+  {
+    "@id": "emp-417",
+    "name": "Janet van Dyne",
+    "role": "UX Designer",
+    "department": "team-mobile-dev",
+    "reports_to": "emp-406",
+    "hire_date": "2023-09-15"
+  },
+  {
+    "@id": "emp-418",
+    "name": "Wong",
+    "role": "Database Administrator",
+    "department": "team-cloud-1a2b",
+    "reports_to": "emp-456",
+    "hire_date": "2023-10-01"
+  },
+  {
+    "@id": "emp-419",
+    "name": "Okoye",
+    "role": "Project Coordinator",
+    "department": "team-emerging-tech",
+    "reports_to": "emp-emerging-1",
+    "hire_date": "2023-11-15"
+  },
+  {
+    "@id": "emp-420",
+    "name": "Matt Murdock",
+    "role": "Legal Technology Specialist",
+    "department": "team-compliance",
+    "reports_to": "emp-405",
+    "hire_date": "2023-12-01"
+  },
+  {
+    "@id": "emp-421",
+    "name": "Jessica Jones",
+    "role": "Security Analyst",
+    "department": "team-security-7890",
+    "reports_to": "emp-404",
+    "hire_date": "2024-01-15"
+  },
+  {
+    "@id": "emp-422",
+    "name": "Luke Cage",
+    "role": "Infrastructure Security",
+    "department": "team-security-7890",
+    "reports_to": "emp-404",
+    "hire_date": "2024-01-02"
+  },
+  {
+    "@id": "emp-423",
+    "name": "Danny Rand",
+    "role": "Innovation Analyst",
+    "department": "team-emerging-tech",
+    "reports_to": "emp-emerging-1",
+    "hire_date": "2024-01-05"
+  },
+  {
+    "@id": "emp-424",
+    "name": "Kate Bishop",
+    "role": "Junior Developer",
+    "department": "team-mobile-dev",
+    "reports_to": "emp-406",
+    "hire_date": "2024-01-10"
+  },
+  {
+    "@id": "emp-425",
+    "name": "Jennifer Walters",
+    "role": "Legal Systems Analyst",
+    "department": "team-compliance",
+    "reports_to": "emp-405",
+    "hire_date": "2024-01-15"
+  },
+  {
+    "@id": "emp-501",
+    "name": "Reed Richards",
+    "role": "Lead Data Scientist",
+    "department": "team-data-science",
+    "reports_to": null,
+    "hire_date": "2023-01-15"
+  },
+  {
+    "@id": "emp-502",
+    "name": "Susan Storm",
+    "role": "Senior Data Scientist",
+    "department": "team-data-science",
+    "reports_to": "emp-501",
+    "hire_date": "2023-02-01"
+  },
+  {
+    "@id": "emp-503",
+    "name": "Ben Grimm",
+    "role": "Data Analyst",
+    "department": "team-data-science",
+    "reports_to": "emp-501",
+    "hire_date": "2023-03-15"
+  },
+  {
+    "@id": "emp-504",
+    "name": "Johnny Storm",
+    "role": "ML Engineer",
+    "department": "team-data-science",
+    "reports_to": "emp-501",
+    "hire_date": "2023-04-01"
+  },
+  {
+    "@id": "emp-505",
+    "name": "Victor von Doom",
+    "role": "Platform Architect",
+    "department": "team-data-science",
+    "reports_to": "emp-501",
+    "hire_date": "2023-05-15"
+  },
+  {
+    "@id": "emp-506",
+    "name": "Namor McKenzie",
+    "role": "Data Engineer",
+    "department": "team-data-science",
+    "reports_to": "emp-501",
+    "hire_date": "2023-06-01"
+  },
+  {
+    "@id": "emp-507",
+    "name": "Charles Xavier",
+    "role": "Data Engineering Lead",
+    "department": "team-data-engineering",
+    "reports_to": null,
+    "hire_date": "2023-07-15"
+  },
+  {
+    "@id": "emp-508",
+    "name": "Erik Lehnsherr",
+    "role": "Senior Data Engineer",
+    "department": "team-data-engineering",
+    "reports_to": "emp-507",
+    "hire_date": "2023-08-01"
+  },
+  {
+    "@id": "emp-509",
+    "name": "Jean Grey",
+    "role": "Data Pipeline Engineer",
+    "department": "team-data-engineering",
+    "reports_to": "emp-507",
+    "hire_date": "2023-09-15"
+  },
+  {
+    "@id": "emp-510",
+    "name": "Scott Summers",
+    "role": "Digital Strategy Lead",
+    "department": "team-digital-strategy",
+    "reports_to": null,
+    "hire_date": "2023-10-01"
+  },
+  {
+    "@id": "emp-511",
+    "name": "Ororo Munroe",
+    "role": "Digital Transformation Specialist",
+    "department": "team-digital-strategy",
+    "reports_to": "emp-510",
+    "hire_date": "2023-11-15"
+  },
+  {
+    "@id": "emp-512",
+    "name": "Henry McCoy",
+    "role": "Innovation Architect",
+    "department": "team-digital-strategy",
+    "reports_to": "emp-510",
+    "hire_date": "2023-12-01"
+  },
+  {
+    "@id": "emp-601",
+    "name": "Barbara Gordon",
+    "role": "Threat Intelligence Lead",
+    "department": "team-threat-intel",
+    "reports_to": null,
+    "hire_date": "2023-06-15"
+  },
+  {
+    "@id": "emp-602",
+    "name": "Dick Grayson",
+    "role": "Senior Security Analyst",
+    "department": "team-threat-intel",
+    "reports_to": "emp-601",
+    "hire_date": "2023-07-01"
+  },
+  {
+    "@id": "emp-603",
+    "name": "Jason Todd",
+    "role": "Threat Researcher",
+    "department": "team-threat-intel",
+    "reports_to": "emp-601",
+    "hire_date": "2023-08-15"
+  },
+  {
+    "@id": "emp-604",
+    "name": "Tim Drake",
+    "role": "Incident Response Lead",
+    "department": "team-incident-response",
+    "reports_to": null,
+    "hire_date": "2023-09-01"
+  },
+  {
+    "@id": "emp-605",
+    "name": "Damian Wayne",
+    "role": "Security Operations Specialist",
+    "department": "team-incident-response",
+    "reports_to": "emp-604",
+    "hire_date": "2023-10-15"
+  },
+  {
+    "@id": "emp-606",
+    "name": "Stephanie Brown",
+    "role": "Incident Response Engineer",
+    "department": "team-incident-response",
+    "reports_to": "emp-604",
+    "hire_date": "2023-11-01"
+  },
+  {
+    "@id": "emp-607",
+    "name": "Diana Troy",
+    "role": "Product Strategy Lead",
+    "department": "team-product-strategy",
+    "reports_to": null,
+    "hire_date": "2023-12-15"
+  },
+  {
+    "@id": "emp-608",
+    "name": "Kara Zor-El",
+    "role": "Senior Product Manager",
+    "department": "team-product-strategy",
+    "reports_to": "emp-607",
+    "hire_date": "2024-01-01"
+  },
+  {
+    "@id": "emp-609",
+    "name": "Kal-El Kent",
+    "role": "Product Innovation Manager",
+    "department": "team-product-strategy",
+    "reports_to": "emp-607",
+    "hire_date": "2024-01-15"
+  },
+  {
+    "@id": "emp-610",
+    "name": "Hal Jordan",
+    "role": "CX Design Lead",
+    "department": "team-cx-design",
+    "reports_to": null,
+    "hire_date": "2024-01-02"
+  },
+  {
+    "@id": "emp-611",
+    "name": "John Stewart",
+    "role": "Senior UX Designer",
+    "department": "team-cx-design",
+    "reports_to": "emp-610",
+    "hire_date": "2024-01-10"
+  },
+  {
+    "@id": "emp-612",
+    "name": "Kyle Rayner",
+    "role": "Customer Experience Analyst",
+    "department": "team-cx-design",
+    "reports_to": "emp-610",
+    "hire_date": "2024-01-20"
+  },
+  {
+    "@id": "emp-613",
+    "name": "Yao Ming",
+    "role": "Asia Support Lead",
+    "department": "team-asia-support",
+    "reports_to": null,
+    "hire_date": "2023-12-01"
+  },
+  {
+    "@id": "emp-614",
+    "name": "Liu Bei",
+    "role": "Senior Support Engineer",
+    "department": "team-asia-support",
+    "reports_to": "emp-613",
+    "hire_date": "2023-12-15"
+  },
+  {
+    "@id": "emp-615",
+    "name": "Sun Quan",
+    "role": "Support Specialist",
+    "department": "team-asia-support",
+    "reports_to": "emp-613",
+    "hire_date": "2024-01-05"
+  }
  ]
 }
  ]
