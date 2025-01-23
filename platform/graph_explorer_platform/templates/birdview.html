@@ -5,11 +5,10 @@ var miniMap;
 var viewport;
 var isMiniMapScaled = false;
 
-function initializeMiniMap(links, force) {
+function initializeMiniMap(links, force, makeSimpleViewFunc) {
     // Reset the mini-map
     d3.select("#bird-view").selectAll("svg").remove();
     isMiniMapScaled = false;
-
     // Create new SVG container with viewBox for better scaling
     miniMap = d3.select("#bird-view")
         .append("svg")
@@ -19,57 +18,71 @@ function initializeMiniMap(links, force) {
         .attr("preserveAspectRatio", "xMidYMid meet")
         .append("g")
         .attr("id", "mini-map");
-
-    // Initialize links
+    // Initialize curved links
     miniMapLinks = miniMap.selectAll(".link")
         .data(links)
         .enter()
-        .append("line")
-        .attr("class", "link");
-
+        .append("path")
+        .attr("class", "link")
+        .style("fill", "none")
+        .style("stroke", "#999")
+        .style("stroke-width", "4px");
     // Initialize nodes
     miniMapNodes = miniMap.selectAll(".node")
         .data(force.nodes())
-        .enter()
-        .append("circle")
+        .enter().append('g')
         .attr("class", "node")
-        .attr("r", 20);
+        .attr("id", function(d) { 
+            
+            return "bird-view-node-" + d.id; 
+        });
+        
 
+    // Use the passed makeSimpleView function for mini map nodes
+    //console.log(miniMapNodes);
+    miniMapNodes.each(function(d) {
+         // Log the data bound to each node
+        makeSimpleViewFunc(d, ".bird-view");
+});
     // Initialize viewport
-    // Initialize viewport
-viewport = miniMap.append("rect")
+    viewport = miniMap.append("rect")
         .attr("class", "viewport")
         .attr("fill", "none")
         .attr("stroke", "#2563eb")
         .attr("stroke-width", "10px")
         .attr("pointer-events", "none")
         .style("opacity", 1);
-
     // Add resize observer to handle container size changes
     const resizeObserver = new ResizeObserver(() => {
         if (!isMiniMapScaled) return;
         requestAnimationFrame(() => scaleAndPositionMiniMap());
     });
-    
+   
     resizeObserver.observe(d3.select("#bird-view").node());
-
     // Listen for force simulation end
-    const transform={ x: 0, y: 0, k: 1 };
-    updateViewport(transform,1200,750);
+    const transform = { x: 0, y: 0, k: 1 };
+    updateViewport(transform, 1200, 750);
     force.on("end", scaleAndPositionMiniMap);
 }
 
 function updateMiniMap() {
-    // Update positions of links and nodes
+    // Update positions of curved links
     miniMapLinks
-        .attr("x1", d => d.source.x)
-        .attr("y1", d => d.source.y)
-        .attr("x2", d => d.target.x)
-        .attr("y2", d => d.target.y);
+        .attr("d", function(d) {
+            var dx = d.target.x - d.source.x,
+                dy = d.target.y - d.source.y,
+                dr = Math.sqrt(dx * dx + dy * dy);
+            
+            return "M" + d.source.x + "," + d.source.y + 
+                   "A" + dr + "," + dr + " 0 0,1 " + 
+                   d.target.x + "," + d.target.y;
+        });
 
+    // Update positions of nodes (using transform for <g> elements)
     miniMapNodes
-        .attr("cx", d => d.x)
-        .attr("cy", d => d.y);
+        .attr("transform", function(d) {
+            return "translate(" + d.x + "," + d.y + ")";
+        });
 }
 
 function updateViewport(transform, mainViewWidth, mainViewHeight) {
