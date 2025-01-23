@@ -1,4 +1,4 @@
-<com.example.Persons>
+<com.example.Persons id="999">
     <Person id="1">
         <name>Alice</name>
         <Person reference="../../Person[2]"/>

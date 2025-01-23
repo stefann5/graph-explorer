@@ -1,10 +1,9 @@
 {% extends "base.html" %} {% load static %} {% block content %}
 <div class="workspace-controls">
-  <select id="dataSourceSelect">
-    <option value="">Select Data Source</option>
-  </select>
+    <select id="dataSourceSelect">
+    </select>
   <select id="workspaceSelect">
-    <option value="">Select Workspace</option>
+    <option value="ws">ws</option>
   </select>
   <button id="newWorkspace">New Workspace</button>
   <button id="saveWorkspace">Save Workspace</button>
@@ -147,7 +146,92 @@
 <script>
  {{ code|safe }}
 </script>
-<script>
+<script> 
+
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/get-installed-plugins/')
+        .then(response => response.json())
+        .then(data => {
+            // Clear any existing options
+            document
+            .getElementById("dataSourceSelect").innerHTML = '';
+            // Populate options
+            data.data_source_plugins.forEach(plugin => {
+                const option = document.createElement('option');
+                option.value = plugin.name;
+                option.textContent = plugin.name;
+                
+                // Select the current plugin if it matches
+                if (plugin.name === data.selected_plugin) {
+                    option.selected = true;
+                }
+
+                document
+            .getElementById("dataSourceSelect").appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching plugins:', error);
+        });
+    
+    // Function to get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
+
+  document
+    .getElementById("dataSourceSelect")
+    .addEventListener("change", function () {
+        const query = document
+        .getElementById("dataSourceSelect").value
+      fetch("/select-plugin/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0]
+              .value,
+          },
+        body: `query=${encodeURIComponent(query)}`,
+      })
+        .then((response) => response.text())
+        .then((html) => {
+          // Extract the graph visualization code from the response
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, "text/html");
+          const scripts = doc.getElementsByTagName("script");
+          let graphCode = "";
+
+          // Find the script containing the graph visualization code
+          for (let script of scripts) {
+            if (script.textContent.includes("var nodes =")) {
+              graphCode = script.textContent;
+              break;
+            }
+          }
+
+          // Clear existing graph and run the new visualization
+          document.querySelector(".main-view").innerHTML = "";
+          const script = document.createElement("script");
+          script.textContent = graphCode;
+          document.body.appendChild(script);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    });
+
   document
     .getElementById("clearFilters")
     .addEventListener("click", function () {
