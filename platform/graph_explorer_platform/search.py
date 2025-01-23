@@ -95,7 +95,7 @@ class GraphSearchFilter(ServiceBase):
         Returns a new subgraph containing matching nodes and their connections.
         """
         # Parse filter query
-        parts = filter_query.split()
+        parts = filter_query.split(maxsplit=2)
         if len(parts) != 3:
             raise ValueError("Filter query must be in format: <attribute_name> <operator> <value>")
 
