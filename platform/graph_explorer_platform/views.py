@@ -4,7 +4,6 @@ import logging
 from pathlib import Path
 from django.shortcuts import render
 from django.apps.registry import apps
-
 from graph_explorer_platform.search import GraphSearchFilter
 from sok.graph.explorer.api.services.graph import(
     DataLoaderBase,
