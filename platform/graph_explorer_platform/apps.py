@@ -37,6 +37,11 @@ class GraphExplorerPlatformConfig(AppConfig):
                     self.data_source = 'test.xml'
                 return True
         return False
+    
+    def set_file(self, file):
+        if file != '':
+            self.data_source = file
+    
         
     def get_current_plugin(self):
             """Return currently selected plugin"""

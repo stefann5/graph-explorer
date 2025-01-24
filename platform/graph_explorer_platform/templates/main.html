@@ -1,7 +1,11 @@
 {% extends "base.html" %} {% load static %} {% block content %}
 <div class="workspace-controls">
-    <select id="dataSourceSelect">
-    </select>
+  <select id="dataSourceSelect"></select>
+  <input
+      type="text"
+      id="dataSourceFileInput"
+      placeholder="Data source file path..."
+    />
   <select id="workspaceSelect">
     <option value="ws">ws</option>
   </select>
@@ -38,24 +42,22 @@
 
 {% block extra_css %}
 <style>
+  body {
+    margin: 0;
+    padding: 20px;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #bdfab4;
+    color: #333;
+  }
 
-    body {
-        margin: 0;
-        padding: 20px;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #bdfab4;
-        color: #333;
-    }
-    
-    .node rect {
-        fill: white;
-        stroke: #666;
-        stroke-width: 1px;
-    }
-    .node text {
-        text-anchor: middle;
-    }
-
+  .node rect {
+    fill: white;
+    stroke: #666;
+    stroke-width: 1px;
+  }
+  .node text {
+    text-anchor: middle;
+  }
 
   .workspace-controls,
   .visualization-controls {
@@ -103,17 +105,16 @@
     border-radius: 4px;
   }
 
-    .views-container {
-        display: grid;
-        width: 1800px;
-        grid-template-columns: 600px 1fr; /* Left column for tree-view, right column for main-view */
-        grid-template-rows: 1fr 600px; /* First row for tree-view and main-view, second row for bird-view */
-        height:750px;
-        grid-template-areas:
-            "tree-view main-view"
-            "bird-view main-view";
-    }
-
+  .views-container {
+    display: grid;
+    width: 1800px;
+    grid-template-columns: 600px 1fr; /* Left column for tree-view, right column for main-view */
+    grid-template-rows: 1fr 600px; /* First row for tree-view and main-view, second row for bird-view */
+    height: 750px;
+    grid-template-areas:
+      "tree-view main-view"
+      "bird-view main-view";
+  }
 
   .tree-view,
   .main-view,
@@ -125,81 +126,130 @@
     overflow: auto;
   }
 
-    .tree-view {
-        grid-area: tree-view;
-    }
+  .tree-view {
+    grid-area: tree-view;
+  }
 
-    .main-view {
-        grid-area: main-view;
-    }
+  .main-view {
+    grid-area: main-view;
+  }
 
-    .bird-view {
-        grid-area: bird-view;
-    }
-
+  .bird-view {
+    grid-area: bird-view;
+  }
 </style>
 {% include "birdview.html" %} {% endblock %} {% block extra_js %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
 <script>
- {{ code|safe }}
-</script>
-<script> 
+  {{ code|safe }}
+ </script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    fetch("/get-installed-plugins/")
+      .then((response) => response.json())
+      .then((data) => {
+        // Clear any existing options
+        document.getElementById("dataSourceSelect").innerHTML = "";
+        // Populate options
+        data.data_source_plugins.forEach((plugin) => {
+          const option = document.createElement("option");
+          option.value = plugin.name;
+          option.textContent = plugin.name;
 
-document.addEventListener('DOMContentLoaded', function() {
-    fetch('/get-installed-plugins/')
-        .then(response => response.json())
-        .then(data => {
-            // Clear any existing options
-            document
-            .getElementById("dataSourceSelect").innerHTML = '';
-            // Populate options
-            data.data_source_plugins.forEach(plugin => {
-                const option = document.createElement('option');
-                option.value = plugin.name;
-                option.textContent = plugin.name;
-                
-                // Select the current plugin if it matches
-                if (plugin.name === data.selected_plugin) {
-                    option.selected = true;
-                }
+          // Select the current plugin if it matches
+          if (plugin.name === data.selected_plugin) {
+            option.selected = true;
+          }
 
-                document
-            .getElementById("dataSourceSelect").appendChild(option);
-            });
-        })
-        .catch(error => {
-            console.error('Error fetching plugins:', error);
+          document.getElementById("dataSourceSelect").appendChild(option);
         });
-    
+      })
+      .catch((error) => {
+        console.error("Error fetching plugins:", error);
+      });
+
     // Function to get CSRF token
     function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === name + "=") {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
         }
-        return cookieValue;
+      }
+      return cookieValue;
     }
-});
+  });
+
+
+
+document
+  .getElementById("dataSourceFileInput")
+  .addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+      const file = document.getElementById("dataSourceFileInput").value;
+
+      fetch("/select-file/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0]
+            .value,
+        },
+        body: `file=${encodeURIComponent(file)}`,
+      })
+        .then((response) => {
+          // Check for errors in the response
+          if (!response.ok) {
+            return response.json().then((errorData) => {
+              throw new Error(errorData.message || "An error occurred");
+            });
+          }
+          return response.text();
+        })
+        .then((html) => {
+          // Extract the graph visualization code from the response
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, "text/html");
+          const scripts = doc.getElementsByTagName("script");
+          let graphCode = "";
+
+          // Find the script containing the graph visualization code
+          for (let script of scripts) {
+            if (script.textContent.includes("var nodes =")) {
+              graphCode = script.textContent;
+              break;
+            }
+          }
+
+          // Clear existing graph and run the new visualization
+          document.querySelector(".main-view").innerHTML = "";
+          const script = document.createElement("script");
+          script.textContent = graphCode;
+          document.body.appendChild(script);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert(error.message); // Display error in an alert
+        });
+    }
+  });
 
   document
     .getElementById("dataSourceSelect")
     .addEventListener("change", function () {
-        const query = document
-        .getElementById("dataSourceSelect").value
+      const query = document.getElementById("dataSourceSelect").value;
       fetch("/select-plugin/", {
         method: "POST",
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0]
-              .value,
-          },
+          "Content-Type": "application/x-www-form-urlencoded",
+          "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0]
+            .value,
+        },
         body: `query=${encodeURIComponent(query)}`,
       })
         .then((response) => response.text())
@@ -245,6 +295,9 @@ document.addEventListener('DOMContentLoaded', function() {
           const doc = parser.parseFromString(html, "text/html");
           const scripts = doc.getElementsByTagName("script");
           let graphCode = "";
+
+          document.getElementById("searchInput").value = "";
+          document.getElementById("filterInput").value = "";
 
           // Find the script containing the graph visualization code
           for (let script of scripts) {
@@ -331,4 +384,5 @@ document.addEventListener('DOMContentLoaded', function() {
     return cookieValue;
   }
 </script>
+
 {% endblock %} {% endblock content %} {% csrf_token %}
