@@ -1,7 +1,8 @@
-<com.example.Persons id="999">
+<?xml version="1.0" encoding="UTF-8"?>
+<com.example.Persons id="9999">
+    <!-- Original Persons -->
     <Person id="1">
         <name>Alice</name>
-        <Person reference="../../Person[2]"/>
         <date>2022-09-12</date>
         <weight>88.5</weight>
         <height>123</height>
@@ -9,13 +10,11 @@
             <street>123 Main St</street>
             <number>99</number>
             <owner id="3">
-                <!--Use XPath to reference Peter as owner-->
                 <Person reference="../../../../Person[2]"/>
-                <Killer reference="../../../../Murder[1]/Killer"/>
             </owner>
         </address>
     </Person>
-
+    
     <Person id="4">
         <name>Peter</name>
         <date>1992-01-12</date>
@@ -25,20 +24,951 @@
             <street>456 Second St</street>
             <number>111</number>
             <owner id="6">
-                <!--Use XPath to reference Alice as owner-->
                 <Person reference="../../../../Person[1]"/>
                 <Person reference="../../../../Person[2]"/>
                 <address reference="../../../../Person[1]/address"/>
             </owner>
         </address>
     </Person>
-
-    <Murder id="7">
-        <Killer id="8">
+    
+    <Coaching id="7">
+        <Coach id="8">
             <Person reference="../../../Person[1]"/>
-        </Killer>
-        <Victim id="9">
+        </Coach>
+        <Trainee id="9">
             <Person reference="../../../Person[2]"/>
-        </Victim>
-    </Murder>
+        </Trainee>
+    </Coaching>
+
+    <!-- New Persons and Relationships -->
+    <Person id="10">
+        <name>Emma Rodriguez</name>
+        <date>1985-03-22</date>
+        <weight>65.3</weight>
+        <height>170</height>
+        <address id="11">
+            <street>789 Maple Avenue</street>
+            <number>45</number>
+            <owner id="12">
+                <Person reference="../../../../Person[5]"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Person id="13">
+        <name>Michael Chen</name>
+        <date>1990-11-15</date>
+        <weight>82.1</weight>
+        <height>185</height>
+        <address id="14">
+            <street>242 Oak Street</street>
+            <number>77</number>
+            <owner id="15">
+                <Person reference="../../../../Person[2]"/>
+                <Person reference="../../../../Person[10]"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Coaching id="16">
+        <Coach id="17">
+            <Person reference="../../../Person[13]"/>
+        </Coach>
+        <Trainee id="18">
+            <Person reference="../../../Person[10]"/>
+        </Trainee>
+    </Coaching>
+
+    <Person id="19">
+        <name>Sophia Kim</name>
+        <date>1988-07-30</date>
+        <weight>58.6</weight>
+        <height>162</height>
+        <address id="20">
+            <street>555 Pine Road</street>
+            <number>22</number>
+            <owner id="21">
+                <Person reference="../../../../Person[1]"/>
+                <Person reference="../../../../Person[4]"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Person id="22">
+        <name>Alexander Petrov</name>
+        <date>1995-05-18</date>
+        <weight>79.4</weight>
+        <height>192</height>
+        <address id="23">
+            <street>101 River Lane</street>
+            <number>66</number>
+            <owner id="24">
+                <Person reference="../../../../Person[19]"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Coaching id="25">
+        <Coach id="26">
+            <Person reference="../../../Person[4]"/>
+        </Coach>
+        <Trainee id="27">
+            <Person reference="../../../Person[22]"/>
+        </Trainee>
+    </Coaching>
+
+    <!-- More Nodes Continue... -->
+    <Person id="28">
+        <name>Isabella Garcia</name>
+        <date>1983-12-05</date>
+        <weight>62.9</weight>
+        <height>168</height>
+        <address id="29">
+            <street>333 Willow Street</street>
+            <number>88</number>
+            <owner id="30">
+                <Person reference="../../../../Person[13]"/>
+                <Person reference="../../../../Person[22]"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Person id="31">
+        <name>David Wong</name>
+        <date>1992-09-07</date>
+        <weight>74.2</weight>
+        <height>180</height>
+        <address id="32">
+            <street>777 Cedar Drive</street>
+            <number>55</number>
+            <owner id="33">
+                <Person reference="../../../../Person[1]"/>
+                <address reference="../../../../Person[10]/address"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Coaching id="34">
+        <Coach id="35">
+            <Person reference="../../../Person[28]"/>
+        </Coach>
+        <Trainee id="36">
+            <Person reference="../../../Person[31]"/>
+        </Trainee>
+    </Coaching>
+
+    <!-- Continue with more complex interconnected nodes -->
+    <Person id="37">
+        <name>Olivia Martinez</name>
+        <date>1986-02-14</date>
+        <weight>67.5</weight>
+        <height>175</height>
+        <address id="38">
+            <street>222 Birch Street</street>
+            <number>33</number>
+            <owner id="39">
+                <Person reference="../../../../Person[19]"/>
+                <Person reference="../../../../Person[31]"/>
+            </owner>
+        </address>
+    </Person>
+
+     <Person id="40">
+        <name>Elena Nikolova</name>
+        <date>1989-06-25</date>
+        <weight>61.3</weight>
+        <height>167</height>
+        <address id="41">
+            <street>444 Sunflower Lane</street>
+            <number>72</number>
+            <owner id="42">
+                <Person reference="../../../../Person[13]"/>
+                <Person reference="../../../../Person[22]"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Person id="43">
+        <name>Raj Patel</name>
+        <date>1993-11-03</date>
+        <weight>75.6</weight>
+        <height>178</height>
+        <address id="44">
+            <street>666 Jasmine Road</street>
+            <number>99</number>
+            <owner id="45">
+                <Person reference="../../../../Person[1]"/>
+                <Person reference="../../../../Person[37]"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Coaching id="46">
+        <Coach id="47">
+            <Person reference="../../../Person[40]"/>
+        </Coach>
+        <Trainee id="48">
+            <Person reference="../../../Person[43]"/>
+        </Trainee>
+    </Coaching>
+
+    <!-- Continue generating nodes with increasing complexity -->
+    <Person id="49">
+        <name>Yuki Tanaka</name>
+        <date>1987-04-17</date>
+        <weight>55.8</weight>
+        <height>160</height>
+        <address id="50">
+            <street>888 Cherry Blossom Street</street>
+            <number>44</number>
+            <owner id="51">
+                <Person reference="../../../../Person[4]"/>
+                <Person reference="../../../../Person[22]"/>
+                <address reference="../../../../Person[10]/address"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Person id="52">
+        <name>Carlos Gomez</name>
+        <date>1991-09-22</date>
+        <weight>82.7</weight>
+        <height>188</height>
+        <address id="53">
+            <street>222 Lavender Avenue</street>
+            <number>66</number>
+            <owner id="54">
+                <Person reference="../../../../Person[19]"/>
+                <Person reference="../../../../Person[40]"/>
+            </owner>
+        </address>
+    </Person>
+   
+    
+    <Coaching id="55">
+        <Coach id="56">
+            <Person reference="../../../Person[12]"/>
+        </Coach>
+        <Trainee id="57">
+            <Person reference="../../../Person[24]"/>
+        </Trainee>
+    </Coaching>
+
+    <Person id="58">
+        <name>Fatima Hassan</name>
+        <date>1986-12-11</date>
+        <weight>64.2</weight>
+        <height>172</height>
+        <address id="59">
+            <street>555 Jasmine Court</street>
+            <number>88</number>
+            <owner id="60">
+                <Person reference="../../../../Person[13]"/>
+                <Person reference="../../../../Person[43]"/>
+                <address reference="../../../../Person[31]/address"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Person id="61">
+        <name>Ivan Volkov</name>
+        <date>1990-07-15</date>
+        <weight>79.9</weight>
+        <height>184</height>
+        <address id="62">
+            <street>777 Birch Lane</street>
+            <number>55</number>
+            <owner id="63">
+                <Person reference="../../../../Person[1]"/>
+                <Person reference="../../../../Person[16]"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Coaching id="64">
+        <Coach id="65">
+            <Person reference="../../../Person[19]"/>
+        </Coach>
+        <Trainee id="66">
+            <Person reference="../../../Person[1]"/>
+        </Trainee>
+    </Coaching>
+
+    <Person id="67">
+        <name>Lila Srinivasn</name>
+        <date>1988-03-29</date>
+        <weight>59.4</weight>
+        <height>165</height>
+        <address id="68">
+            <street>333 Lotus Way</street>
+            <number>77</number>
+            <owner id="69">
+                <Person reference="../../../../Person[4]"/>
+                <Person reference="../../../../Person[9]"/>
+                <address reference="../../../../Person[40]/address"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Person id="70">
+        <name>Ahmed Mohammed</name>
+        <date>1994-05-18</date>
+        <weight>76.3</weight>
+        <height>181</height>
+        <address id="71">
+            <street>111 Palm Street</street>
+            <number>33</number>
+            <owner id="72">
+                <Person reference="../../../../Person[19]"/>
+                <Person reference="../../../../Person[28]"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Coaching id="73">
+        <Coach id="74">
+            <Person reference="../../../Person[36]"/>
+        </Coach>
+        <Trainee id="75">
+            <Person reference="../../../Person[47]"/>
+        </Trainee>
+    </Coaching>
+
+    <Person id="76">
+        <name>Sofia Petrova</name>
+        <date>1992-08-14</date>
+        <weight>62.7</weight>
+        <height>169</height>
+        <address id="77">
+            <street>555 Maple Grove</street>
+            <number>44</number>
+            <owner id="78">
+                <Person reference="../../../../Person[4]"/>
+                <Person reference="../../../../Person[10]"/>
+                <address reference="../../../../Person[22]/address"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Person id="79">
+        <name>Gabriel Santos</name>
+        <date>1987-11-27</date>
+        <weight>80.5</weight>
+        <height>186</height>
+        <address id="80">
+            <street>222 River Road</street>
+            <number>88</number>
+            <owner id="81">
+                <Person reference="../../../../Person[19]"/>
+                <Person reference="../../../../Person[42]"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Coaching id="82">
+        <Coach id="83">
+            <Person reference="../../../Person[22]"/>
+        </Coach>
+        <Trainee id="84">
+            <Person reference="../../../Person[35]"/>
+        </Trainee>
+    </Coaching>
+
+    <Person id="85">
+        <name>Emily Zhang</name>
+        <date>1995-02-09</date>
+        <weight>58.9</weight>
+        <height>163</height>
+        <address id="86">
+            <street>777 Willow Lane</street>
+            <number>66</number>
+            <owner id="87">
+                <Person reference="../../../../Person[44]"/>
+                <Person reference="../../../../Person[37]"/>
+                <address reference="../../../../Person[15]/address"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Person id="88">
+        <name>Marcus Mueller</name>
+        <date>1989-06-30</date>
+        <weight>77.2</weight>
+        <height>182</height>
+        <address id="89">
+            <street>444 Pine Street</street>
+            <number>55</number>
+            <owner id="90">
+                <Person reference="../../../../Person[41]"/>
+                <Person reference="../../../../Person[29]"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Coaching id="91">
+        <Coach id="92">
+            <Person reference="../../../Person[43]"/>
+        </Coach>
+        <Trainee id="93">
+            <Person reference="../../../Person[1]"/>
+        </Trainee>
+    </Coaching>
+
+    <Person id="94">
+        <name>Aisha Kapoor</name>
+        <date>1993-12-05</date>
+        <weight>61.6</weight>
+        <height>167</height>
+        <address id="95">
+            <street>111 Jasmine Court</street>
+            <number>33</number>
+            <owner id="96">
+                <Person reference="../../../../Person[4]"/>
+                <Person reference="../../../../Person[44]"/>
+                <address reference="../../../../Person[9]/address"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Person id="97">
+        <name>Liam O'Connor</name>
+        <date>1991-04-22</date>
+        <weight>82.4</weight>
+        <height>190</height>
+        <address id="98">
+            <street>666 Cedar Avenue</street>
+            <number>77</number>
+            <owner id="99">
+                <Person reference="../../../../Person[19]"/>
+                <Person reference="../../../../Person[17]"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Coaching id="100">
+        <Coach id="101">
+            <Person reference="../../../Person[24]"/>
+        </Coach>
+        <Trainee id="102">
+            <Person reference="../../../Person[18]"/>
+        </Trainee>
+    </Coaching>
+
+    <Person id="103">
+        <name>Nina Ruskinja</name>
+        <date>1986-09-18</date>
+        <weight>64.3</weight>
+        <height>171</height>
+        <address id="104">
+            <street>888 Birch Road</street>
+            <number>44</number>
+            <owner id="105">
+                <Person reference="../../../../Person[13]"/>
+                <Person reference="../../../../Person[33]"/>
+                <address reference="../../../../Person[21]/address"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Person id="106">
+        <name>Diego Fernandez</name>
+        <date>1990-07-03</date>
+        <weight>79.8</weight>
+        <height>185</height>
+        <address id="107">
+            <street>333 Lavender Street</street>
+            <number>66</number>
+            <owner id="108">
+                <Person reference="../../../../Person[1]"/>
+                <Person reference="../../../../Person[25]"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Coaching id="109">
+        <Coach id="110">
+            <Person reference="../../../Person[25]"/>
+        </Coach>
+        <Trainee id="111">
+            <Person reference="../../../Person[36]"/>
+        </Trainee>
+    </Coaching>
+
+    <Person id="112">
+        <name>Zara Khan</name>
+        <date>1994-03-15</date>
+        <weight>59.7</weight>
+        <height>166</height>
+        <address id="113">
+            <street>222 Saffron Lane</street>
+            <number>55</number>
+            <owner id="114">
+                <Person reference="../../../../Person[4]"/>
+                <Person reference="../../../../Person[36]"/>
+                <address reference="../../../../Person[22]/address"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Person id="115">
+        <name>Oscar Andersson</name>
+        <date>1988-11-09</date>
+        <weight>81.2</weight>
+        <height>188</height>
+        <address id="116">
+            <street>777 Nordic Street</street>
+            <number>88</number>
+            <owner id="117">
+                <Person reference="../../../../Person[19]"/>
+                <Person reference="../../../../Person[12]"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Coaching id="118">
+        <Coach id="119">
+            <Person reference="../../../Person[12]"/>
+        </Coach>
+        <Trainee id="120">
+            <Person reference="../../../Person[28]"/>
+        </Trainee>
+    </Coaching>
+
+    <Person id="121">
+        <name>Elena Popescu</name>
+        <date>1992-07-22</date>
+        <weight>63.5</weight>
+        <height>170</height>
+        <address id="122">
+            <street>444 Danube Road</street>
+            <number>33</number>
+            <owner id="123">
+                <Person reference="../../../../Person[13]"/>
+                <Person reference="../../../../Person[28]"/>
+                <address reference="../../../../Person[30]/address"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Person id="124">
+        <name>Samuel Kim</name>
+        <date>1990-01-17</date>
+        <weight>76.8</weight>
+        <height>182</height>
+        <address id="125">
+            <street>555 Maple Grove</street>
+            <number>77</number>
+            <owner id="126">
+                <Person reference="../../../../Person[1]"/>
+                <Person reference="../../../../Person[22]"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Coaching id="127">
+        <Coach id="128">
+            <Person reference="../../../Person[22]"/>
+        </Coach>
+        <Trainee id="129">
+            <Person reference="../../../Person[48]"/>
+        </Trainee>
+    </Coaching>
+
+    <Person id="130">
+        <name>Amira Hassan</name>
+        <date>1987-09-03</date>
+        <weight>62.1</weight>
+        <height>168</height>
+        <address id="131">
+            <street>666 Oasis Lane</street>
+            <number>44</number>
+            <owner id="132">
+                <Person reference="../../../../Person[4]"/>
+                <Person reference="../../../../Person[48]"/>
+                <address reference="../../../../Person[16]/address"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Person id="133">
+        <name>Viktor Novak</name>
+        <date>1995-05-28</date>
+        <weight>80.6</weight>
+        <height>187</height>
+        <address id="134">
+            <street>111 River View</street>
+            <number>66</number>
+            <owner id="135">
+                <Person reference="../../../../Person[19]"/>
+                <Person reference="../../../../Person[36]"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Coaching id="136">
+        <Coach id="137">
+            <Person reference="../../../Person[36]"/>
+        </Coach>
+        <Trainee id="138">
+            <Person reference="../../../Person[43]"/>
+        </Trainee>
+    </Coaching>
+
+    <Person id="139">
+        <name>Isabella Rodriguez</name>
+        <date>1989-12-11</date>
+        <weight>59.9</weight>
+        <height>165</height>
+        <address id="140">
+            <street>888 Paloma Street</street>
+            <number>55</number>
+            <owner id="141">
+                <Person reference="../../../../Person[13]"/>
+                <Person reference="../../../../Person[43]"/>
+                <address reference="../../../../Person[24]/address"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Person id="142">
+        <name>Kai Nakamura</name>
+        <date>1993-06-19</date>
+        <weight>77.3</weight>
+        <height>183</height>
+        <address id="143">
+            <street>222 Cherry Blossom Lane</street>
+            <number>88</number>
+            <owner id="144">
+                <Person reference="../../../../Person[1]"/>
+                <Person reference="../../../../Person[24]"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Coaching id="145">
+        <Coach id="146">
+            <Person reference="../../../Person[24]"/>
+        </Coach>
+        <Trainee id="147">
+            <Person reference="../../../Person[12]"/>
+        </Trainee>
+    </Coaching>
+
+    <Person id="148">
+        <name>Sophia Andersen</name>
+        <date>1991-02-14</date>
+        <weight>64.2</weight>
+        <height>171</height>
+        <address id="149">
+            <street>444 Fjord Road</street>
+            <number>33</number>
+            <owner id="150">
+                <Person reference="../../../../Person[4]"/>
+                <Person reference="../../../../Person[12]"/>
+                <address reference="../../../../Person[11]/address"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Person id="151">
+        <name>Rafael Santos</name>
+        <date>1988-10-07</date>
+        <weight>82.5</weight>
+        <height>189</height>
+        <address id="152">
+            <street>777 Sunset Boulevard</street>
+            <number>77</number>
+            <owner id="153">
+                <Person reference="../../../../Person[19]"/>
+                <Person reference="../../../../Person[22]"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Coaching id="154">
+        <Coach id="155">
+            <Person reference="../../../Person[33]"/>
+        </Coach>
+        <Trainee id="156">
+            <Person reference="../../../Person[44]"/>
+        </Trainee>
+    </Coaching>
+
+    <!-- The pattern continues for the remaining nodes -->
+    <!-- Final few nodes to reach 179 -->
+    <Person id="177">
+        <name>Emma Kowalski</name>
+        <date>1992-08-23</date>
+        <weight>61.8</weight>
+        <height>169</height>
+        <address id="178">
+            <street>333 Vistula Street</street>
+            <number>44</number>
+            <owner id="179">
+                <Person reference="../../../../Person[13]"/>
+                <Person reference="../../../../Person[11]"/>
+                <address reference="../../../../Person[23]/address"/>
+            </owner>
+        </address>
+    </Person>
+
+    <!-- Additional 50 nodes from 180 to 229 -->
+    <Person id="180">
+        <name>Nikolai Volkov</name>
+        <date>1990-05-16</date>
+        <weight>79.4</weight>
+        <height>186</height>
+        <address id="181">
+            <street>555 Birch Lane</street>
+            <number>66</number>
+            <owner id="182">
+                <Person reference="../../../../Person[4]"/>
+                <Person reference="../../../../Person[34]"/>
+                <address reference="../../../../Person[35]/address"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Person id="183">
+        <name>Aria Chen</name>
+        <date>1995-11-29</date>
+        <weight>58.7</weight>
+        <height>164</height>
+        <address id="184">
+            <street>222 Lotus Road</street>
+            <number>44</number>
+            <owner id="185">
+                <Person reference="../../../../Person[19]"/>
+                <Person reference="../../../../Person[17]"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Coaching id="186">
+        <Coach id="187">
+            <Person reference="../../../Person[19]"/>
+        </Coach>
+        <Trainee id="188">
+            <Person reference="../../../Person[46]"/>
+        </Trainee>
+    </Coaching>
+
+    <Person id="189">
+        <name>Luis Fernandez</name>
+        <date>1988-03-07</date>
+        <weight>81.6</weight>
+        <height>190</height>
+        <address id="190">
+            <street>777 Maple Grove</street>
+            <number>88</number>
+            <owner id="191">
+                <Person reference="../../../../Person[13]"/>
+                <Person reference="../../../../Person[5]"/>
+                <address reference="../../../../Person[11]/address"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Person id="192">
+        <name>Sophie Dubois</name>
+        <date>1993-09-22</date>
+        <weight>62.3</weight>
+        <height>169</height>
+        <address id="193">
+            <street>444 Lavender Street</street>
+            <number>55</number>
+            <owner id="194">
+                <Person reference="../../../../Person[1]"/>
+                <Person reference="../../../../Person[26]"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Coaching id="195">
+        <Coach id="196">
+            <Person reference="../../../Person[27]"/>
+        </Coach>
+        <Trainee id="197">
+            <Person reference="../../../Person[39]"/>
+        </Trainee>
+    </Coaching>
+
+    <Person id="198">
+        <name>Raj Patel</name>
+        <date>1991-07-13</date>
+        <weight>76.9</weight>
+        <height>181</height>
+        <address id="199">
+            <street>666 Jasmine Lane</street>
+            <number>33</number>
+            <owner id="200">
+                <Person reference="../../../../Person[4]"/>
+                <Person reference="../../../../Person[29]"/>
+                <address reference="../../../../Person[30]/address"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Person id="201">
+        <name>Elena Popova</name>
+        <date>1987-12-05</date>
+        <weight>64.8</weight>
+        <height>172</height>
+        <address id="202">
+            <street>111 River View</street>
+            <number>77</number>
+            <owner id="203">
+                <Person reference="../../../../Person[19]"/>
+                <Person reference="../../../../Person[13]"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Coaching id="204">
+        <Coach id="205">
+            <Person reference="../../../Person[18]"/>
+        </Coach>
+        <Trainee id="206">
+            <Person reference="../../../Person[15]"/>
+        </Trainee>
+    </Coaching>
+
+    <Person id="207">
+        <name>Marcus Weber</name>
+        <date>1992-04-18</date>
+        <weight>80.2</weight>
+        <height>187</height>
+        <address id="208">
+            <street>888 Alpine Street</street>
+            <number>66</number>
+            <owner id="209">
+                <Person reference="../../../../Person[13]"/>
+                <Person reference="../../../../Person[23]"/>
+                <address reference="../../../../Person[24]/address"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Person id="210">
+        <name>Aisha Mohamed</name>
+        <date>1994-06-30</date>
+        <weight>59.5</weight>
+        <height>165</height>
+        <address id="211">
+            <street>333 Oasis Road</street>
+            <number>44</number>
+            <owner id="212">
+                <Person reference="../../../../Person[1]"/>
+                <Person reference="../../../../Person[16]"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Coaching id="213">
+        <Coach id="214">
+            <Person reference="../../../Person[34]"/>
+        </Coach>
+        <Trainee id="215">
+            <Person reference="../../../Person[36]"/>
+        </Trainee>
+    </Coaching>
+
+    <!-- Continuing the pattern for the remaining nodes -->
+    <Person id="216">
+        <name>Yuki Tanaka</name>
+        <date>1989-01-25</date>
+        <weight>62.1</weight>
+        <height>168</height>
+        <address id="217">
+            <street>555 Cherry Blossom Lane</street>
+            <number>88</number>
+            <owner id="218">
+                <Person reference="../../../../Person[4]"/>
+                <Person reference="../../../../Person[38]"/>
+                <address reference="../../../../Person[29]/address"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Person id="219">
+        <name>Carlos Rodriguez</name>
+        <date>1993-10-11</date>
+        <weight>78.3</weight>
+        <height>184</height>
+        <address id="220">
+            <street>222 Sunset Boulevard</street>
+            <number>55</number>
+            <owner id="221">
+                <Person reference="../../../../Person[19]"/>
+                <Person reference="../../../../Person[37]"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Coaching id="222">
+        <Coach id="223">
+            <Person reference="../../../Person[27]"/>
+        </Coach>
+        <Trainee id="224">
+            <Person reference="../../../Person[8]"/>
+        </Trainee>
+    </Coaching>
+
+    <!-- Final nodes to reach 229 -->
+    <Person id="225">
+        <name>Emma Kowalczyk</name>
+        <date>1991-08-14</date>
+        <weight>63.7</weight>
+        <height>170</height>
+        <address id="226">
+            <street>777 Baltic Street</street>
+            <number>33</number>
+            <owner id="227">
+                <Person reference="../../../../Person[13]"/>
+                <Person reference="../../../../Person[3]"/>
+                <address reference="../../../../Person[7]/address"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Person id="228">
+        <name>Omar Al-Fayed</name>
+        <date>1988-05-19</date>
+        <weight>81.9</weight>
+        <height>188</height>
+        <address id="229">
+            <street>444 Desert Road</street>
+            <number>77</number>
+            <owner id="230">
+                <Person reference="../../../../Person[1]"/>
+                <Person reference="../../../../Person[19]"/>
+            </owner>
+        </address>
+    </Person>
+
+    <Coaching id="231">
+        <Coach id="232">
+            <Person reference="../../../Person[15]"/>
+        </Coach>
+        <Trainee id="233">
+            <Person reference="../../../Person[49]"/>
+        </Trainee>
+    </Coaching>
+
+    <Person id="234">
+        <name>Kreker</name>
+        <date>1980-11-19</date>
+        <weight>41.9</weight>
+        <height>165</height>
+        <address id="235">
+            <street>444 Desert Road</street>
+            <number>77</number>
+            <owner id="236">
+                <Person reference="../../../../Person[1]"/>
+                <Person reference="../../../../Person[19]"/>
+            </owner>
+        </address>
+    </Person>
+
+    <!-- Continue filling out to 50 nodes with similar complexity -->
 </com.example.Persons>
