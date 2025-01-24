@@ -66,23 +66,25 @@ function initializeMiniMap(links, force, makeSimpleViewFunc) {
 }
 
 function updateMiniMap() {
-    // Update positions of curved links
-    miniMapLinks
-        .attr("d", function(d) {
-            var dx = d.target.x - d.source.x,
-                dy = d.target.y - d.source.y,
-                dr = Math.sqrt(dx * dx + dy * dy);
-            
-            return "M" + d.source.x + "," + d.source.y + 
-                   "A" + dr + "," + dr + " 0 0,1 " + 
-                   d.target.x + "," + d.target.y;
-        });
+    miniMapNodes.attr("transform", function(d) {
+        if (d.fx !== undefined && d.fx != null) {{
+            d.x = d.fx;
+            d.y = d.fy;
+        }}
+        return "translate(" + d.x + "," + d.y + ")";
+    });
 
-    // Update positions of nodes (using transform for <g> elements)
-    miniMapNodes
-        .attr("transform", function(d) {
-            return "translate(" + d.x + "," + d.y + ")";
-        });
+    // Apply collision only to nodes not being dragged
+
+    // Update links with curved paths
+    miniMapLinks.attr('d', function(d) {
+        var dx = d.target.x - d.source.x,
+            dy = d.target.y - d.source.y,
+            dr = Math.sqrt(dx * dx + dy * dy);
+        return "M" + d.source.x + "," + d.source.y +
+            "A" + dr + "," + dr + " 0 0,1 " +
+            d.target.x + "," + d.target.y;
+    });
 }
 
 function updateViewport(transform, mainViewWidth, mainViewHeight) {

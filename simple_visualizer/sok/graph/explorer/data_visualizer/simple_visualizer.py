@@ -1,3 +1,4 @@
+from datetime import datetime
 from sok.graph.explorer.api.model.graph import Graph
 from sok.graph.explorer.api.services.graph import DataVisualizerBase
 import json
@@ -15,7 +16,20 @@ class SimpleVisualizer(DataVisualizerBase):
     def nodes_sw(self, graph: Graph) -> str:
         nodes_dict = {}
         for node_id in graph.nodes:
-            nodes_dict[node_id] = {"id": node_id}
+            attributes = graph.nodes[node_id].data["attributes"]
+            # Create a new dictionary with converted datetime values
+            converted_attributes = {}
+            
+            for key, value in attributes.items():
+                if isinstance(value, datetime):
+                    converted_attributes[key] = value.isoformat()
+                else:
+                    converted_attributes[key] = value
+                    
+            nodes_dict[node_id] = {
+                "id": node_id,
+                "attributes": converted_attributes
+            }
         return json.dumps(nodes_dict)
 
     def links_sw(self, graph: Graph) -> str:
@@ -32,6 +46,7 @@ class SimpleVisualizer(DataVisualizerBase):
         links_json = self.links_sw(graph)
         
         js_code = f"""
+       
         
             var nodes = {nodes_json};
 var links = {links_json};
@@ -52,9 +67,14 @@ function createGraphView(container, width, height, enableZoom) {{
         .attr("width", "100%")
         .attr("height", "100%")
         .attr("class", "graph-svg");
+    var tooltip = d3.select("body")
+        .append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
 
     // Add definitions for gradients and filters
     var defs = svg.append("defs");
+    
     
     // Add drop shadow filter
     var filter = defs.append("filter")
@@ -116,15 +136,7 @@ function createGraphView(container, width, height, enableZoom) {{
         .gravity(0.1)
         .start();
 
-    // Add collision detection
-    force.on("tick", function() {{
-        var q = d3.geom.quadtree(force.nodes()),
-            i = 0,
-            n = force.nodes().length;
-        
-        while (++i < n) q.visit(collide(force.nodes()[i]));
-        tick();
-    }});
+    
 
     function collide(node) {{
         var r = 100,
@@ -165,20 +177,43 @@ function createGraphView(container, width, height, enableZoom) {{
         .attr('id', function (d) {{
             return container.replace('.', '') + '-node-' + d.id;
         }})
-        .on('click', nodeClick)
-        .on('mouseover', function() {{
-            d3.select(this).select('rect')
-                .transition()
-                .duration(300)
-                .style('filter', 'url(#drop-shadow)')
-                .style('transform', 'scale(1.05)');
-        }})
-        .on('mouseout', function() {{
-            d3.select(this).select('rect')
-                .transition()
+        
+    .on('mouseover', function(d) {{
+        // Show tooltip with attributes
+        tooltip.transition()
+            .duration(200)
+            .style("opacity", .9);
+        
+        let tooltipContent = "<div style='font-weight:bold;margin-bottom:5px;'>" + d.id + "</div>";
+        for (let key in d.attributes) {{
+            tooltipContent += "<div><strong>" + key + ":</strong> " + d.attributes[key] + "</div>";
+        }}
+        
+        tooltip.html(tooltipContent)
+            .style("left", (d3.event.pageX + 10) + "px")
+            .style("top", (d3.event.pageY - 10) + "px");
+
+        // Node hover effect
+        d3.select(this).select('rect')
+            .transition()
+            .duration(300)
+            .style('filter', 'url(#drop-shadow)')
+            .style('transform', 'scale(1.05)');
+    }})
+    .on('mouseout', function(d) {{
+        // Hide tooltip
+        tooltip.transition()
+            .duration(500)
+            .style("opacity", 0);
+
+        // Remove hover effect if not clicked
+        let rect = d3.select(this).select('rect');
+        if (!rect.classed('clicked')) {{
+            rect.transition()
                 .duration(300)
                 .style('filter', null)
                 .style('transform', 'scale(1)');
+        }}
         }})
         .call(d3.behavior.drag()
             .on("dragstart", function(d) {{
@@ -225,74 +260,113 @@ function createGraphView(container, width, height, enableZoom) {{
         makeSimpleView(d, container);
     }});
                 
-    function makeSimpleView(d, container) {{
-        let scale =  1;
-        let width = 180 * scale;
-        let height = 60 * scale;
-        let textSize = 12 * scale;
-        var gradient = defs.append("linearGradient")
+   function makeSimpleView(d, container) {{
+    let scale = 1;
+    let width = 180 * scale;
+    let height = 60 * scale;
+    let textSize = 12 * scale;
+    var gradient = defs.append("linearGradient")
         .attr("id", "node-gradient")
         .attr("x1", "0%")
         .attr("y1", "0%")
         .attr("x2", "0%")
         .attr("y2", "100%");
 
-        gradient.append("stop")
-            .attr("offset", "0%")
-            .attr("style", "stop-color:#ffffff;stop-opacity:1");
+    gradient.append("stop")
+        .attr("offset", "0%")
+        .attr("style", "stop-color:#ffffff;stop-opacity:1");
 
-        gradient.append("stop")
-            .attr("offset", "100%")
-            .attr("style", "stop-color:#f0f0f0;stop-opacity:1");
-        
-        let containerId = container.replace('.', '');
-        console.log("#" + containerId + "-node-" + d.id);
-        console.log(d);
-        
-        d3.select("#" + containerId + "-node-" + d.id)
-            .append("rect")
-            .attr("x", -width/2)
-            .attr("y", -height/2)
-            .attr("rx", 6 * scale)  // Rounded corners
-            .attr("ry", 6 * scale)
-            .attr("width", width)
-            .attr("height", height)
-            .attr("class", "node")
-            .style('fill', 'url(#node-gradient)')
-            .style('stroke', '#2563eb')
-            .style('stroke-width', 2 * scale);
-        
-        d3.select("#" + containerId + "-node-" + d.id)
-            .append("text")
-            .attr("x", 0)
-            .attr("y", 0)
-            .attr("text-anchor", "middle")
-            .attr("dominant-baseline", "middle")
-            .attr("font-size", textSize)
-            .attr('font-family', 'system-ui, sans-serif')
-            .attr('font-weight', '600')
-            .attr('fill', '#1e40af')
-            .attr("class", "name")
-            .text(d.id);
+    gradient.append("stop")
+        .attr("offset", "100%")
+        .attr("style", "stop-color:#f0f0f0;stop-opacity:1");
+
+    let containerId = container.replace('.', '');
+
+    // Select the node group and add click event
+    let nodeGroup = d3.select("#" + containerId + "-node-" + d.id)
+        .on('click', function(d) {{
+    // Fix the node position
+    if (typeof d.fx == 'undefined'||d.fx==null){{
+    d.fx = d.x;
+    d.fy = d.y;
     }}
+    else{{
+        d.fx=null;
+        d.fy=null;
+    }}
+
+    // Highlight the clicked node
+    updateNodeColor(d.id, 'main-view');
+    updateNodeColor(d.id, 'bird-view');
+}});
+
+    // Append the rect without click event
+    nodeGroup.append("rect")
+        .attr("x", -width / 2)
+        .attr("y", -height / 2)
+        .attr("rx", 6 * scale)
+        .attr("ry", 6 * scale)
+        .attr("width", width)
+        .attr("height", height)
+        .attr("class", "node")
+        .style('fill', 'url(#node-gradient)')
+        .style('stroke', '#2563eb')
+        .style('stroke-width', 2 * scale);
+
+    nodeGroup.append("text")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("text-anchor", "middle")
+        .attr("dominant-baseline", "middle")
+        .attr("font-size", textSize)
+        .attr('font-family', 'system-ui, sans-serif')
+        .attr('font-weight', '600')
+        .attr('fill', '#1e40af')
+        .attr("class", "name")
+        .text(d.id);
+
+    function updateNodeColor(nodeId, viewName) {{
+        let selector = "#" + viewName + "-node-" + nodeId;
+        let rect = d3.select(selector).select('rect');
+        let isClicked = rect.classed('clicked');
+
+        rect.classed('clicked', !isClicked);
+        rect.style('fill', !isClicked ? '#93c5fd' : 'url(#node-gradient)');
+    }}
+}}
+
         
     function tick() {{
-        node.attr("transform", function(d) {{
-            return "translate(" + d.x + "," + d.y + ")";
-        }});
-        
-        // Update links with curved paths
-        link.attr('d', function(d) {{
-            var dx = d.target.x - d.source.x,
-                dy = d.target.y - d.source.y,
-                dr = Math.sqrt(dx * dx + dy * dy);
-            return "M" + d.source.x + "," + d.source.y + 
-                   "A" + dr + "," + dr + " 0 0,1 " + 
-                   d.target.x + "," + d.target.y;
-        }});
-        
-        updateMiniMap();
-    }}
+    node.attr("transform", function(d) {{
+        // Ensure fixed nodes don't move
+        if (d.fx !== undefined && d.fx != null) {{
+            d.x = d.fx;
+            d.y = d.fy;
+        }}
+        return "translate(" + d.x + "," + d.y + ")";
+    }});
+
+    // Apply collision only to nodes not being dragged
+    var q = d3.geom.quadtree(force.nodes());
+    force.nodes().forEach(function(node) {{
+        if (!node.dragging) {{ // Skip collision for dragged nodes
+            q.visit(collide(node));
+        }}
+    }});
+
+    // Update links with curved paths
+    link.attr('d', function(d) {{
+        var dx = d.target.x - d.source.x,
+            dy = d.target.y - d.source.y,
+            dr = Math.sqrt(dx * dx + dy * dy);
+        return "M" + d.source.x + "," + d.source.y +
+            "A" + dr + "," + dr + " 0 0,1 " +
+            d.target.x + "," + d.target.y;
+    }});
+
+    updateMiniMap();
+}}
+
     
     initializeMiniMap(links, force,makeSimpleView);
 }}
