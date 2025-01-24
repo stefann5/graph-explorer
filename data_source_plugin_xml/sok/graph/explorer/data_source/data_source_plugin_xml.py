@@ -216,9 +216,6 @@ class DataSourcePluginXml(DataLoaderBase):
         # Third pass: Process references
         self._process_references(graph)
 
-        if len(graph.nodes) > 200:
-            raise ValueError(f"Generated graph has {len(graph.nodes)} nodes. Maximum allowed is 200.")
-
         return graph
 
     def load_graph(self, params: Dict[str, Any]) -> Graph:
