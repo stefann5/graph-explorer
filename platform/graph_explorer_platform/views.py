@@ -1,6 +1,7 @@
 
 import json
 import logging
+import os
 from pathlib import Path
 from django.shortcuts import render
 from django.apps.registry import apps
@@ -33,6 +34,19 @@ def select_plugin(request):
 
     return index(request)
 
+def select_file(request):
+    if request.method == 'POST':
+        file = request.POST.get('file', '')
+        plugin_name = apps.get_app_config('graph_explorer_platform').selected_plugin.__class__.__name__.lower()
+
+        if not os.path.exists(file):
+            return JsonResponse({"message": "File does not exist!"}, status=400)
+
+        if ('json' not in file and 'xml' not in file) or ('json' in plugin_name and 'xml' in file) or ('xml' in plugin_name and 'json' in file):
+            return JsonResponse({"message": "Bad data source file path!"}, status=400)
+        apps.get_app_config('graph_explorer_platform').set_file(file)
+ 
+    return index(request)
 
 def get_available_plugins(request):
     app_config = apps.get_app_config('graph_explorer_platform')

@@ -7,6 +7,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name="index"),
     path('select-plugin/', views.select_plugin, name="select_plugin"),
+    path('select-file/', views.select_file, name="select_file"),
     path('search/', views.search, name="search_graph"),
     path('filter/', views.filter, name="filter_graph"),
     path('get-installed-plugins/', views.get_available_plugins, name="get_installed_plugins"),
