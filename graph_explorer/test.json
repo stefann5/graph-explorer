@@ -1696,6 +1696,86 @@
     "department": "team-asia-support",
     "reports_to": "emp-613",
     "hire_date": "2024-01-05"
+  },
+  {
+    "@id": "emp-616",
+    "name": "Bruce Banner",
+    "role": "Senior Cloud Engineer",
+    "department": "team-cloud-1a2b",
+    "reports_to": "emp-456",
+    "hire_date": "2023-02-15"
+  },
+  {
+    "@id": "emp-617",
+    "name": "Natasha Romanova",
+    "role": "Security Operations Specialist",
+    "department": "team-security-7890",
+    "reports_to": "emp-404",
+    "hire_date": "2023-03-01"
+  },
+  {
+    "@id": "emp-618",
+    "name": "Peter Quill",
+    "role": "Mobile Developer",
+    "department": "team-mobile-dev",
+    "reports_to": "emp-951",
+    "hire_date": "2023-04-15"
+  },
+  {
+    "@id": "emp-619",
+    "name": "Gamora Zen",
+    "role": "QA Engineer",
+    "department": "team-quality-1234",
+    "reports_to": "emp-777",
+    "hire_date": "2023-05-01"
+  },
+  {
+    "@id": "emp-620",
+    "name": "Drax the Destroyer",
+    "role": "Network Engineer",
+    "department": "team-network-4567",
+    "reports_to": "emp-135",
+    "hire_date": "2023-06-15"
+  },
+  {
+    "@id": "emp-621",
+    "name": "Rocket Raccoon",
+    "role": "DevOps Engineer",
+    "department": "team-cloud-1a2b",
+    "reports_to": "emp-456",
+    "hire_date": "2023-07-01"
+  },
+  {
+    "@id": "emp-622",
+    "name": "Groot",
+    "role": "Cloud Infrastructure Specialist",
+    "department": "team-cloud-1a2b",
+    "reports_to": "emp-456",
+    "hire_date": "2023-08-15"
+  },
+  {
+    "@id": "emp-623",
+    "name": "Mantis",
+    "role": "UX Designer",
+    "department": "team-mobile-dev",
+    "reports_to": "emp-406",
+    "hire_date": "2023-09-01"
+  },
+  {
+    "@id": "emp-624",
+    "name": "Nebula",
+    "role": "Security Analyst",
+    "department": "team-security-7890",
+    "reports_to": "emp-404",
+    "hire_date": "2023-10-15"
+  },
+  {
+    "@id": "emp-625",
+    "name": "Yondu Udonta",
+    "role": "Senior Network Architect",
+    "department": "team-network-4567",
+    "reports_to": "emp-135",
+    "hire_date": "2023-11-01"
   }
  ]
 }
