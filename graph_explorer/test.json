@@ -1,1783 +1,2249 @@
 {
-  "@id": "corp-root-28dd",
- "name": "Global Conglomerate",
- "market_cap": 5000000000.75,
- "founded_date": "1985-06-15",
- "stock_price": 156.78,
- "children": [
-   {
-     "@id": "div-tech-6616",
-     "name": "Technology Division",
-     "revenue": 800000000,
-     "growth_rate": 22.5,
-     "reports_to": "corp-root-28dd",
-     "linked_divisions": ["div-rd-940e", "div-sales-8811", "div-ai-1234"],
-     "children": [
-       {
-         "@id": "subdiv-software-4abc",
-         "name": "Software Solutions",
-         "budget": 250000000,
-         "headcount": 500,
-         "parent": "div-tech-6616",
-         "collaborates_with": ["subdiv-hardware-5def", "team-research-9876", "team-ai-1122"],
-         "children": [
-           {
-             "@id": "team-cloud-1a2b",
-             "name": "Cloud Infrastructure",
-             "project_count": 15,
-             "team_size": 125,
-             "parent": "subdiv-software-4abc",
-             "dependencies": ["team-security-7890", "team-network-4567", "team-ai-1122"],
-             "children": [
-               {
-                 "@id": "proj-cloud-micro",
-                 "name": "Microservices Platform",
-                 "status": "active",
-                 "progress": 78.5,
-                 "start_date": "2023-08-15",
-                 "parent": "team-cloud-1a2b",
-                 "related_projects": ["proj-cloud-container", "proj-security-auth", "proj-ai-ml"],
-                 "team_members": ["emp-123", "emp-456", "emp-789"]
-               },
-               {
-                 "@id": "proj-cloud-container",
-                 "name": "Container Orchestration",
-                 "status": "in_progress",
-                 "progress": 62.3,
-                 "start_date": "2023-09-01",
-                 "parent": "team-cloud-1a2b",
-                 "related_projects": ["proj-cloud-micro", "proj-security-auth"],
-                 "team_members": ["emp-234", "emp-567", "emp-890"]
-               },
-               {
-                 "@id": "proj-cloud-monitoring",
-                 "name": "Cloud Monitoring System",
-                 "status": "planning",
-                 "progress": 15.0,
-                 "start_date": "2024-01-15",
-                 "parent": "team-cloud-1a2b",
-                 "related_projects": ["proj-cloud-micro", "proj-cloud-container"],
-                 "team_members": ["emp-147", "emp-258", "emp-369"]
-               }
-             ]
-           },
-           {
-             "@id": "team-security-7890",
-             "name": "Security Team",
-             "project_count": 5,
-             "team_size": 50,
-             "parent": "subdiv-software-4abc",
-             "dependencies": ["team-network-4567"],
-             "children": [
-               {
-                 "@id": "proj-security-auth",
-                 "name": "Authentication System",
-                 "status": "active",
-                 "progress": 90.0,
-                 "start_date": "2023-07-01",
-                 "parent": "team-security-7890",
-                 "related_projects": ["proj-cloud-micro", "proj-cloud-container"],
-                 "team_members": ["emp-321", "emp-654", "emp-987"]
-               },
-               {
-                 "@id": "proj-security-encryption",
-                 "name": "End-to-End Encryption",
-                 "status": "in_progress",
-                 "progress": 45.0,
-                 "start_date": "2023-12-01",
-                 "parent": "team-security-7890",
-                 "related_projects": ["proj-security-auth"],
-                 "team_members": ["emp-741", "emp-852", "emp-963"]
-               }
-             ]
-           },
-           {
-             "@id": "team-network-4567",
-             "name": "Networking Team",
-             "project_count": 7,
-             "team_size": 60,
-             "parent": "subdiv-software-4abc",
-             "dependencies": [],
-             "children": [
-               {
-                 "@id": "proj-network-vpn",
-                 "name": "VPN Infrastructure",
-                 "status": "completed",
-                 "progress": 100.0,
-                 "start_date": "2023-06-01",
-                 "parent": "team-network-4567",
-                 "related_projects": ["proj-cloud-micro"],
-                 "team_members": ["emp-135", "emp-246", "emp-357"]
-               },
-               {
-                 "@id": "proj-network-sdn",
-                 "name": "Software-Defined Networking",
-                 "status": "active",
-                 "progress": 65.0,
-                 "start_date": "2023-11-01",
-                 "parent": "team-network-4567",
-                 "related_projects": ["proj-network-vpn", "proj-cloud-micro"],
-                 "team_members": ["emp-159", "emp-267", "emp-348"]
-               }
-             ]
-           },
-           {
-             "@id": "team-mobile-dev",
-             "name": "Mobile Development",
-             "project_count": 8,
-             "team_size": 45,
-             "parent": "subdiv-software-4abc",
-             "dependencies": ["team-cloud-1a2b", "team-security-7890"],
-             "children": [
-               {
-                 "@id": "proj-mobile-app",
-                 "name": "Enterprise Mobile App",
-                 "status": "active",
-                 "progress": 55.0,
-                 "start_date": "2023-10-15",
-                 "parent": "team-mobile-dev",
-                 "related_projects": ["proj-cloud-micro", "proj-security-auth"],
-                 "team_members": ["emp-951", "emp-842", "emp-733"]
-               }
-             ]
-           }
-         ]
-       },
-       {
-         "@id": "subdiv-hardware-5def",
-         "name": "Hardware Development",
-         "budget": 180000000,
-         "headcount": 300,
-         "parent": "div-tech-6616",
-         "collaborates_with": ["subdiv-software-4abc", "team-research-9876"],
-         "children": [
-           {
-             "@id": "team-iot-3344",
-             "name": "IoT Devices",
-             "project_count": 10,
-             "team_size": 80,
-             "parent": "subdiv-hardware-5def",
-             "dependencies": ["team-cloud-1a2b", "team-ai-1122"],
-             "children": [
-               {
-                 "@id": "proj-iot-smart-home",
-                 "name": "Smart Home Solutions",
-                 "status": "active",
-                 "progress": 85.0,
-                 "start_date": "2023-07-01",
-                 "parent": "team-iot-3344",
-                 "related_projects": ["proj-iot-industrial", "proj-cloud-micro"],
-                 "team_members": ["emp-345", "emp-678", "emp-901"]
-               },
-               {
-                 "@id": "proj-iot-industrial",
-                 "name": "Industrial IoT Platform",
-                 "status": "in_progress",
-                 "progress": 40.0,
-                 "start_date": "2023-11-15",
-                 "parent": "team-iot-3344",
-                 "related_projects": ["proj-iot-smart-home", "proj-cloud-micro"],
-                 "team_members": ["emp-741", "emp-852", "emp-963"]
-               }
-             ]
-           },
-           {
-             "@id": "team-embedded-5566",
-             "name": "Embedded Systems",
-             "project_count": 6,
-             "team_size": 40,
-             "parent": "subdiv-hardware-5def",
-             "dependencies": ["team-iot-3344"],
-             "children": [
-               {
-                 "@id": "proj-embedded-firmware",
-                 "name": "Firmware Development",
-                 "status": "active",
-                 "progress": 70.0,
-                 "start_date": "2023-09-15",
-                 "parent": "team-embedded-5566",
-                 "related_projects": ["proj-iot-smart-home", "proj-iot-industrial"],
-                 "team_members": ["emp-159", "emp-267", "emp-348"]
-               }
-             ]
-           }
-         ]
-       }
-     ]
-   },
-   {
-     "@id": "div-rd-940e",
-     "name": "R&D Division",
-     "budget": 600000000,
-     "growth_rate": 18.7,
-     "parent": "corp-root-28dd",
-     "linked_divisions": ["div-tech-6616", "div-prod-3322", "div-ai-1234"],
-     "children": [
-       {
-         "@id": "team-research-9876",
-         "name": "Research Lab Alpha",
-         "budget": 150000000,
-         "project_count": 8,
-         "parent": "div-rd-940e",
-         "collaborates_with": ["subdiv-software-4abc", "team-innovation-5544", "team-ai-1122"],
-         "references": ["div-tech-6616", "team-cloud-1a2b"],
-         "children": [
-           {
-             "@id": "proj-research-ai",
-             "name": "AI Initiative",
-             "status": "in_progress",
-             "completion": 45.7,
-             "start_date": "2023-11-01",
-             "parent": "team-research-9876",
-             "depends_on": ["proj-cloud-micro", "div-tech-6616"]
-           },
-           {
-             "@id": "proj-research-quantum",
-             "name": "Quantum Computing",
-             "status": "planning",
-             "completion": 10.2,
-             "start_date": "2024-02-01",
-             "parent": "team-research-9876",
-             "depends_on": ["proj-research-ai", "team-ai-1122"]
-           }
-         ]
-       },
-       {
-         "@id": "team-innovation-5544",
-         "name": "Innovation Team",
-         "project_count": 6,
-         "team_size": 40,
-         "parent": "div-rd-940e",
-         "collaborates_with": ["team-research-9876", "team-ai-1122"],
-         "children": [
-           {
-             "@id": "proj-innovation-blockchain",
-             "name": "Blockchain Research",
-             "status": "in_progress",
-             "progress": 30.0,
-             "start_date": "2023-12-01",
-             "parent": "team-innovation-5544",
-             "related_projects": ["proj-research-ai"],
-             "team_members": ["emp-111", "emp-222", "emp-333"]
-           }
-         ]
-       }
-     ]
-   },
-   {
-     "@id": "div-ai-1234",
-     "name": "AI Division",
-     "budget": 400000000,
-     "growth_rate": 30.0,
-     "parent": "corp-root-28dd",
-     "linked_divisions": ["div-tech-6616", "div-rd-940e"],
-     "children": [
-       {
-         "@id": "team-ai-1122",
-         "name": "AI Research Team",
-         "project_count": 12,
-         "team_size": 90,
-         "parent": "div-ai-1234",
-         "collaborates_with": ["team-research-9876", "team-cloud-1a2b"],
-         "children": [
-           {
-             "@id": "proj-ai-ml",
-             "name": "Machine Learning Framework",
-             "status": "active",
-             "progress": 70.0,
-             "start_date": "2023-10-01",
-             "parent": "team-ai-1122",
-             "related_projects": ["proj-research-ai", "proj-cloud-micro"],
-             "team_members": ["emp-111", "emp-222", "emp-333"]
-           },
-           {
-             "@id": "proj-ai-nlp",
-             "name": "Natural Language Processing Engine",
-             "status": "in_progress",
-             "progress": 45.0,
-             "start_date": "2023-11-15",
-             "parent": "team-ai-1122",
-             "related_projects": ["proj-ai-ml", "proj-research-ai"],
-             "team_members": ["emp-444", "emp-555", "emp-666"]
-           }
-         ]
-       },
-       {
-         "@id": "team-ai-applications",
-         "name": "AI Applications Team",
-         "project_count": 8,
-         "team_size": 60,
-         "parent": "div-ai-1234",
-         "collaborates_with": ["team-ai-1122", "team-cloud-1a2b"],
-         "children": [
-           {
-             "@id": "proj-ai-vision",
-             "name": "Computer Vision Platform",
-             "status": "active",
-             "progress": 65.0,
-             "start_date": "2023-09-15",
-             "parent": "team-ai-applications",
-             "related_projects": ["proj-ai-ml"],
-             "team_members": ["emp-777", "emp-888", "emp-999"]
-           }
-         ]
-       }
-     ]
-   },
-   {
-     "@id": "div-sales-8811",
-     "name": "Sales Division",
-     "revenue": 1200000000,
-     "growth_rate": 15.2,
-     "parent": "corp-root-28dd",
-     "linked_divisions": ["div-tech-6616", "div-marketing-7733", "div-prod-3322"],
-     "children": [
-       {
-         "@id": "region-na-2233",
-         "name": "North America",
-         "revenue": 500000000,
-         "team_size": 250,
-         "parent": "div-sales-8811",
-         "collaborates_with": ["region-eu-4455", "team-cloud-1a2b", "team-ai-1122"],
-         "children": [
-           {
-             "@id": "team-enterprise-6677",
-             "name": "Enterprise Sales",
-             "revenue": 300000000,
-             "deals_closed": 45,
-             "parent": "region-na-2233",
-             "depends_on": ["team-cloud-1a2b", "team-support-8899"],
-             "references": ["proj-cloud-micro", "proj-ai-ml"]
-           },
-           {
-             "@id": "team-support-8899",
-             "name": "Customer Support",
-             "team_size": 100,
-             "parent": "region-na-2233",
-             "collaborates_with": ["team-enterprise-6677"],
-             "children": [
-               {
-                 "@id": "proj-support-portal",
-                 "name": "Support Portal",
-                 "status": "active",
-                 "progress": 80.0,
-                 "start_date": "2023-09-01",
-                 "parent": "team-support-8899",
-                 "related_projects": ["proj-cloud-micro"],
-                 "team_members": ["emp-444", "emp-555", "emp-666"]
-               }
-             ]
-           }
-         ]
-       },
-       {
-         "@id": "region-eu-4455",
-         "name": "Europe",
-         "revenue": 400000000,
-         "team_size": 200,
-         "parent": "div-sales-8811",
-         "collaborates_with": ["region-na-2233", "team-ai-1122"],
-         "children": [
-           {
-             "@id": "team-retail-9988",
-             "name": "Retail Sales",
-             "revenue": 250000000,
-             "deals_closed": 60,
-             "parent": "region-eu-4455",
-             "depends_on": ["team-cloud-1a2b", "team-support-8899"],
-             "references": ["proj-iot-smart-home"]
-           }
-         ]
-       },
-       {
-         "@id": "region-apac-6677",
-         "name": "Asia Pacific",
-         "revenue": 300000000,
-         "team_size": 150,
-         "parent": "div-sales-8811",
-         "collaborates_with": ["region-na-2233", "region-eu-4455"],
-         "children": [
-           {
-             "@id": "team-apac-sales",
-             "name": "APAC Sales Team",
-             "revenue": 200000000,
-             "deals_closed": 40,
-             "parent": "region-apac-6677",
-             "depends_on": ["team-cloud-1a2b", "team-support-8899"],
-             "references": ["proj-cloud-micro", "proj-ai-ml"]
-           }
-         ]
-       }
-       
-     ]
-   },
-   {
-    "@id": "div-region-6688",
-    "name": "Regional Operations",
-    "budget": 500000000,
-    "growth_rate": 15.5,
-    "parent": "corp-root-28dd",
-    "linked_divisions": ["div-sales-8811", "div-logistics-9900"],
+    "@id": "corp-root-28dd",
+    "name": "Global Conglomerate",
+    "market_cap": 5000000000.75,
+    "founded_date": "1985-06-15",
+    "stock_price": 156.78,
     "children": [
-      {
-        "@id": "region-latam-7799",
-        "name": "Latin America",
-        "revenue": 350000000,
-        "team_size": 180,
-        "parent": "div-region-6688",
-        "collaborates_with": ["region-na-2233", "region-eu-4455"],
-        "children": [
-          {
-            "@id": "team-latam-sales",
-            "name": "LATAM Sales Team",
-            "revenue": 250000000,
-            "deals_closed": 35,
-            "parent": "region-latam-7799",
-            "depends_on": ["team-cloud-1a2b", "team-support-8899"],
-            "references": ["proj-cloud-micro", "proj-mobile-app"]
-          }
-        ]
-      },
-      {
-        "@id": "region-mea-8800",
-        "name": "Middle East & Africa",
-        "revenue": 280000000,
-        "team_size": 150,
-        "parent": "div-region-6688",
-        "collaborates_with": ["region-eu-4455", "region-apac-6677"],
-        "children": [
-          {
-            "@id": "team-mea-sales",
-            "name": "MEA Sales Team",
-            "revenue": 180000000,
-            "deals_closed": 28,
-            "parent": "region-mea-8800",
-            "depends_on": ["team-cloud-1a2b", "team-support-8899"],
-            "references": ["proj-cloud-micro", "proj-ai-ml"]
-          }
-        ]
-      }
-    ]
-  },
-   {
-     "@id": "div-marketing-7733",
-     "name": "Marketing Division",
-     "budget": 200000000,
-     "growth_rate": 10.5,
-     "parent": "corp-root-28dd",
-     "linked_divisions": ["div-sales-8811", "div-prod-3322"],
-     "children": [
-       {
-         "@id": "team-digital-marketing",
-         "name": "Digital Marketing",
-         "budget": 80000000,
-         "team_size": 40,
-         "parent": "div-marketing-7733",
-         "collaborates_with": ["team-enterprise-6677", "team-retail-9988"],
-         "children": [
-           {
-             "@id": "proj-digital-campaign",
-             "name": "Q1 Digital Campaign",
-             "status": "active",
-             "progress": 60.0,
-             "start_date": "2024-01-01",
-             "parent": "team-digital-marketing",
-             "related_projects": ["proj-ai-ml", "proj-mobile-app"],
-             "team_members": ["emp-159", "emp-267", "emp-348"]
-           }
-         ]
-       }
-     ]
-   },
-   {
-     "@id": "div-logistics-9900",
-     "name": "Logistics Division",
-     "budget": 300000000,
-     "growth_rate": 8.5,
-     "parent": "corp-root-28dd",
-     "linked_divisions": ["div-prod-3322", "div-sales-8811"],
-     "children": [
-       {
-         "@id": "team-supply-chain",
-         "name": "Supply Chain Management",
-         "budget": 150000000,
-         "team_size": 75,
-         "parent": "div-logistics-9900",
-         "collaborates_with": ["facility-main-5544"],
-         "children": [
-           {
-             "@id": "proj-inventory-system",
-             "name": "Inventory Management System",
-             "status": "in_progress",
-             "progress": 40.0,
-             "start_date": "2023-12-01",
-             "parent": "team-supply-chain",
-             "related_projects": ["proj-cloud-micro", "proj-ai-ml"],
-             "team_members": ["emp-741", "emp-852", "emp-963"]
-           }
-         ]
-       }
-     ]
-   },
-   {
-     "@id": "div-hr-1100",
-     "name": "Human Resources Division",
-     "budget": 150000000,
-     "growth_rate": 5.5,
-     "parent": "corp-root-28dd",
-     "linked_divisions": ["div-tech-6616", "div-prod-3322"],
-     "children": [
-       {
-         "@id": "team-talent-acquisition",
-         "name": "Talent Acquisition",
-         "budget": 50000000,
-         "team_size": 30,
-         "parent": "div-hr-1100",
-         "collaborates_with": ["team-ai-1122"],
-         "children": [
-           {
-             "@id": "proj-recruitment-ai",
-             "name": "AI-Powered Recruitment",
-             "status": "planning",
-             "progress": 20.0,
-             "start_date": "2024-01-15",
-             "parent": "team-talent-acquisition",
-             "related_projects": ["proj-ai-ml"],
-             "team_members": ["emp-951", "emp-842", "emp-733"]
-           }
-         ]
-       }
-     ]
-   },
-   {
-     "@id": "div-legal-1300",
-     "name": "Legal Division",
-     "budget": 180000000,
-     "growth_rate": 4.5,
-     "parent": "corp-root-28dd",
-     "linked_divisions": ["div-hr-1100", "div-finance-1200"],
-     "children": [
-       {
-         "@id": "team-compliance",
-         "name": "Compliance Team",
-         "budget": 70000000,
-         "team_size": 25,
-         "parent": "div-legal-1300",
-         "collaborates_with": ["team-security-7890"],
-         "children": [
-           {
-             "@id": "proj-compliance-automation",
-             "name": "Compliance Automation System",
-             "status": "in_progress",
-             "progress": 35.0,
-             "start_date": "2023-12-15",
-             "parent": "team-compliance",
-             "related_projects": ["proj-ai-ml", "proj-security-auth"],
-             "team_members": ["emp-135", "emp-246", "emp-357"]
-           }
-         ]
-       }
-     ]
-   },
-   {
-     "@id": "div-finance-1200",
-     "name": "Finance Division",
-     "budget": 250000000,
-     "growth_rate": 7.5,
-     "parent": "corp-root-28dd",
-     "linked_divisions": ["div-sales-8811", "div-prod-3322"],
-     "children": [
-       {
-         "@id": "team-financial-planning",
-         "name": "Financial Planning & Analysis",
-         "budget": 100000000,
-         "team_size": 45,
-         "parent": "div-finance-1200",
-         "collaborates_with": ["team-ai-1122"],
-         "children": [
-           {
-             "@id": "proj-predictive-analytics",
-             "name": "Predictive Financial Analytics",
-             "status": "active",
-             "progress": 55.0,
-             "start_date": "2023-11-01",
-             "parent": "team-financial-planning",
-             "related_projects": ["proj-ai-ml"],
-             "team_members": ["emp-321", "emp-654", "emp-987"]
-           }
-         ]
-       }
-     ]
-   },
-   {
-     "@id": "div-prod-3322",
-     "name": "Production Division",
-     "revenue": 900000000,
-     "growth_rate": 12.8,
-     "parent": "corp-root-28dd",
-     "linked_divisions": ["div-rd-940e", "div-logistics-9900", "div-sales-8811"],
-     "children": [
-       {
-         "@id": "facility-main-5544",
-         "name": "Main Factory",
-         "output_capacity": 1000000,
-         "efficiency_rate": 92.5,
-         "parent": "div-prod-3322",
-         "supplies_to": ["region-na-2233", "region-eu-4455"],
-         "references": ["team-enterprise-6677", "team-retail-9988"],
-         "children": [
-           {
-             "@id": "line-assembly-7788",
-             "name": "Assembly Line A",
-             "units_per_day": 5000,
-             "defect_rate": 0.5,
-             "parent": "facility-main-5544",
-             "depends_on": ["line-parts-8899", "team-quality-1234"],
-             "last_maintenance": "2024-01-15"
-           },
-           {
-             "@id": "line-parts-8899",
-             "name": "Parts Manufacturing",
-             "units_per_day": 3000,
-             "defect_rate": 0.3,
-             "parent": "facility-main-5544",
-             "depends_on": ["team-quality-1234"],
-             "last_maintenance": "2024-02-01"
-           }
-         ]
-       },
-       {
-         "@id": "team-quality-1234",
-         "name": "Quality Assurance",
-         "team_size": 50,
-         "parent": "div-prod-3322",
-         "collaborates_with": ["line-assembly-7788", "line-parts-8899"],
-         "children": [
-           {
-             "@id": "proj-quality-audit",
-             "name": "Quality Audit System",
-             "status": "active",
-             "progress": 75.0,
-             "start_date": "2023-10-15",
-             "parent": "team-quality-1234",
-             "related_projects": ["line-assembly-7788", "line-parts-8899"],
-             "team_members": ["emp-777", "emp-888", "emp-999"]
-           }
-         ]
-       }
-     ]
-   },
-   {
-    "@id": "div-innovation-2244",
-    "name": "Innovation Division",
-    "budget": 350000000,
-    "growth_rate": 25.3,
-    "parent": "corp-root-28dd",
-    "linked_divisions": ["div-tech-6616", "div-rd-940e", "div-ai-1234"],
-    "children": [
-      {
-        "@id": "team-emerging-tech",
-        "name": "Emerging Technologies",
-        "budget": 120000000,
-        "team_size": 65,
-        "parent": "div-innovation-2244",
-        "collaborates_with": ["team-research-9876", "team-ai-1122"],
-        "children": [
-          {
-            "@id": "proj-ar-platform",
-            "name": "AR Development Platform",
-            "status": "active",
-            "progress": 45.0,
-            "start_date": "2023-11-15",
-            "parent": "team-emerging-tech",
-            "related_projects": ["proj-ai-vision", "proj-mobile-app"],
-            "team_members": ["emp-emerging-1", "emp-emerging-2", "emp-emerging-3"]
-          }
-        ]
-      }
-    ]
-  }, {
-    "@id": "div-cybersecurity-7788",
-    "name": "Cybersecurity Division",
-    "budget": 420000000,
-    "growth_rate": 35.0,
-    "parent": "corp-root-28dd",
-    "linked_divisions": ["div-tech-6616", "div-data-4466"],
-    "children": [
-      {
-        "@id": "team-threat-intel",
-        "name": "Threat Intelligence",
-        "budget": 150000000,
-        "team_size": 60,
-        "parent": "div-cybersecurity-7788",
-        "collaborates_with": ["team-security-7890", "team-cloud-1a2b"],
-        "children": [
-          {
-            "@id": "proj-threat-detection",
-            "name": "Advanced Threat Detection",
-            "status": "active",
-            "progress": 55.0,
-            "start_date": "2023-11-01",
-            "parent": "team-threat-intel",
-            "related_projects": ["proj-security-auth", "proj-ai-ml"],
-            "team_members": ["emp-601", "emp-602", "emp-603"]
-          }
-        ]
-      },
-      {
-        "@id": "team-incident-response",
-        "name": "Incident Response",
-        "budget": 120000000,
-        "team_size": 45,
-        "parent": "div-cybersecurity-7788",
-        "collaborates_with": ["team-security-7890", "team-network-4567"],
-        "children": [
-          {
-            "@id": "proj-incident-automation",
-            "name": "Response Automation Platform",
-            "status": "in_progress",
-            "progress": 30.0,
-            "start_date": "2023-12-15",
-            "parent": "team-incident-response",
-            "related_projects": ["proj-cloud-micro", "proj-ai-ml"],
-            "team_members": ["emp-604", "emp-605", "emp-606"]
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "@id": "div-product-8899",
-    "name": "Product Management Division",
-    "budget": 280000000,
-    "growth_rate": 22.0,
-    "parent": "corp-root-28dd",
-    "linked_divisions": ["div-tech-6616", "div-marketing-7733"],
-    "children": [
-      {
-        "@id": "team-product-strategy",
-        "name": "Product Strategy",
-        "budget": 100000000,
-        "team_size": 35,
-        "parent": "div-product-8899",
-        "collaborates_with": ["team-digital-strategy", "team-emerging-tech"],
-        "children": [
-          {
-            "@id": "proj-product-roadmap",
-            "name": "Product Roadmap 2025",
-            "status": "active",
-            "progress": 45.0,
-            "start_date": "2024-01-01",
-            "parent": "team-product-strategy",
-            "related_projects": ["proj-digital-workspace", "proj-ai-ml"],
-            "team_members": ["emp-607", "emp-608", "emp-609"]
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "@id": "div-customer-exp-9900",
-    "name": "Customer Experience Division",
-    "budget": 250000000,
-    "growth_rate": 20.0,
-    "parent": "corp-root-28dd",
-    "linked_divisions": ["div-sales-8811", "div-marketing-7733"],
-    "children": [
-      {
-        "@id": "team-cx-design",
-        "name": "CX Design Team",
-        "budget": 90000000,
-        "team_size": 40,
-        "parent": "div-customer-exp-9900",
-        "collaborates_with": ["team-mobile-dev", "team-digital-strategy"],
-        "children": [
-          {
-            "@id": "proj-cx-platform",
-            "name": "CX Management Platform",
-            "status": "planning",
-            "progress": 15.0,
-            "start_date": "2024-02-01",
-            "parent": "team-cx-design",
-            "related_projects": ["proj-mobile-app", "proj-cloud-micro"],
-            "team_members": ["emp-610", "emp-611", "emp-612"]
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "@id": "div-sustainability-3355",
-    "name": "Sustainability Division",
-    "budget": 180000000,
-    "growth_rate": 18.5,
-    "parent": "corp-root-28dd",
-    "linked_divisions": ["div-prod-3322", "div-rd-940e"],
-    "children": [
-      {
-        "@id": "team-green-initiatives",
-        "name": "Green Initiatives",
-        "budget": 75000000,
-        "team_size": 40,
-        "parent": "div-sustainability-3355",
-        "collaborates_with": ["team-research-9876"],
-        "children": [
-          {
-            "@id": "proj-carbon-tracking",
-            "name": "Carbon Footprint Tracker",
-            "status": "in_progress",
-            "progress": 35.0,
-            "start_date": "2023-12-01",
-            "parent": "team-green-initiatives",
-            "related_projects": ["proj-iot-industrial"],
-            "team_members": ["emp-green-1", "emp-green-2", "emp-green-3"]
-          }
-        ]
-      }
-    ]
-    },
-    {
-      "@id": "div-data-4466",
-      "name": "Data Analytics Division",
-      "budget": 450000000,
-      "growth_rate": 28.5,
-      "parent": "corp-root-28dd",
-      "linked_divisions": ["div-tech-6616", "div-ai-1234", "div-rd-940e"],
-      "children": [
         {
-          "@id": "team-data-science",
-          "name": "Data Science Team",
-          "budget": 180000000,
-          "team_size": 85,
-          "parent": "div-data-4466",
-          "collaborates_with": ["team-ai-1122", "team-cloud-1a2b"],
-          "children": [
-            {
-              "@id": "proj-predictive-models",
-              "name": "Customer Behavior Prediction",
-              "status": "active",
-              "progress": 65.0,
-              "start_date": "2023-10-15",
-              "parent": "team-data-science",
-              "related_projects": ["proj-ai-ml", "proj-ai-nlp"],
-              "team_members": ["emp-501", "emp-502", "emp-503"]
-            },
-            {
-              "@id": "proj-data-platform",
-              "name": "Enterprise Data Platform",
-              "status": "in_progress",
-              "progress": 40.0,
-              "start_date": "2023-12-01",
-              "parent": "team-data-science",
-              "related_projects": ["proj-cloud-micro", "proj-ai-ml"],
-              "team_members": ["emp-504", "emp-505", "emp-506"]
-            }
-          ]
+            "@id": "div-tech-6616",
+            "name": "Technology Division",
+            "revenue": 800000000,
+            "growth_rate": 22.5,
+            "reports_to": "corp-root-28dd",
+            "linked_divisions": [
+                "div-rd-940e",
+                "div-sales-8811",
+                "div-ai-1234"
+            ],
+            "children": [
+                {
+                    "@id": "subdiv-software-4abc",
+                    "name": "Software Solutions",
+                    "budget": 250000000,
+                    "headcount": 500,
+                    "parent": "div-tech-6616",
+                    "collaborates_with": [
+                        "subdiv-hardware-5def",
+                        "team-research-9876",
+                        "team-ai-1122"
+                    ],
+                    "children": [
+                        {
+                            "@id": "team-cloud-1a2b",
+                            "name": "Cloud Infrastructure",
+                            "project_count": 15,
+                            "team_size": 125,
+                            "parent": "subdiv-software-4abc",
+                            "dependencies": [
+                                "team-security-7890",
+                                "team-network-4567",
+                                "team-ai-1122"
+                            ],
+                            "children": [
+                                {
+                                    "@id": "proj-cloud-micro",
+                                    "name": "Microservices Platform",
+                                    "status": "active",
+                                    "progress": 78.5,
+                                    "start_date": "2023-08-15",
+                                    "parent": "team-cloud-1a2b",
+                                    "related_projects": [
+                                        "proj-cloud-container",
+                                        "proj-security-auth",
+                                        "proj-ai-ml"
+                                    ],
+                                    "team_members": [
+                                        "emp-123",
+                                        "emp-456",
+                                        "emp-789"
+                                    ]
+                                },
+                                {
+                                    "@id": "proj-cloud-container",
+                                    "name": "Container Orchestration",
+                                    "status": "in_progress",
+                                    "progress": 62.3,
+                                    "start_date": "2023-09-01",
+                                    "parent": "team-cloud-1a2b",
+                                    "related_projects": [
+                                        "proj-cloud-micro",
+                                        "proj-security-auth"
+                                    ],
+                                    "team_members": [
+                                        "emp-234",
+                                        "emp-567",
+                                        "emp-890"
+                                    ]
+                                },
+                                {
+                                    "@id": "proj-cloud-monitoring",
+                                    "name": "Cloud Monitoring System",
+                                    "status": "planning",
+                                    "progress": 15.0,
+                                    "start_date": "2024-01-15",
+                                    "parent": "team-cloud-1a2b",
+                                    "related_projects": [
+                                        "proj-cloud-micro",
+                                        "proj-cloud-container"
+                                    ],
+                                    "team_members": [
+                                        "emp-147",
+                                        "emp-258",
+                                        "emp-369"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "@id": "team-security-7890",
+                            "name": "Security Team",
+                            "project_count": 5,
+                            "team_size": 50,
+                            "parent": "subdiv-software-4abc",
+                            "dependencies": [
+                                "team-network-4567"
+                            ],
+                            "children": [
+                                {
+                                    "@id": "proj-security-auth",
+                                    "name": "Authentication System",
+                                    "status": "active",
+                                    "progress": 90.0,
+                                    "start_date": "2023-07-01",
+                                    "parent": "team-security-7890",
+                                    "related_projects": [
+                                        "proj-cloud-micro",
+                                        "proj-cloud-container"
+                                    ],
+                                    "team_members": [
+                                        "emp-321",
+                                        "emp-654",
+                                        "emp-987"
+                                    ]
+                                },
+                                {
+                                    "@id": "proj-security-encryption",
+                                    "name": "End-to-End Encryption",
+                                    "status": "in_progress",
+                                    "progress": 45.0,
+                                    "start_date": "2023-12-01",
+                                    "parent": "team-security-7890",
+                                    "related_projects": [
+                                        "proj-security-auth"
+                                    ],
+                                    "team_members": [
+                                        "emp-741",
+                                        "emp-852",
+                                        "emp-963"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "@id": "team-network-4567",
+                            "name": "Networking Team",
+                            "project_count": 7,
+                            "team_size": 60,
+                            "parent": "subdiv-software-4abc",
+                            "dependencies": [],
+                            "children": [
+                                {
+                                    "@id": "proj-network-vpn",
+                                    "name": "VPN Infrastructure",
+                                    "status": "completed",
+                                    "progress": 100.0,
+                                    "start_date": "2023-06-01",
+                                    "parent": "team-network-4567",
+                                    "related_projects": [
+                                        "proj-cloud-micro"
+                                    ],
+                                    "team_members": [
+                                        "emp-135",
+                                        "emp-246",
+                                        "emp-357"
+                                    ]
+                                },
+                                {
+                                    "@id": "proj-network-sdn",
+                                    "name": "Software-Defined Networking",
+                                    "status": "active",
+                                    "progress": 65.0,
+                                    "start_date": "2023-11-01",
+                                    "parent": "team-network-4567",
+                                    "related_projects": [
+                                        "proj-network-vpn",
+                                        "proj-cloud-micro"
+                                    ],
+                                    "team_members": [
+                                        "emp-159",
+                                        "emp-267",
+                                        "emp-348"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "@id": "team-mobile-dev",
+                            "name": "Mobile Development",
+                            "project_count": 8,
+                            "team_size": 45,
+                            "parent": "subdiv-software-4abc",
+                            "dependencies": [
+                                "team-cloud-1a2b",
+                                "team-security-7890"
+                            ],
+                            "children": [
+                                {
+                                    "@id": "proj-mobile-app",
+                                    "name": "Enterprise Mobile App",
+                                    "status": "active",
+                                    "progress": 55.0,
+                                    "start_date": "2023-10-15",
+                                    "parent": "team-mobile-dev",
+                                    "related_projects": [
+                                        "proj-cloud-micro",
+                                        "proj-security-auth"
+                                    ],
+                                    "team_members": [
+                                        "emp-951",
+                                        "emp-842",
+                                        "emp-733"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "@id": "subdiv-hardware-5def",
+                    "name": "Hardware Development",
+                    "budget": 180000000,
+                    "headcount": 300,
+                    "parent": "div-tech-6616",
+                    "collaborates_with": [
+                        "subdiv-software-4abc",
+                        "team-research-9876"
+                    ],
+                    "children": [
+                        {
+                            "@id": "team-iot-3344",
+                            "name": "IoT Devices",
+                            "project_count": 10,
+                            "team_size": 80,
+                            "parent": "subdiv-hardware-5def",
+                            "dependencies": [
+                                "team-cloud-1a2b",
+                                "team-ai-1122"
+                            ],
+                            "children": [
+                                {
+                                    "@id": "proj-iot-smart-home",
+                                    "name": "Smart Home Solutions",
+                                    "status": "active",
+                                    "progress": 85.0,
+                                    "start_date": "2023-07-01",
+                                    "parent": "team-iot-3344",
+                                    "related_projects": [
+                                        "proj-iot-industrial",
+                                        "proj-cloud-micro"
+                                    ],
+                                    "team_members": [
+                                        "emp-345",
+                                        "emp-678",
+                                        "emp-901"
+                                    ]
+                                },
+                                {
+                                    "@id": "proj-iot-industrial",
+                                    "name": "Industrial IoT Platform",
+                                    "status": "in_progress",
+                                    "progress": 40.0,
+                                    "start_date": "2023-11-15",
+                                    "parent": "team-iot-3344",
+                                    "related_projects": [
+                                        "proj-iot-smart-home",
+                                        "proj-cloud-micro"
+                                    ],
+                                    "team_members": [
+                                        "emp-741",
+                                        "emp-852",
+                                        "emp-963"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "@id": "team-embedded-5566",
+                            "name": "Embedded Systems",
+                            "project_count": 6,
+                            "team_size": 40,
+                            "parent": "subdiv-hardware-5def",
+                            "dependencies": [
+                                "team-iot-3344"
+                            ],
+                            "children": [
+                                {
+                                    "@id": "proj-embedded-firmware",
+                                    "name": "Firmware Development",
+                                    "status": "active",
+                                    "progress": 70.0,
+                                    "start_date": "2023-09-15",
+                                    "parent": "team-embedded-5566",
+                                    "related_projects": [
+                                        "proj-iot-smart-home",
+                                        "proj-iot-industrial"
+                                    ],
+                                    "team_members": [
+                                        "emp-159",
+                                        "emp-267",
+                                        "emp-348"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
         },
         {
-          "@id": "team-data-engineering",
-          "name": "Data Engineering",
-          "budget": 150000000,
-          "team_size": 70,
-          "parent": "div-data-4466",
-          "collaborates_with": ["team-cloud-1a2b", "team-data-science"],
-          "children": [
-            {
-              "@id": "proj-data-pipeline",
-              "name": "Real-time Data Pipeline",
-              "status": "active",
-              "progress": 75.0,
-              "start_date": "2023-09-01",
-              "parent": "team-data-engineering",
-              "related_projects": ["proj-cloud-micro", "proj-data-platform"],
-              "team_members": ["emp-507", "emp-508", "emp-509"]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "@id": "div-digital-5577",
-      "name": "Digital Transformation Division",
-      "budget": 380000000,
-      "growth_rate": 32.0,
-      "parent": "corp-root-28dd",
-      "linked_divisions": ["div-tech-6616", "div-innovation-2244"],
-      "children": [
-        {
-          "@id": "team-digital-strategy",
-          "name": "Digital Strategy",
-          "budget": 120000000,
-          "team_size": 45,
-          "parent": "div-digital-5577",
-          "collaborates_with": ["team-emerging-tech", "team-data-science"],
-          "children": [
-            {
-              "@id": "proj-digital-workspace",
-              "name": "Future Workplace Platform",
-              "status": "in_progress",
-              "progress": 35.0,
-              "start_date": "2024-01-15",
-              "parent": "team-digital-strategy",
-              "related_projects": ["proj-cloud-micro", "proj-mobile-app"],
-              "team_members": ["emp-510", "emp-511", "emp-512"]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "@id": "div-global-support-1100",
-      "name": "Global Support Operations",
-      "budget": 320000000,
-      "growth_rate": 18.0,
-      "parent": "corp-root-28dd",
-      "linked_divisions": ["div-sales-8811", "div-customer-exp-9900"],
-      "children": [
-        {
-          "@id": "center-asia-2200",
-          "name": "Asian Support Center",
-          "budget": 120000000,
-          "team_size": 150,
-          "parent": "div-global-support-1100",
-          "collaborates_with": ["team-support-8899", "region-apac-6677"],
-          "children": [
-            {
-              "@id": "team-asia-support",
-              "name": "Asia Support Team",
-              "team_size": 100,
-              "parent": "center-asia-2200",
-              "collaborates_with": ["team-cloud-1a2b"],
-              "children": [
+            "@id": "div-rd-940e",
+            "name": "R&D Division",
+            "budget": 600000000,
+            "growth_rate": 18.7,
+            "parent": "corp-root-28dd",
+            "linked_divisions": [
+                "div-tech-6616",
+                "div-prod-3322",
+                "div-ai-1234"
+            ],
+            "children": [
                 {
-                  "@id": "proj-asia-support-platform",
-                  "name": "Asian Market Support Platform",
-                  "status": "in_progress",
-                  "progress": 25.0,
-                  "start_date": "2024-01-15",
-                  "parent": "team-asia-support",
-                  "related_projects": ["proj-support-portal", "proj-cloud-micro"],
-                  "team_members": ["emp-613", "emp-614", "emp-615"]
+                    "@id": "team-research-9876",
+                    "name": "Research Lab Alpha",
+                    "budget": 150000000,
+                    "project_count": 8,
+                    "parent": "div-rd-940e",
+                    "collaborates_with": [
+                        "subdiv-software-4abc",
+                        "team-innovation-5544",
+                        "team-ai-1122"
+                    ],
+                    "references": [
+                        "div-tech-6616",
+                        "team-cloud-1a2b"
+                    ],
+                    "children": [
+                        {
+                            "@id": "proj-research-ai",
+                            "name": "AI Initiative",
+                            "status": "in_progress",
+                            "completion": 45.7,
+                            "start_date": "2023-11-01",
+                            "parent": "team-research-9876",
+                            "depends_on": [
+                                "proj-cloud-micro",
+                                "div-tech-6616"
+                            ]
+                        },
+                        {
+                            "@id": "proj-research-quantum",
+                            "name": "Quantum Computing",
+                            "status": "planning",
+                            "completion": 10.2,
+                            "start_date": "2024-02-01",
+                            "parent": "team-research-9876",
+                            "depends_on": [
+                                "proj-research-ai",
+                                "team-ai-1122"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "@id": "team-innovation-5544",
+                    "name": "Innovation Team",
+                    "project_count": 6,
+                    "team_size": 40,
+                    "parent": "div-rd-940e",
+                    "collaborates_with": [
+                        "team-research-9876",
+                        "team-ai-1122"
+                    ],
+                    "children": [
+                        {
+                            "@id": "proj-innovation-blockchain",
+                            "name": "Blockchain Research",
+                            "status": "in_progress",
+                            "progress": 30.0,
+                            "start_date": "2023-12-01",
+                            "parent": "team-innovation-5544",
+                            "related_projects": [
+                                "proj-research-ai"
+                            ],
+                            "team_members": [
+                                "emp-111",
+                                "emp-222",
+                                "emp-333"
+                            ]
+                        }
+                    ]
                 }
-              ]
+            ]
+        },
+        {
+            "@id": "div-ai-1234",
+            "name": "AI Division",
+            "budget": 400000000,
+            "growth_rate": 30.0,
+            "parent": "corp-root-28dd",
+            "linked_divisions": [
+                "div-tech-6616",
+                "div-rd-940e"
+            ],
+            "children": [
+                {
+                    "@id": "team-ai-1122",
+                    "name": "AI Research Team",
+                    "project_count": 12,
+                    "team_size": 90,
+                    "parent": "div-ai-1234",
+                    "collaborates_with": [
+                        "team-research-9876",
+                        "team-cloud-1a2b"
+                    ],
+                    "children": [
+                        {
+                            "@id": "proj-ai-ml",
+                            "name": "Machine Learning Framework",
+                            "status": "active",
+                            "progress": 70.0,
+                            "start_date": "2023-10-01",
+                            "parent": "team-ai-1122",
+                            "related_projects": [
+                                "proj-research-ai",
+                                "proj-cloud-micro"
+                            ],
+                            "team_members": [
+                                "emp-111",
+                                "emp-222",
+                                "emp-333"
+                            ]
+                        },
+                        {
+                            "@id": "proj-ai-nlp",
+                            "name": "Natural Language Processing Engine",
+                            "status": "in_progress",
+                            "progress": 45.0,
+                            "start_date": "2023-11-15",
+                            "parent": "team-ai-1122",
+                            "related_projects": [
+                                "proj-ai-ml",
+                                "proj-research-ai"
+                            ],
+                            "team_members": [
+                                "emp-444",
+                                "emp-555",
+                                "emp-666"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "@id": "team-ai-applications",
+                    "name": "AI Applications Team",
+                    "project_count": 8,
+                    "team_size": 60,
+                    "parent": "div-ai-1234",
+                    "collaborates_with": [
+                        "team-ai-1122",
+                        "team-cloud-1a2b"
+                    ],
+                    "children": [
+                        {
+                            "@id": "proj-ai-vision",
+                            "name": "Computer Vision Platform",
+                            "status": "active",
+                            "progress": 65.0,
+                            "start_date": "2023-09-15",
+                            "parent": "team-ai-applications",
+                            "related_projects": [
+                                "proj-ai-ml"
+                            ],
+                            "team_members": [
+                                "emp-777",
+                                "emp-888",
+                                "emp-999"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "@id": "div-sales-8811",
+            "name": "Sales Division",
+            "revenue": 1200000000,
+            "growth_rate": 15.2,
+            "parent": "corp-root-28dd",
+            "linked_divisions": [
+                "div-tech-6616",
+                "div-marketing-7733",
+                "div-prod-3322"
+            ],
+            "children": [
+                {
+                    "@id": "region-na-2233",
+                    "name": "North America",
+                    "revenue": 500000000,
+                    "team_size": 250,
+                    "parent": "div-sales-8811",
+                    "collaborates_with": [
+                        "region-eu-4455",
+                        "team-cloud-1a2b",
+                        "team-ai-1122"
+                    ],
+                    "children": [
+                        {
+                            "@id": "team-enterprise-6677",
+                            "name": "Enterprise Sales",
+                            "revenue": 300000000,
+                            "deals_closed": 45,
+                            "parent": "region-na-2233",
+                            "depends_on": [
+                                "team-cloud-1a2b",
+                                "team-support-8899"
+                            ],
+                            "references": [
+                                "proj-cloud-micro",
+                                "proj-ai-ml"
+                            ]
+                        },
+                        {
+                            "@id": "team-support-8899",
+                            "name": "Customer Support",
+                            "team_size": 100,
+                            "parent": "region-na-2233",
+                            "collaborates_with": [
+                                "team-enterprise-6677"
+                            ],
+                            "children": [
+                                {
+                                    "@id": "proj-support-portal",
+                                    "name": "Support Portal",
+                                    "status": "active",
+                                    "progress": 80.0,
+                                    "start_date": "2023-09-01",
+                                    "parent": "team-support-8899",
+                                    "related_projects": [
+                                        "proj-cloud-micro"
+                                    ],
+                                    "team_members": [
+                                        "emp-444",
+                                        "emp-555",
+                                        "emp-666"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "@id": "region-eu-4455",
+                    "name": "Europe",
+                    "revenue": 400000000,
+                    "team_size": 200,
+                    "parent": "div-sales-8811",
+                    "collaborates_with": [
+                        "region-na-2233",
+                        "team-ai-1122"
+                    ],
+                    "children": [
+                        {
+                            "@id": "team-retail-9988",
+                            "name": "Retail Sales",
+                            "revenue": 250000000,
+                            "deals_closed": 60,
+                            "parent": "region-eu-4455",
+                            "depends_on": [
+                                "team-cloud-1a2b",
+                                "team-support-8899"
+                            ],
+                            "references": [
+                                "proj-iot-smart-home"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "@id": "region-apac-6677",
+                    "name": "Asia Pacific",
+                    "revenue": 300000000,
+                    "team_size": 150,
+                    "parent": "div-sales-8811",
+                    "collaborates_with": [
+                        "region-na-2233",
+                        "region-eu-4455"
+                    ],
+                    "children": [
+                        {
+                            "@id": "team-apac-sales",
+                            "name": "APAC Sales Team",
+                            "revenue": 200000000,
+                            "deals_closed": 40,
+                            "parent": "region-apac-6677",
+                            "depends_on": [
+                                "team-cloud-1a2b",
+                                "team-support-8899"
+                            ],
+                            "references": [
+                                "proj-cloud-micro",
+                                "proj-ai-ml"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "@id": "div-region-6688",
+            "name": "Regional Operations",
+            "budget": 500000000,
+            "growth_rate": 15.5,
+            "parent": "corp-root-28dd",
+            "linked_divisions": [
+                "div-sales-8811",
+                "div-logistics-9900"
+            ],
+            "children": [
+                {
+                    "@id": "region-latam-7799",
+                    "name": "Latin America",
+                    "revenue": 350000000,
+                    "team_size": 180,
+                    "parent": "div-region-6688",
+                    "collaborates_with": [
+                        "region-na-2233",
+                        "region-eu-4455"
+                    ],
+                    "children": [
+                        {
+                            "@id": "team-latam-sales",
+                            "name": "LATAM Sales Team",
+                            "revenue": 250000000,
+                            "deals_closed": 35,
+                            "parent": "region-latam-7799",
+                            "depends_on": [
+                                "team-cloud-1a2b",
+                                "team-support-8899"
+                            ],
+                            "references": [
+                                "proj-cloud-micro",
+                                "proj-mobile-app"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "@id": "region-mea-8800",
+                    "name": "Middle East & Africa",
+                    "revenue": 280000000,
+                    "team_size": 150,
+                    "parent": "div-region-6688",
+                    "collaborates_with": [
+                        "region-eu-4455",
+                        "region-apac-6677"
+                    ],
+                    "children": [
+                        {
+                            "@id": "team-mea-sales",
+                            "name": "MEA Sales Team",
+                            "revenue": 180000000,
+                            "deals_closed": 28,
+                            "parent": "region-mea-8800",
+                            "depends_on": [
+                                "team-cloud-1a2b",
+                                "team-support-8899"
+                            ],
+                            "references": [
+                                "proj-cloud-micro",
+                                "proj-ai-ml"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "@id": "div-marketing-7733",
+            "name": "Marketing Division",
+            "budget": 200000000,
+            "growth_rate": 10.5,
+            "parent": "corp-root-28dd",
+            "linked_divisions": [
+                "div-sales-8811",
+                "div-prod-3322"
+            ],
+            "children": [
+                {
+                    "@id": "team-digital-marketing",
+                    "name": "Digital Marketing",
+                    "budget": 80000000,
+                    "team_size": 40,
+                    "parent": "div-marketing-7733",
+                    "collaborates_with": [
+                        "team-enterprise-6677",
+                        "team-retail-9988"
+                    ],
+                    "children": [
+                        {
+                            "@id": "proj-digital-campaign",
+                            "name": "Q1 Digital Campaign",
+                            "status": "active",
+                            "progress": 60.0,
+                            "start_date": "2024-01-01",
+                            "parent": "team-digital-marketing",
+                            "related_projects": [
+                                "proj-ai-ml",
+                                "proj-mobile-app"
+                            ],
+                            "team_members": [
+                                "emp-159",
+                                "emp-267",
+                                "emp-348"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "@id": "div-logistics-9900",
+            "name": "Logistics Division",
+            "budget": 300000000,
+            "growth_rate": 8.5,
+            "parent": "corp-root-28dd",
+            "linked_divisions": [
+                "div-prod-3322",
+                "div-sales-8811"
+            ],
+            "children": [
+                {
+                    "@id": "team-supply-chain",
+                    "name": "Supply Chain Management",
+                    "budget": 150000000,
+                    "team_size": 75,
+                    "parent": "div-logistics-9900",
+                    "collaborates_with": [
+                        "facility-main-5544"
+                    ],
+                    "children": [
+                        {
+                            "@id": "proj-inventory-system",
+                            "name": "Inventory Management System",
+                            "status": "in_progress",
+                            "progress": 40.0,
+                            "start_date": "2023-12-01",
+                            "parent": "team-supply-chain",
+                            "related_projects": [
+                                "proj-cloud-micro",
+                                "proj-ai-ml"
+                            ],
+                            "team_members": [
+                                "emp-741",
+                                "emp-852",
+                                "emp-963"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "@id": "div-hr-1100",
+            "name": "Human Resources Division",
+            "budget": 150000000,
+            "growth_rate": 5.5,
+            "parent": "corp-root-28dd",
+            "linked_divisions": [
+                "div-tech-6616",
+                "div-prod-3322"
+            ],
+            "children": [
+                {
+                    "@id": "team-talent-acquisition",
+                    "name": "Talent Acquisition",
+                    "budget": 50000000,
+                    "team_size": 30,
+                    "parent": "div-hr-1100",
+                    "collaborates_with": [
+                        "team-ai-1122"
+                    ],
+                    "children": [
+                        {
+                            "@id": "proj-recruitment-ai",
+                            "name": "AI-Powered Recruitment",
+                            "status": "planning",
+                            "progress": 20.0,
+                            "start_date": "2024-01-15",
+                            "parent": "team-talent-acquisition",
+                            "related_projects": [
+                                "proj-ai-ml"
+                            ],
+                            "team_members": [
+                                "emp-951",
+                                "emp-842",
+                                "emp-733"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "@id": "div-legal-1300",
+            "name": "Legal Division",
+            "budget": 180000000,
+            "growth_rate": 4.5,
+            "parent": "corp-root-28dd",
+            "linked_divisions": [
+                "div-hr-1100",
+                "div-finance-1200"
+            ],
+            "children": [
+                {
+                    "@id": "team-compliance",
+                    "name": "Compliance Team",
+                    "budget": 70000000,
+                    "team_size": 25,
+                    "parent": "div-legal-1300",
+                    "collaborates_with": [
+                        "team-security-7890"
+                    ],
+                    "children": [
+                        {
+                            "@id": "proj-compliance-automation",
+                            "name": "Compliance Automation System",
+                            "status": "in_progress",
+                            "progress": 35.0,
+                            "start_date": "2023-12-15",
+                            "parent": "team-compliance",
+                            "related_projects": [
+                                "proj-ai-ml",
+                                "proj-security-auth"
+                            ],
+                            "team_members": [
+                                "emp-135",
+                                "emp-246",
+                                "emp-357"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "@id": "div-finance-1200",
+            "name": "Finance Division",
+            "budget": 250000000,
+            "growth_rate": 7.5,
+            "parent": "corp-root-28dd",
+            "linked_divisions": [
+                "div-sales-8811",
+                "div-prod-3322"
+            ],
+            "children": [
+                {
+                    "@id": "team-financial-planning",
+                    "name": "Financial Planning & Analysis",
+                    "budget": 100000000,
+                    "team_size": 45,
+                    "parent": "div-finance-1200",
+                    "collaborates_with": [
+                        "team-ai-1122"
+                    ],
+                    "children": [
+                        {
+                            "@id": "proj-predictive-analytics",
+                            "name": "Predictive Financial Analytics",
+                            "status": "active",
+                            "progress": 55.0,
+                            "start_date": "2023-11-01",
+                            "parent": "team-financial-planning",
+                            "related_projects": [
+                                "proj-ai-ml"
+                            ],
+                            "team_members": [
+                                "emp-321",
+                                "emp-654",
+                                "emp-987"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "@id": "div-prod-3322",
+            "name": "Production Division",
+            "revenue": 900000000,
+            "growth_rate": 12.8,
+            "parent": "corp-root-28dd",
+            "linked_divisions": [
+                "div-rd-940e",
+                "div-logistics-9900",
+                "div-sales-8811"
+            ],
+            "children": [
+                {
+                    "@id": "facility-main-5544",
+                    "name": "Main Factory",
+                    "output_capacity": 1000000,
+                    "efficiency_rate": 92.5,
+                    "parent": "div-prod-3322",
+                    "supplies_to": [
+                        "region-na-2233",
+                        "region-eu-4455"
+                    ],
+                    "references": [
+                        "team-enterprise-6677",
+                        "team-retail-9988"
+                    ],
+                    "children": [
+                        {
+                            "@id": "line-assembly-7788",
+                            "name": "Assembly Line A",
+                            "units_per_day": 5000,
+                            "defect_rate": 0.5,
+                            "parent": "facility-main-5544",
+                            "depends_on": [
+                                "line-parts-8899",
+                                "team-quality-1234"
+                            ],
+                            "last_maintenance": "2024-01-15"
+                        },
+                        {
+                            "@id": "line-parts-8899",
+                            "name": "Parts Manufacturing",
+                            "units_per_day": 3000,
+                            "defect_rate": 0.3,
+                            "parent": "facility-main-5544",
+                            "depends_on": [
+                                "team-quality-1234"
+                            ],
+                            "last_maintenance": "2024-02-01"
+                        }
+                    ]
+                },
+                {
+                    "@id": "team-quality-1234",
+                    "name": "Quality Assurance",
+                    "team_size": 50,
+                    "parent": "div-prod-3322",
+                    "collaborates_with": [
+                        "line-assembly-7788",
+                        "line-parts-8899"
+                    ],
+                    "children": [
+                        {
+                            "@id": "proj-quality-audit",
+                            "name": "Quality Audit System",
+                            "status": "active",
+                            "progress": 75.0,
+                            "start_date": "2023-10-15",
+                            "parent": "team-quality-1234",
+                            "related_projects": [
+                                "line-assembly-7788",
+                                "line-parts-8899"
+                            ],
+                            "team_members": [
+                                "emp-777",
+                                "emp-888",
+                                "emp-999"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "@id": "div-innovation-2244",
+            "name": "Innovation Division",
+            "budget": 350000000,
+            "growth_rate": 25.3,
+            "parent": "corp-root-28dd",
+            "linked_divisions": [
+                "div-tech-6616",
+                "div-rd-940e",
+                "div-ai-1234"
+            ],
+            "children": [
+                {
+                    "@id": "team-emerging-tech",
+                    "name": "Emerging Technologies",
+                    "budget": 120000000,
+                    "team_size": 65,
+                    "parent": "div-innovation-2244",
+                    "collaborates_with": [
+                        "team-research-9876",
+                        "team-ai-1122"
+                    ],
+                    "children": [
+                        {
+                            "@id": "proj-ar-platform",
+                            "name": "AR Development Platform",
+                            "status": "active",
+                            "progress": 45.0,
+                            "start_date": "2023-11-15",
+                            "parent": "team-emerging-tech",
+                            "related_projects": [
+                                "proj-ai-vision",
+                                "proj-mobile-app"
+                            ],
+                            "team_members": [
+                                "emp-emerging-1",
+                                "emp-emerging-2",
+                                "emp-emerging-3"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "@id": "div-cybersecurity-7788",
+            "name": "Cybersecurity Division",
+            "budget": 420000000,
+            "growth_rate": 35.0,
+            "parent": "corp-root-28dd",
+            "linked_divisions": [
+                "div-tech-6616",
+                "div-data-4466"
+            ],
+            "children": [
+                {
+                    "@id": "team-threat-intel",
+                    "name": "Threat Intelligence",
+                    "budget": 150000000,
+                    "team_size": 60,
+                    "parent": "div-cybersecurity-7788",
+                    "collaborates_with": [
+                        "team-security-7890",
+                        "team-cloud-1a2b"
+                    ],
+                    "children": [
+                        {
+                            "@id": "proj-threat-detection",
+                            "name": "Advanced Threat Detection",
+                            "status": "active",
+                            "progress": 55.0,
+                            "start_date": "2023-11-01",
+                            "parent": "team-threat-intel",
+                            "related_projects": [
+                                "proj-security-auth",
+                                "proj-ai-ml"
+                            ],
+                            "team_members": [
+                                "emp-601",
+                                "emp-602",
+                                "emp-603"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "@id": "team-incident-response",
+                    "name": "Incident Response",
+                    "budget": 120000000,
+                    "team_size": 45,
+                    "parent": "div-cybersecurity-7788",
+                    "collaborates_with": [
+                        "team-security-7890",
+                        "team-network-4567"
+                    ],
+                    "children": [
+                        {
+                            "@id": "proj-incident-automation",
+                            "name": "Response Automation Platform",
+                            "status": "in_progress",
+                            "progress": 30.0,
+                            "start_date": "2023-12-15",
+                            "parent": "team-incident-response",
+                            "related_projects": [
+                                "proj-cloud-micro",
+                                "proj-ai-ml"
+                            ],
+                            "team_members": [
+                                "emp-604",
+                                "emp-605",
+                                "emp-606"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "@id": "div-product-8899",
+            "name": "Product Management Division",
+            "budget": 280000000,
+            "growth_rate": 22.0,
+            "parent": "corp-root-28dd",
+            "linked_divisions": [
+                "div-tech-6616",
+                "div-marketing-7733"
+            ],
+            "children": [
+                {
+                    "@id": "team-product-strategy",
+                    "name": "Product Strategy",
+                    "budget": 100000000,
+                    "team_size": 35,
+                    "parent": "div-product-8899",
+                    "collaborates_with": [
+                        "team-digital-strategy",
+                        "team-emerging-tech"
+                    ],
+                    "children": [
+                        {
+                            "@id": "proj-product-roadmap",
+                            "name": "Product Roadmap 2025",
+                            "status": "active",
+                            "progress": 45.0,
+                            "start_date": "2024-01-01",
+                            "parent": "team-product-strategy",
+                            "related_projects": [
+                                "proj-digital-workspace",
+                                "proj-ai-ml"
+                            ],
+                            "team_members": [
+                                "emp-607",
+                                "emp-608",
+                                "emp-609"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "@id": "div-customer-exp-9900",
+            "name": "Customer Experience Division",
+            "budget": 250000000,
+            "growth_rate": 20.0,
+            "parent": "corp-root-28dd",
+            "linked_divisions": [
+                "div-sales-8811",
+                "div-marketing-7733"
+            ],
+            "children": [
+                {
+                    "@id": "team-cx-design",
+                    "name": "CX Design Team",
+                    "budget": 90000000,
+                    "team_size": 40,
+                    "parent": "div-customer-exp-9900",
+                    "collaborates_with": [
+                        "team-mobile-dev",
+                        "team-digital-strategy"
+                    ],
+                    "children": [
+                        {
+                            "@id": "proj-cx-platform",
+                            "name": "CX Management Platform",
+                            "status": "planning",
+                            "progress": 15.0,
+                            "start_date": "2024-02-01",
+                            "parent": "team-cx-design",
+                            "related_projects": [
+                                "proj-mobile-app",
+                                "proj-cloud-micro"
+                            ],
+                            "team_members": [
+                                "emp-610",
+                                "emp-611",
+                                "emp-612"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "@id": "div-sustainability-3355",
+            "name": "Sustainability Division",
+            "budget": 180000000,
+            "growth_rate": 18.5,
+            "parent": "corp-root-28dd",
+            "linked_divisions": [
+                "div-prod-3322",
+                "div-rd-940e"
+            ],
+            "children": [
+                {
+                    "@id": "team-green-initiatives",
+                    "name": "Green Initiatives",
+                    "budget": 75000000,
+                    "team_size": 40,
+                    "parent": "div-sustainability-3355",
+                    "collaborates_with": [
+                        "team-research-9876"
+                    ],
+                    "children": [
+                        {
+                            "@id": "proj-carbon-tracking",
+                            "name": "Carbon Footprint Tracker",
+                            "status": "in_progress",
+                            "progress": 35.0,
+                            "start_date": "2023-12-01",
+                            "parent": "team-green-initiatives",
+                            "related_projects": [
+                                "proj-iot-industrial"
+                            ],
+                            "team_members": [
+                                "emp-green-1",
+                                "emp-green-2",
+                                "emp-green-3"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "@id": "div-data-4466",
+            "name": "Data Analytics Division",
+            "budget": 450000000,
+            "growth_rate": 28.5,
+            "parent": "corp-root-28dd",
+            "linked_divisions": [
+                "div-tech-6616",
+                "div-ai-1234",
+                "div-rd-940e"
+            ],
+            "children": [
+                {
+                    "@id": "team-data-science",
+                    "name": "Data Science Team",
+                    "budget": 180000000,
+                    "team_size": 85,
+                    "parent": "div-data-4466",
+                    "collaborates_with": [
+                        "team-ai-1122",
+                        "team-cloud-1a2b"
+                    ],
+                    "children": [
+                        {
+                            "@id": "proj-predictive-models",
+                            "name": "Customer Behavior Prediction",
+                            "status": "active",
+                            "progress": 65.0,
+                            "start_date": "2023-10-15",
+                            "parent": "team-data-science",
+                            "related_projects": [
+                                "proj-ai-ml",
+                                "proj-ai-nlp"
+                            ],
+                            "team_members": [
+                                "emp-501",
+                                "emp-502",
+                                "emp-503"
+                            ]
+                        },
+                        {
+                            "@id": "proj-data-platform",
+                            "name": "Enterprise Data Platform",
+                            "status": "in_progress",
+                            "progress": 40.0,
+                            "start_date": "2023-12-01",
+                            "parent": "team-data-science",
+                            "related_projects": [
+                                "proj-cloud-micro",
+                                "proj-ai-ml"
+                            ],
+                            "team_members": [
+                                "emp-504",
+                                "emp-505",
+                                "emp-506"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "@id": "team-data-engineering",
+                    "name": "Data Engineering",
+                    "budget": 150000000,
+                    "team_size": 70,
+                    "parent": "div-data-4466",
+                    "collaborates_with": [
+                        "team-cloud-1a2b",
+                        "team-data-science"
+                    ],
+                    "children": [
+                        {
+                            "@id": "proj-data-pipeline",
+                            "name": "Real-time Data Pipeline",
+                            "status": "active",
+                            "progress": 75.0,
+                            "start_date": "2023-09-01",
+                            "parent": "team-data-engineering",
+                            "related_projects": [
+                                "proj-cloud-micro",
+                                "proj-data-platform"
+                            ],
+                            "team_members": [
+                                "emp-507",
+                                "emp-508",
+                                "emp-509"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "@id": "div-digital-5577",
+            "name": "Digital Transformation Division",
+            "budget": 380000000,
+            "growth_rate": 32.0,
+            "parent": "corp-root-28dd",
+            "linked_divisions": [
+                "div-tech-6616",
+                "div-innovation-2244"
+            ],
+            "children": [
+                {
+                    "@id": "team-digital-strategy",
+                    "name": "Digital Strategy",
+                    "budget": 120000000,
+                    "team_size": 45,
+                    "parent": "div-digital-5577",
+                    "collaborates_with": [
+                        "team-emerging-tech",
+                        "team-data-science"
+                    ],
+                    "children": [
+                        {
+                            "@id": "proj-digital-workspace",
+                            "name": "Future Workplace Platform",
+                            "status": "in_progress",
+                            "progress": 35.0,
+                            "start_date": "2024-01-15",
+                            "parent": "team-digital-strategy",
+                            "related_projects": [
+                                "proj-cloud-micro",
+                                "proj-mobile-app"
+                            ],
+                            "team_members": [
+                                "emp-510",
+                                "emp-511",
+                                "emp-512"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "@id": "div-global-support-1100",
+            "name": "Global Support Operations",
+            "budget": 320000000,
+            "growth_rate": 18.0,
+            "parent": "corp-root-28dd",
+            "linked_divisions": [
+                "div-sales-8811",
+                "div-customer-exp-9900"
+            ],
+            "children": [
+                {
+                    "@id": "center-asia-2200",
+                    "name": "Asian Support Center",
+                    "budget": 120000000,
+                    "team_size": 150,
+                    "parent": "div-global-support-1100",
+                    "collaborates_with": [
+                        "team-support-8899",
+                        "region-apac-6677"
+                    ],
+                    "children": [
+                        {
+                            "@id": "team-asia-support",
+                            "name": "Asia Support Team",
+                            "team_size": 100,
+                            "parent": "center-asia-2200",
+                            "collaborates_with": [
+                                "team-cloud-1a2b"
+                            ],
+                            "children": [
+                                {
+                                    "@id": "proj-asia-support-platform",
+                                    "name": "Asian Market Support Platform",
+                                    "status": "in_progress",
+                                    "progress": 25.0,
+                                    "start_date": "2024-01-15",
+                                    "parent": "team-asia-support",
+                                    "related_projects": [
+                                        "proj-support-portal",
+                                        "proj-cloud-micro"
+                                    ],
+                                    "team_members": [
+                                        "emp-613",
+                                        "emp-614",
+                                        "emp-615"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "@id": "emp-directory",
+            "name": "Employee Directory",
+            "children": [
+                {
+                    "@id": "emp-123",
+                    "name": "Sarah Chen",
+                    "role": "Senior Cloud Architect",
+                    "department": "team-cloud-1a2b",
+                    "reports_to": "emp-456",
+                    "hire_date": "2020-03-15"
+                },
+                {
+                    "@id": "emp-456",
+                    "name": "Michael Rodriguez",
+                    "role": "Cloud Team Lead",
+                    "department": "team-cloud-1a2b",
+                    "reports_to": null,
+                    "hire_date": "2019-06-01"
+                },
+                {
+                    "@id": "emp-789",
+                    "name": "David Kim",
+                    "role": "Cloud DevOps Engineer",
+                    "department": "team-cloud-1a2b",
+                    "reports_to": "emp-456",
+                    "hire_date": "2021-02-15"
+                },
+                {
+                    "@id": "emp-234",
+                    "name": "Emily Johnson",
+                    "role": "Container Specialist",
+                    "department": "team-cloud-1a2b",
+                    "reports_to": "emp-456",
+                    "hire_date": "2021-08-01"
+                },
+                {
+                    "@id": "emp-567",
+                    "name": "Alex Thompson",
+                    "role": "Systems Engineer",
+                    "department": "team-cloud-1a2b",
+                    "reports_to": "emp-456",
+                    "hire_date": "2022-01-15"
+                },
+                {
+                    "@id": "emp-890",
+                    "name": "Lisa Wang",
+                    "role": "DevOps Engineer",
+                    "department": "team-cloud-1a2b",
+                    "reports_to": "emp-456",
+                    "hire_date": "2022-03-01"
+                },
+                {
+                    "@id": "emp-147",
+                    "name": "James Wilson",
+                    "role": "Monitoring Specialist",
+                    "department": "team-cloud-1a2b",
+                    "reports_to": "emp-456",
+                    "hire_date": "2023-06-15"
+                },
+                {
+                    "@id": "emp-258",
+                    "name": "Rachel Martinez",
+                    "role": "SRE Engineer",
+                    "department": "team-cloud-1a2b",
+                    "reports_to": "emp-456",
+                    "hire_date": "2023-07-01"
+                },
+                {
+                    "@id": "emp-369",
+                    "name": "Tom Anderson",
+                    "role": "Cloud Engineer",
+                    "department": "team-cloud-1a2b",
+                    "reports_to": "emp-456",
+                    "hire_date": "2023-08-15"
+                },
+                {
+                    "@id": "emp-321",
+                    "name": "Jennifer Lee",
+                    "role": "Security Lead",
+                    "department": "team-security-7890",
+                    "reports_to": null,
+                    "hire_date": "2020-01-15"
+                },
+                {
+                    "@id": "emp-654",
+                    "name": "Robert Taylor",
+                    "role": "Security Engineer",
+                    "department": "team-security-7890",
+                    "reports_to": "emp-321",
+                    "hire_date": "2021-04-01"
+                },
+                {
+                    "@id": "emp-987",
+                    "name": "Maria Garcia",
+                    "role": "Security Analyst",
+                    "department": "team-security-7890",
+                    "reports_to": "emp-321",
+                    "hire_date": "2022-02-15"
+                },
+                {
+                    "@id": "emp-741",
+                    "name": "Daniel Brown",
+                    "role": "Encryption Specialist",
+                    "department": "team-security-7890",
+                    "reports_to": "emp-321",
+                    "hire_date": "2023-01-15"
+                },
+                {
+                    "@id": "emp-852",
+                    "name": "Sophie Martin",
+                    "role": "Security Engineer",
+                    "department": "team-security-7890",
+                    "reports_to": "emp-321",
+                    "hire_date": "2023-03-01"
+                },
+                {
+                    "@id": "emp-963",
+                    "name": "Chris Parker",
+                    "role": "Security Developer",
+                    "department": "team-security-7890",
+                    "reports_to": "emp-321",
+                    "hire_date": "2023-04-15"
+                },
+                {
+                    "@id": "emp-135",
+                    "name": "Michelle White",
+                    "role": "Network Team Lead",
+                    "department": "team-network-4567",
+                    "reports_to": null,
+                    "hire_date": "2020-05-01"
+                },
+                {
+                    "@id": "emp-246",
+                    "name": "Kevin Zhang",
+                    "role": "Network Engineer",
+                    "department": "team-network-4567",
+                    "reports_to": "emp-135",
+                    "hire_date": "2021-06-15"
+                },
+                {
+                    "@id": "emp-357",
+                    "name": "Anna Kowalski",
+                    "role": "Network Security Specialist",
+                    "department": "team-network-4567",
+                    "reports_to": "emp-135",
+                    "hire_date": "2022-04-01"
+                },
+                {
+                    "@id": "emp-159",
+                    "name": "Ryan Murphy",
+                    "role": "SDN Engineer",
+                    "department": "team-network-4567",
+                    "reports_to": "emp-135",
+                    "hire_date": "2022-08-15"
+                },
+                {
+                    "@id": "emp-267",
+                    "name": "Laura Scott",
+                    "role": "Network Architect",
+                    "department": "team-network-4567",
+                    "reports_to": "emp-135",
+                    "hire_date": "2022-09-01"
+                },
+                {
+                    "@id": "emp-348",
+                    "name": "Mark Davis",
+                    "role": "Network Engineer",
+                    "department": "team-network-4567",
+                    "reports_to": "emp-135",
+                    "hire_date": "2022-10-15"
+                },
+                {
+                    "@id": "emp-951",
+                    "name": "Jessica Brown",
+                    "role": "Mobile Dev Lead",
+                    "department": "team-mobile-dev",
+                    "reports_to": null,
+                    "hire_date": "2021-01-15"
+                },
+                {
+                    "@id": "emp-842",
+                    "name": "Andrew Wilson",
+                    "role": "Senior Mobile Developer",
+                    "department": "team-mobile-dev",
+                    "reports_to": "emp-951",
+                    "hire_date": "2021-03-01"
+                },
+                {
+                    "@id": "emp-733",
+                    "name": "Nina Patel",
+                    "role": "Mobile Developer",
+                    "department": "team-mobile-dev",
+                    "reports_to": "emp-951",
+                    "hire_date": "2021-04-15"
+                },
+                {
+                    "@id": "emp-444",
+                    "name": "John Smith",
+                    "role": "Support Lead",
+                    "department": "team-support-8899",
+                    "reports_to": null,
+                    "hire_date": "2020-07-15"
+                },
+                {
+                    "@id": "emp-555",
+                    "name": "Amanda Jones",
+                    "role": "Senior Support Engineer",
+                    "department": "team-support-8899",
+                    "reports_to": "emp-444",
+                    "hire_date": "2021-08-01"
+                },
+                {
+                    "@id": "emp-666",
+                    "name": "Carlos Rivera",
+                    "role": "Support Engineer",
+                    "department": "team-support-8899",
+                    "reports_to": "emp-444",
+                    "hire_date": "2022-01-15"
+                },
+                {
+                    "@id": "emp-777",
+                    "name": "Patricia Chen",
+                    "role": "QA Lead",
+                    "department": "team-quality-1234",
+                    "reports_to": null,
+                    "hire_date": "2020-09-01"
+                },
+                {
+                    "@id": "emp-888",
+                    "name": "Steven Lee",
+                    "role": "Senior QA Engineer",
+                    "department": "team-quality-1234",
+                    "reports_to": "emp-777",
+                    "hire_date": "2021-10-15"
+                },
+                {
+                    "@id": "emp-999",
+                    "name": "Rebecca Taylor",
+                    "role": "QA Engineer",
+                    "department": "team-quality-1234",
+                    "reports_to": "emp-777",
+                    "hire_date": "2022-03-01"
+                },
+                {
+                    "@id": "emp-111",
+                    "name": "Alan Turing",
+                    "role": "AI Research Lead",
+                    "department": "team-ai-1122",
+                    "reports_to": null,
+                    "hire_date": "2020-01-01"
+                },
+                {
+                    "@id": "emp-222",
+                    "name": "Grace Hopper",
+                    "role": "Senior AI Researcher",
+                    "department": "team-ai-1122",
+                    "reports_to": "emp-111",
+                    "hire_date": "2020-03-15"
+                },
+                {
+                    "@id": "emp-333",
+                    "name": "Ada Lovelace",
+                    "role": "AI Engineer",
+                    "department": "team-ai-1122",
+                    "reports_to": "emp-111",
+                    "hire_date": "2020-06-01"
+                },
+                {
+                    "@id": "emp-emerging-1",
+                    "name": "Diana Prince",
+                    "role": "AR Team Lead",
+                    "department": "team-emerging-tech",
+                    "reports_to": null,
+                    "hire_date": "2022-05-15"
+                },
+                {
+                    "@id": "emp-emerging-2",
+                    "name": "Bruce Wayne",
+                    "role": "Senior AR Developer",
+                    "department": "team-emerging-tech",
+                    "reports_to": "emp-emerging-1",
+                    "hire_date": "2022-07-01"
+                },
+                {
+                    "@id": "emp-emerging-3",
+                    "name": "Clark Kent",
+                    "role": "AR Engineer",
+                    "department": "team-emerging-tech",
+                    "reports_to": "emp-emerging-1",
+                    "hire_date": "2022-09-15"
+                },
+                {
+                    "@id": "emp-green-1",
+                    "name": "Barry Allen",
+                    "role": "Sustainability Lead",
+                    "department": "team-green-initiatives",
+                    "reports_to": null,
+                    "hire_date": "2022-06-01"
+                },
+                {
+                    "@id": "emp-green-2",
+                    "name": "Hal Jordan",
+                    "role": "Environmental Engineer",
+                    "department": "team-green-initiatives",
+                    "reports_to": "emp-green-1",
+                    "hire_date": "2022-08-15"
+                },
+                {
+                    "@id": "emp-green-3",
+                    "name": "Arthur Curry",
+                    "role": "Sustainability Analyst",
+                    "department": "team-green-initiatives",
+                    "reports_to": "emp-green-1",
+                    "hire_date": "2022-10-01"
+                },
+                {
+                    "@id": "emp-401",
+                    "name": "Emma Frost",
+                    "role": "Data Science Lead",
+                    "department": "team-ai-1122",
+                    "reports_to": "emp-111",
+                    "hire_date": "2022-04-15"
+                },
+                {
+                    "@id": "emp-402",
+                    "name": "Peter Parker",
+                    "role": "Machine Learning Engineer",
+                    "department": "team-ai-1122",
+                    "reports_to": "emp-401",
+                    "hire_date": "2022-06-01"
+                },
+                {
+                    "@id": "emp-403",
+                    "name": "Tony Stark",
+                    "role": "Senior AI Architect",
+                    "department": "team-ai-1122",
+                    "reports_to": "emp-111",
+                    "hire_date": "2022-07-15"
+                },
+                {
+                    "@id": "emp-404",
+                    "name": "Natasha Romanoff",
+                    "role": "Security Operations Lead",
+                    "department": "team-security-7890",
+                    "reports_to": "emp-321",
+                    "hire_date": "2022-08-01"
+                },
+                {
+                    "@id": "emp-405",
+                    "name": "Steve Rogers",
+                    "role": "Compliance Officer",
+                    "department": "team-compliance",
+                    "reports_to": null,
+                    "hire_date": "2022-09-15"
+                },
+                {
+                    "@id": "emp-406",
+                    "name": "Wanda Maximoff",
+                    "role": "UX Research Lead",
+                    "department": "team-mobile-dev",
+                    "reports_to": "emp-951",
+                    "hire_date": "2022-10-01"
+                },
+                {
+                    "@id": "emp-407",
+                    "name": "T'Challa",
+                    "role": "Innovation Strategist",
+                    "department": "team-emerging-tech",
+                    "reports_to": "emp-emerging-1",
+                    "hire_date": "2022-11-15"
+                },
+                {
+                    "@id": "emp-408",
+                    "name": "Carol Danvers",
+                    "role": "Project Manager",
+                    "department": "team-cloud-1a2b",
+                    "reports_to": "emp-456",
+                    "hire_date": "2022-12-01"
+                },
+                {
+                    "@id": "emp-409",
+                    "name": "Stephen Strange",
+                    "role": "Systems Architect",
+                    "department": "team-cloud-1a2b",
+                    "reports_to": "emp-456",
+                    "hire_date": "2023-01-15"
+                },
+                {
+                    "@id": "emp-410",
+                    "name": "Scott Lang",
+                    "role": "QA Engineer",
+                    "department": "team-quality-1234",
+                    "reports_to": "emp-777",
+                    "hire_date": "2023-02-01"
+                },
+                {
+                    "@id": "emp-411",
+                    "name": "Hope van Dyne",
+                    "role": "Technical Lead",
+                    "department": "team-network-4567",
+                    "reports_to": "emp-135",
+                    "hire_date": "2023-03-15"
+                },
+                {
+                    "@id": "emp-412",
+                    "name": "Sam Wilson",
+                    "role": "Cloud Security Specialist",
+                    "department": "team-security-7890",
+                    "reports_to": "emp-404",
+                    "hire_date": "2023-04-01"
+                },
+                {
+                    "@id": "emp-413",
+                    "name": "Bucky Barnes",
+                    "role": "Infrastructure Engineer",
+                    "department": "team-cloud-1a2b",
+                    "reports_to": "emp-456",
+                    "hire_date": "2023-05-15"
+                },
+                {
+                    "@id": "emp-414",
+                    "name": "Shuri",
+                    "role": "Innovation Engineer",
+                    "department": "team-emerging-tech",
+                    "reports_to": "emp-emerging-1",
+                    "hire_date": "2023-06-01"
+                },
+                {
+                    "@id": "emp-415",
+                    "name": "Vision",
+                    "role": "Data Architect",
+                    "department": "team-ai-1122",
+                    "reports_to": "emp-401",
+                    "hire_date": "2023-07-15"
+                },
+                {
+                    "@id": "emp-416",
+                    "name": "James Rhodes",
+                    "role": "Security Engineer",
+                    "department": "team-security-7890",
+                    "reports_to": "emp-404",
+                    "hire_date": "2023-08-01"
+                },
+                {
+                    "@id": "emp-417",
+                    "name": "Janet van Dyne",
+                    "role": "UX Designer",
+                    "department": "team-mobile-dev",
+                    "reports_to": "emp-406",
+                    "hire_date": "2023-09-15"
+                },
+                {
+                    "@id": "emp-418",
+                    "name": "Wong",
+                    "role": "Database Administrator",
+                    "department": "team-cloud-1a2b",
+                    "reports_to": "emp-456",
+                    "hire_date": "2023-10-01"
+                },
+                {
+                    "@id": "emp-419",
+                    "name": "Okoye",
+                    "role": "Project Coordinator",
+                    "department": "team-emerging-tech",
+                    "reports_to": "emp-emerging-1",
+                    "hire_date": "2023-11-15"
+                },
+                {
+                    "@id": "emp-420",
+                    "name": "Matt Murdock",
+                    "role": "Legal Technology Specialist",
+                    "department": "team-compliance",
+                    "reports_to": "emp-405",
+                    "hire_date": "2023-12-01"
+                },
+                {
+                    "@id": "emp-421",
+                    "name": "Jessica Jones",
+                    "role": "Security Analyst",
+                    "department": "team-security-7890",
+                    "reports_to": "emp-404",
+                    "hire_date": "2024-01-15"
+                },
+                {
+                    "@id": "emp-422",
+                    "name": "Luke Cage",
+                    "role": "Infrastructure Security",
+                    "department": "team-security-7890",
+                    "reports_to": "emp-404",
+                    "hire_date": "2024-01-02"
+                },
+                {
+                    "@id": "emp-423",
+                    "name": "Danny Rand",
+                    "role": "Innovation Analyst",
+                    "department": "team-emerging-tech",
+                    "reports_to": "emp-emerging-1",
+                    "hire_date": "2024-01-05"
+                },
+                {
+                    "@id": "emp-424",
+                    "name": "Kate Bishop",
+                    "role": "Junior Developer",
+                    "department": "team-mobile-dev",
+                    "reports_to": "emp-406",
+                    "hire_date": "2024-01-10"
+                },
+                {
+                    "@id": "emp-425",
+                    "name": "Jennifer Walters",
+                    "role": "Legal Systems Analyst",
+                    "department": "team-compliance",
+                    "reports_to": "emp-405",
+                    "hire_date": "2024-01-15"
+                },
+                {
+                    "@id": "emp-501",
+                    "name": "Reed Richards",
+                    "role": "Lead Data Scientist",
+                    "department": "team-data-science",
+                    "reports_to": null,
+                    "hire_date": "2023-01-15"
+                },
+                {
+                    "@id": "emp-502",
+                    "name": "Susan Storm",
+                    "role": "Senior Data Scientist",
+                    "department": "team-data-science",
+                    "reports_to": "emp-501",
+                    "hire_date": "2023-02-01"
+                },
+                {
+                    "@id": "emp-503",
+                    "name": "Ben Grimm",
+                    "role": "Data Analyst",
+                    "department": "team-data-science",
+                    "reports_to": "emp-501",
+                    "hire_date": "2023-03-15"
+                },
+                {
+                    "@id": "emp-504",
+                    "name": "Johnny Storm",
+                    "role": "ML Engineer",
+                    "department": "team-data-science",
+                    "reports_to": "emp-501",
+                    "hire_date": "2023-04-01"
+                },
+                {
+                    "@id": "emp-505",
+                    "name": "Victor von Doom",
+                    "role": "Platform Architect",
+                    "department": "team-data-science",
+                    "reports_to": "emp-501",
+                    "hire_date": "2023-05-15"
+                },
+                {
+                    "@id": "emp-506",
+                    "name": "Namor McKenzie",
+                    "role": "Data Engineer",
+                    "department": "team-data-science",
+                    "reports_to": "emp-501",
+                    "hire_date": "2023-06-01"
+                },
+                {
+                    "@id": "emp-507",
+                    "name": "Charles Xavier",
+                    "role": "Data Engineering Lead",
+                    "department": "team-data-engineering",
+                    "reports_to": null,
+                    "hire_date": "2023-07-15"
+                },
+                {
+                    "@id": "emp-508",
+                    "name": "Erik Lehnsherr",
+                    "role": "Senior Data Engineer",
+                    "department": "team-data-engineering",
+                    "reports_to": "emp-507",
+                    "hire_date": "2023-08-01"
+                },
+                {
+                    "@id": "emp-509",
+                    "name": "Jean Grey",
+                    "role": "Data Pipeline Engineer",
+                    "department": "team-data-engineering",
+                    "reports_to": "emp-507",
+                    "hire_date": "2023-09-15"
+                },
+                {
+                    "@id": "emp-510",
+                    "name": "Scott Summers",
+                    "role": "Digital Strategy Lead",
+                    "department": "team-digital-strategy",
+                    "reports_to": null,
+                    "hire_date": "2023-10-01"
+                },
+                {
+                    "@id": "emp-511",
+                    "name": "Ororo Munroe",
+                    "role": "Digital Transformation Specialist",
+                    "department": "team-digital-strategy",
+                    "reports_to": "emp-510",
+                    "hire_date": "2023-11-15"
+                },
+                {
+                    "@id": "emp-512",
+                    "name": "Henry McCoy",
+                    "role": "Innovation Architect",
+                    "department": "team-digital-strategy",
+                    "reports_to": "emp-510",
+                    "hire_date": "2023-12-01"
+                },
+                {
+                    "@id": "emp-601",
+                    "name": "Barbara Gordon",
+                    "role": "Threat Intelligence Lead",
+                    "department": "team-threat-intel",
+                    "reports_to": null,
+                    "hire_date": "2023-06-15"
+                },
+                {
+                    "@id": "emp-602",
+                    "name": "Dick Grayson",
+                    "role": "Senior Security Analyst",
+                    "department": "team-threat-intel",
+                    "reports_to": "emp-601",
+                    "hire_date": "2023-07-01"
+                },
+                {
+                    "@id": "emp-603",
+                    "name": "Jason Todd",
+                    "role": "Threat Researcher",
+                    "department": "team-threat-intel",
+                    "reports_to": "emp-601",
+                    "hire_date": "2023-08-15"
+                },
+                {
+                    "@id": "emp-604",
+                    "name": "Tim Drake",
+                    "role": "Incident Response Lead",
+                    "department": "team-incident-response",
+                    "reports_to": null,
+                    "hire_date": "2023-09-01"
+                },
+                {
+                    "@id": "emp-605",
+                    "name": "Damian Wayne",
+                    "role": "Security Operations Specialist",
+                    "department": "team-incident-response",
+                    "reports_to": "emp-604",
+                    "hire_date": "2023-10-15"
+                },
+                {
+                    "@id": "emp-606",
+                    "name": "Stephanie Brown",
+                    "role": "Incident Response Engineer",
+                    "department": "team-incident-response",
+                    "reports_to": "emp-604",
+                    "hire_date": "2023-11-01"
+                },
+                {
+                    "@id": "emp-607",
+                    "name": "Diana Troy",
+                    "role": "Product Strategy Lead",
+                    "department": "team-product-strategy",
+                    "reports_to": null,
+                    "hire_date": "2023-12-15"
+                },
+                {
+                    "@id": "emp-608",
+                    "name": "Kara Zor-El",
+                    "role": "Senior Product Manager",
+                    "department": "team-product-strategy",
+                    "reports_to": "emp-607",
+                    "hire_date": "2024-01-01"
+                },
+                {
+                    "@id": "emp-609",
+                    "name": "Kal-El Kent",
+                    "role": "Product Innovation Manager",
+                    "department": "team-product-strategy",
+                    "reports_to": "emp-607",
+                    "hire_date": "2024-01-15"
+                },
+                {
+                    "@id": "emp-610",
+                    "name": "Hal Jordan",
+                    "role": "CX Design Lead",
+                    "department": "team-cx-design",
+                    "reports_to": null,
+                    "hire_date": "2024-01-02"
+                },
+                {
+                    "@id": "emp-611",
+                    "name": "John Stewart",
+                    "role": "Senior UX Designer",
+                    "department": "team-cx-design",
+                    "reports_to": "emp-610",
+                    "hire_date": "2024-01-10"
+                },
+                {
+                    "@id": "emp-612",
+                    "name": "Kyle Rayner",
+                    "role": "Customer Experience Analyst",
+                    "department": "team-cx-design",
+                    "reports_to": "emp-610",
+                    "hire_date": "2024-01-20"
+                },
+                {
+                    "@id": "emp-613",
+                    "name": "Yao Ming",
+                    "role": "Asia Support Lead",
+                    "department": "team-asia-support",
+                    "reports_to": null,
+                    "hire_date": "2023-12-01"
+                },
+                {
+                    "@id": "emp-614",
+                    "name": "Liu Bei",
+                    "role": "Senior Support Engineer",
+                    "department": "team-asia-support",
+                    "reports_to": "emp-613",
+                    "hire_date": "2023-12-15"
+                },
+                {
+                    "@id": "emp-615",
+                    "name": "Sun Quan",
+                    "role": "Support Specialist",
+                    "department": "team-asia-support",
+                    "reports_to": "emp-613",
+                    "hire_date": "2024-01-05"
+                },
+                {
+                    "@id": "emp-616",
+                    "name": "Bruce Banner",
+                    "role": "Senior Cloud Engineer",
+                    "department": "team-cloud-1a2b",
+                    "reports_to": "emp-456",
+                    "hire_date": "2023-02-15"
+                },
+                {
+                    "@id": "emp-617",
+                    "name": "Natasha Romanova",
+                    "role": "Security Operations Specialist",
+                    "department": "team-security-7890",
+                    "reports_to": "emp-404",
+                    "hire_date": "2023-03-01"
+                },
+                {
+                    "@id": "emp-618",
+                    "name": "Peter Quill",
+                    "role": "Mobile Developer",
+                    "department": "team-mobile-dev",
+                    "reports_to": "emp-951",
+                    "hire_date": "2023-04-15"
+                },
+                {
+                    "@id": "emp-619",
+                    "name": "Gamora Zen",
+                    "role": "QA Engineer",
+                    "department": "team-quality-1234",
+                    "reports_to": "emp-777",
+                    "hire_date": "2023-05-01"
+                },
+                {
+                    "@id": "emp-620",
+                    "name": "Drax the Destroyer",
+                    "role": "Network Engineer",
+                    "department": "team-network-4567",
+                    "reports_to": "emp-135",
+                    "hire_date": "2023-06-15"
+                },
+                {
+                    "@id": "emp-621",
+                    "name": "Rocket Raccoon",
+                    "role": "DevOps Engineer",
+                    "department": "team-cloud-1a2b",
+                    "reports_to": "emp-456",
+                    "hire_date": "2023-07-01"
+                },
+                {
+                    "@id": "emp-622",
+                    "name": "Groot",
+                    "role": "Cloud Infrastructure Specialist",
+                    "department": "team-cloud-1a2b",
+                    "reports_to": "emp-456",
+                    "hire_date": "2023-08-15"
+                },
+                {
+                    "@id": "emp-623",
+                    "name": "Mantis",
+                    "role": "UX Designer",
+                    "department": "team-mobile-dev",
+                    "reports_to": "emp-406",
+                    "hire_date": "2023-09-01"
+                },
+                {
+                    "@id": "emp-624",
+                    "name": "Nebula",
+                    "role": "Security Analyst",
+                    "department": "team-security-7890",
+                    "reports_to": "emp-404",
+                    "hire_date": "2023-10-15"
+                },
+                {
+                    "@id": "emp-625",
+                    "name": "Yondu Udonta",
+                    "role": "Senior Network Architect",
+                    "department": "team-network-4567",
+                    "reports_to": "emp-135",
+                    "hire_date": "2023-11-01"
+                }
+            ]
+        },
+        {
+            "@id": 456,
+            "name": "Igor",
+            "surname": "Nikolic",
+            "attributes": {
+                "name": "Igor",
+                "surname": "Nikolic"
             }
-          ]
+        },
+        {
+            "@id": 898,
+            "name": "Pavle",
+            "surname": "Papic",
+            "attributes": {
+                "name": "Pavle",
+                "surname": "Papic"
+            }
+        },
+        {
+            "@id": 845,
+            "name": "Filip",
+            "surname": "Filipovic"
+        },
+        {
+            "@id": 673,
+            "name": "Filip",
+            "surname": "Jovic"
+        },
+        {
+            "@id": 901,
+            "name": "Ivan",
+            "surname": "Protic"
         }
-      ]
-    },
-   {
- "@id": "emp-directory",
- "name": "Employee Directory",
- "children": [
-   {
-     "@id": "emp-123",
-     "name": "Sarah Chen",
-     "role": "Senior Cloud Architect",
-     "department": "team-cloud-1a2b",
-     "reports_to": "emp-456",
-     "hire_date": "2020-03-15"
-   },
-   {
-     "@id": "emp-456",
-     "name": "Michael Rodriguez",
-     "role": "Cloud Team Lead",
-     "department": "team-cloud-1a2b",
-     "reports_to": null,
-     "hire_date": "2019-06-01"
-   },
-   {
-     "@id": "emp-789",
-     "name": "David Kim",
-     "role": "Cloud DevOps Engineer",
-     "department": "team-cloud-1a2b",
-     "reports_to": "emp-456",
-     "hire_date": "2021-02-15"
-   },
-   {
-     "@id": "emp-234",
-     "name": "Emily Johnson",
-     "role": "Container Specialist",
-     "department": "team-cloud-1a2b",
-     "reports_to": "emp-456",
-     "hire_date": "2021-08-01"
-   },
-   {
-     "@id": "emp-567",
-     "name": "Alex Thompson",
-     "role": "Systems Engineer",
-     "department": "team-cloud-1a2b",
-     "reports_to": "emp-456",
-     "hire_date": "2022-01-15"
-   },
-   {
-     "@id": "emp-890",
-     "name": "Lisa Wang",
-     "role": "DevOps Engineer",
-     "department": "team-cloud-1a2b",
-     "reports_to": "emp-456",
-     "hire_date": "2022-03-01"
-   },
-   {
-     "@id": "emp-147",
-     "name": "James Wilson",
-     "role": "Monitoring Specialist",
-     "department": "team-cloud-1a2b",
-     "reports_to": "emp-456",
-     "hire_date": "2023-06-15"
-   },
-   {
-     "@id": "emp-258",
-     "name": "Rachel Martinez",
-     "role": "SRE Engineer",
-     "department": "team-cloud-1a2b",
-     "reports_to": "emp-456",
-     "hire_date": "2023-07-01"
-   },
-   {
-     "@id": "emp-369",
-     "name": "Tom Anderson",
-     "role": "Cloud Engineer",
-     "department": "team-cloud-1a2b",
-     "reports_to": "emp-456",
-     "hire_date": "2023-08-15"
-   },
-   {
-     "@id": "emp-321",
-     "name": "Jennifer Lee",
-     "role": "Security Lead",
-     "department": "team-security-7890",
-     "reports_to": null,
-     "hire_date": "2020-01-15"
-   },
-   {
-     "@id": "emp-654",
-     "name": "Robert Taylor",
-     "role": "Security Engineer",
-     "department": "team-security-7890",
-     "reports_to": "emp-321",
-     "hire_date": "2021-04-01"
-   },
-   {
-     "@id": "emp-987",
-     "name": "Maria Garcia",
-     "role": "Security Analyst",
-     "department": "team-security-7890",
-     "reports_to": "emp-321",
-     "hire_date": "2022-02-15"
-   },
-   {
-     "@id": "emp-741",
-     "name": "Daniel Brown",
-     "role": "Encryption Specialist",
-     "department": "team-security-7890",
-     "reports_to": "emp-321",
-     "hire_date": "2023-01-15"
-   },
-   {
-     "@id": "emp-852",
-     "name": "Sophie Martin",
-     "role": "Security Engineer",
-     "department": "team-security-7890",
-     "reports_to": "emp-321",
-     "hire_date": "2023-03-01"
-   },
-   {
-     "@id": "emp-963",
-     "name": "Chris Parker",
-     "role": "Security Developer",
-     "department": "team-security-7890",
-     "reports_to": "emp-321",
-     "hire_date": "2023-04-15"
-   },
-   {
-     "@id": "emp-135",
-     "name": "Michelle White",
-     "role": "Network Team Lead",
-     "department": "team-network-4567",
-     "reports_to": null,
-     "hire_date": "2020-05-01"
-   },
-   {
-     "@id": "emp-246",
-     "name": "Kevin Zhang",
-     "role": "Network Engineer",
-     "department": "team-network-4567",
-     "reports_to": "emp-135",
-     "hire_date": "2021-06-15"
-   },
-   {
-     "@id": "emp-357",
-     "name": "Anna Kowalski",
-     "role": "Network Security Specialist",
-     "department": "team-network-4567",
-     "reports_to": "emp-135",
-     "hire_date": "2022-04-01"
-   },
-   {
-     "@id": "emp-159",
-     "name": "Ryan Murphy",
-     "role": "SDN Engineer",
-     "department": "team-network-4567",
-     "reports_to": "emp-135",
-     "hire_date": "2022-08-15"
-   },
-   {
-     "@id": "emp-267",
-     "name": "Laura Scott",
-     "role": "Network Architect",
-     "department": "team-network-4567",
-     "reports_to": "emp-135",
-     "hire_date": "2022-09-01"
-   },
-   {
-     "@id": "emp-348",
-     "name": "Mark Davis",
-     "role": "Network Engineer",
-     "department": "team-network-4567",
-     "reports_to": "emp-135",
-     "hire_date": "2022-10-15"
-   },
-   {
-     "@id": "emp-951",
-     "name": "Jessica Brown",
-     "role": "Mobile Dev Lead",
-     "department": "team-mobile-dev",
-     "reports_to": null,
-     "hire_date": "2021-01-15"
-   },
-   {
-     "@id": "emp-842",
-     "name": "Andrew Wilson",
-     "role": "Senior Mobile Developer",
-     "department": "team-mobile-dev",
-     "reports_to": "emp-951",
-     "hire_date": "2021-03-01"
-   },
-   {
-     "@id": "emp-733",
-     "name": "Nina Patel",
-     "role": "Mobile Developer",
-     "department": "team-mobile-dev",
-     "reports_to": "emp-951",
-     "hire_date": "2021-04-15"
-   },
-   {
-     "@id": "emp-444",
-     "name": "John Smith",
-     "role": "Support Lead",
-     "department": "team-support-8899",
-     "reports_to": null,
-     "hire_date": "2020-07-15"
-   },
-   {
-     "@id": "emp-555",
-     "name": "Amanda Jones",
-     "role": "Senior Support Engineer",
-     "department": "team-support-8899",
-     "reports_to": "emp-444",
-     "hire_date": "2021-08-01"
-   },
-   {
-     "@id": "emp-666",
-     "name": "Carlos Rivera",
-     "role": "Support Engineer",
-     "department": "team-support-8899",
-     "reports_to": "emp-444",
-     "hire_date": "2022-01-15"
-   },
-   {
-     "@id": "emp-777",
-     "name": "Patricia Chen",
-     "role": "QA Lead",
-     "department": "team-quality-1234",
-     "reports_to": null,
-     "hire_date": "2020-09-01"
-   },
-   {
-     "@id": "emp-888",
-     "name": "Steven Lee",
-     "role": "Senior QA Engineer",
-     "department": "team-quality-1234",
-     "reports_to": "emp-777",
-     "hire_date": "2021-10-15"
-   },
-   {
-     "@id": "emp-999",
-     "name": "Rebecca Taylor",
-     "role": "QA Engineer",
-     "department": "team-quality-1234",
-     "reports_to": "emp-777",
-     "hire_date": "2022-03-01"
-   },
-   {
-     "@id": "emp-111",
-     "name": "Alan Turing",
-     "role": "AI Research Lead",
-     "department": "team-ai-1122",
-     "reports_to": null, 
-     "hire_date": "2020-01-01"
-   },
-   {
-     "@id": "emp-222",
-     "name": "Grace Hopper",
-     "role": "Senior AI Researcher",
-     "department": "team-ai-1122",
-     "reports_to": "emp-111",
-     "hire_date": "2020-03-15"
-   },
-   {
-     "@id": "emp-333",
-     "name": "Ada Lovelace",
-     "role": "AI Engineer",
-     "department": "team-ai-1122",
-     "reports_to": "emp-111",
-     "hire_date": "2020-06-01"
-   },
-   {
-    "@id": "emp-emerging-1",
-    "name": "Diana Prince",
-    "role": "AR Team Lead",
-    "department": "team-emerging-tech",
-    "reports_to": null,
-    "hire_date": "2022-05-15"
-  },
-  {
-    "@id": "emp-emerging-2",
-    "name": "Bruce Wayne",
-    "role": "Senior AR Developer",
-    "department": "team-emerging-tech",
-    "reports_to": "emp-emerging-1",
-    "hire_date": "2022-07-01"
-  },
-  {
-    "@id": "emp-emerging-3",
-    "name": "Clark Kent",
-    "role": "AR Engineer",
-    "department": "team-emerging-tech",
-    "reports_to": "emp-emerging-1",
-    "hire_date": "2022-09-15"
-  },
-  {
-    "@id": "emp-green-1",
-    "name": "Barry Allen",
-    "role": "Sustainability Lead",
-    "department": "team-green-initiatives",
-    "reports_to": null,
-    "hire_date": "2022-06-01"
-  },
-  {
-    "@id": "emp-green-2",
-    "name": "Hal Jordan",
-    "role": "Environmental Engineer",
-    "department": "team-green-initiatives",
-    "reports_to": "emp-green-1",
-    "hire_date": "2022-08-15"
-  },
-  {
-    "@id": "emp-green-3",
-    "name": "Arthur Curry",
-    "role": "Sustainability Analyst",
-    "department": "team-green-initiatives",
-    "reports_to": "emp-green-1",
-    "hire_date": "2022-10-01"
-  },
-  {
-    "@id": "emp-401",
-    "name": "Emma Frost",
-    "role": "Data Science Lead",
-    "department": "team-ai-1122",
-    "reports_to": "emp-111",
-    "hire_date": "2022-04-15"
-  },
-  {
-    "@id": "emp-402",
-    "name": "Peter Parker",
-    "role": "Machine Learning Engineer",
-    "department": "team-ai-1122",
-    "reports_to": "emp-401",
-    "hire_date": "2022-06-01"
-  },
-  {
-    "@id": "emp-403",
-    "name": "Tony Stark",
-    "role": "Senior AI Architect",
-    "department": "team-ai-1122",
-    "reports_to": "emp-111",
-    "hire_date": "2022-07-15"
-  },
-  {
-    "@id": "emp-404",
-    "name": "Natasha Romanoff",
-    "role": "Security Operations Lead",
-    "department": "team-security-7890",
-    "reports_to": "emp-321",
-    "hire_date": "2022-08-01"
-  },
-  {
-    "@id": "emp-405",
-    "name": "Steve Rogers",
-    "role": "Compliance Officer",
-    "department": "team-compliance",
-    "reports_to": null,
-    "hire_date": "2022-09-15"
-  },
-  {
-    "@id": "emp-406",
-    "name": "Wanda Maximoff",
-    "role": "UX Research Lead",
-    "department": "team-mobile-dev",
-    "reports_to": "emp-951",
-    "hire_date": "2022-10-01"
-  },
-  {
-    "@id": "emp-407",
-    "name": "T'Challa",
-    "role": "Innovation Strategist",
-    "department": "team-emerging-tech",
-    "reports_to": "emp-emerging-1",
-    "hire_date": "2022-11-15"
-  },
-  {
-    "@id": "emp-408",
-    "name": "Carol Danvers",
-    "role": "Project Manager",
-    "department": "team-cloud-1a2b",
-    "reports_to": "emp-456",
-    "hire_date": "2022-12-01"
-  },
-  {
-    "@id": "emp-409",
-    "name": "Stephen Strange",
-    "role": "Systems Architect",
-    "department": "team-cloud-1a2b",
-    "reports_to": "emp-456",
-    "hire_date": "2023-01-15"
-  },
-  {
-    "@id": "emp-410",
-    "name": "Scott Lang",
-    "role": "QA Engineer",
-    "department": "team-quality-1234",
-    "reports_to": "emp-777",
-    "hire_date": "2023-02-01"
-  },
-  {
-    "@id": "emp-411",
-    "name": "Hope van Dyne",
-    "role": "Technical Lead",
-    "department": "team-network-4567",
-    "reports_to": "emp-135",
-    "hire_date": "2023-03-15"
-  },
-  {
-    "@id": "emp-412",
-    "name": "Sam Wilson",
-    "role": "Cloud Security Specialist",
-    "department": "team-security-7890",
-    "reports_to": "emp-404",
-    "hire_date": "2023-04-01"
-  },
-  {
-    "@id": "emp-413",
-    "name": "Bucky Barnes",
-    "role": "Infrastructure Engineer",
-    "department": "team-cloud-1a2b",
-    "reports_to": "emp-456",
-    "hire_date": "2023-05-15"
-  },
-  {
-    "@id": "emp-414",
-    "name": "Shuri",
-    "role": "Innovation Engineer",
-    "department": "team-emerging-tech",
-    "reports_to": "emp-emerging-1",
-    "hire_date": "2023-06-01"
-  },
-  {
-    "@id": "emp-415",
-    "name": "Vision",
-    "role": "Data Architect",
-    "department": "team-ai-1122",
-    "reports_to": "emp-401",
-    "hire_date": "2023-07-15"
-  },
-  {
-    "@id": "emp-416",
-    "name": "James Rhodes",
-    "role": "Security Engineer",
-    "department": "team-security-7890",
-    "reports_to": "emp-404",
-    "hire_date": "2023-08-01"
-  },
-  {
-    "@id": "emp-417",
-    "name": "Janet van Dyne",
-    "role": "UX Designer",
-    "department": "team-mobile-dev",
-    "reports_to": "emp-406",
-    "hire_date": "2023-09-15"
-  },
-  {
-    "@id": "emp-418",
-    "name": "Wong",
-    "role": "Database Administrator",
-    "department": "team-cloud-1a2b",
-    "reports_to": "emp-456",
-    "hire_date": "2023-10-01"
-  },
-  {
-    "@id": "emp-419",
-    "name": "Okoye",
-    "role": "Project Coordinator",
-    "department": "team-emerging-tech",
-    "reports_to": "emp-emerging-1",
-    "hire_date": "2023-11-15"
-  },
-  {
-    "@id": "emp-420",
-    "name": "Matt Murdock",
-    "role": "Legal Technology Specialist",
-    "department": "team-compliance",
-    "reports_to": "emp-405",
-    "hire_date": "2023-12-01"
-  },
-  {
-    "@id": "emp-421",
-    "name": "Jessica Jones",
-    "role": "Security Analyst",
-    "department": "team-security-7890",
-    "reports_to": "emp-404",
-    "hire_date": "2024-01-15"
-  },
-  {
-    "@id": "emp-422",
-    "name": "Luke Cage",
-    "role": "Infrastructure Security",
-    "department": "team-security-7890",
-    "reports_to": "emp-404",
-    "hire_date": "2024-01-02"
-  },
-  {
-    "@id": "emp-423",
-    "name": "Danny Rand",
-    "role": "Innovation Analyst",
-    "department": "team-emerging-tech",
-    "reports_to": "emp-emerging-1",
-    "hire_date": "2024-01-05"
-  },
-  {
-    "@id": "emp-424",
-    "name": "Kate Bishop",
-    "role": "Junior Developer",
-    "department": "team-mobile-dev",
-    "reports_to": "emp-406",
-    "hire_date": "2024-01-10"
-  },
-  {
-    "@id": "emp-425",
-    "name": "Jennifer Walters",
-    "role": "Legal Systems Analyst",
-    "department": "team-compliance",
-    "reports_to": "emp-405",
-    "hire_date": "2024-01-15"
-  },
-  {
-    "@id": "emp-501",
-    "name": "Reed Richards",
-    "role": "Lead Data Scientist",
-    "department": "team-data-science",
-    "reports_to": null,
-    "hire_date": "2023-01-15"
-  },
-  {
-    "@id": "emp-502",
-    "name": "Susan Storm",
-    "role": "Senior Data Scientist",
-    "department": "team-data-science",
-    "reports_to": "emp-501",
-    "hire_date": "2023-02-01"
-  },
-  {
-    "@id": "emp-503",
-    "name": "Ben Grimm",
-    "role": "Data Analyst",
-    "department": "team-data-science",
-    "reports_to": "emp-501",
-    "hire_date": "2023-03-15"
-  },
-  {
-    "@id": "emp-504",
-    "name": "Johnny Storm",
-    "role": "ML Engineer",
-    "department": "team-data-science",
-    "reports_to": "emp-501",
-    "hire_date": "2023-04-01"
-  },
-  {
-    "@id": "emp-505",
-    "name": "Victor von Doom",
-    "role": "Platform Architect",
-    "department": "team-data-science",
-    "reports_to": "emp-501",
-    "hire_date": "2023-05-15"
-  },
-  {
-    "@id": "emp-506",
-    "name": "Namor McKenzie",
-    "role": "Data Engineer",
-    "department": "team-data-science",
-    "reports_to": "emp-501",
-    "hire_date": "2023-06-01"
-  },
-  {
-    "@id": "emp-507",
-    "name": "Charles Xavier",
-    "role": "Data Engineering Lead",
-    "department": "team-data-engineering",
-    "reports_to": null,
-    "hire_date": "2023-07-15"
-  },
-  {
-    "@id": "emp-508",
-    "name": "Erik Lehnsherr",
-    "role": "Senior Data Engineer",
-    "department": "team-data-engineering",
-    "reports_to": "emp-507",
-    "hire_date": "2023-08-01"
-  },
-  {
-    "@id": "emp-509",
-    "name": "Jean Grey",
-    "role": "Data Pipeline Engineer",
-    "department": "team-data-engineering",
-    "reports_to": "emp-507",
-    "hire_date": "2023-09-15"
-  },
-  {
-    "@id": "emp-510",
-    "name": "Scott Summers",
-    "role": "Digital Strategy Lead",
-    "department": "team-digital-strategy",
-    "reports_to": null,
-    "hire_date": "2023-10-01"
-  },
-  {
-    "@id": "emp-511",
-    "name": "Ororo Munroe",
-    "role": "Digital Transformation Specialist",
-    "department": "team-digital-strategy",
-    "reports_to": "emp-510",
-    "hire_date": "2023-11-15"
-  },
-  {
-    "@id": "emp-512",
-    "name": "Henry McCoy",
-    "role": "Innovation Architect",
-    "department": "team-digital-strategy",
-    "reports_to": "emp-510",
-    "hire_date": "2023-12-01"
-  },
-  {
-    "@id": "emp-601",
-    "name": "Barbara Gordon",
-    "role": "Threat Intelligence Lead",
-    "department": "team-threat-intel",
-    "reports_to": null,
-    "hire_date": "2023-06-15"
-  },
-  {
-    "@id": "emp-602",
-    "name": "Dick Grayson",
-    "role": "Senior Security Analyst",
-    "department": "team-threat-intel",
-    "reports_to": "emp-601",
-    "hire_date": "2023-07-01"
-  },
-  {
-    "@id": "emp-603",
-    "name": "Jason Todd",
-    "role": "Threat Researcher",
-    "department": "team-threat-intel",
-    "reports_to": "emp-601",
-    "hire_date": "2023-08-15"
-  },
-  {
-    "@id": "emp-604",
-    "name": "Tim Drake",
-    "role": "Incident Response Lead",
-    "department": "team-incident-response",
-    "reports_to": null,
-    "hire_date": "2023-09-01"
-  },
-  {
-    "@id": "emp-605",
-    "name": "Damian Wayne",
-    "role": "Security Operations Specialist",
-    "department": "team-incident-response",
-    "reports_to": "emp-604",
-    "hire_date": "2023-10-15"
-  },
-  {
-    "@id": "emp-606",
-    "name": "Stephanie Brown",
-    "role": "Incident Response Engineer",
-    "department": "team-incident-response",
-    "reports_to": "emp-604",
-    "hire_date": "2023-11-01"
-  },
-  {
-    "@id": "emp-607",
-    "name": "Diana Troy",
-    "role": "Product Strategy Lead",
-    "department": "team-product-strategy",
-    "reports_to": null,
-    "hire_date": "2023-12-15"
-  },
-  {
-    "@id": "emp-608",
-    "name": "Kara Zor-El",
-    "role": "Senior Product Manager",
-    "department": "team-product-strategy",
-    "reports_to": "emp-607",
-    "hire_date": "2024-01-01"
-  },
-  {
-    "@id": "emp-609",
-    "name": "Kal-El Kent",
-    "role": "Product Innovation Manager",
-    "department": "team-product-strategy",
-    "reports_to": "emp-607",
-    "hire_date": "2024-01-15"
-  },
-  {
-    "@id": "emp-610",
-    "name": "Hal Jordan",
-    "role": "CX Design Lead",
-    "department": "team-cx-design",
-    "reports_to": null,
-    "hire_date": "2024-01-02"
-  },
-  {
-    "@id": "emp-611",
-    "name": "John Stewart",
-    "role": "Senior UX Designer",
-    "department": "team-cx-design",
-    "reports_to": "emp-610",
-    "hire_date": "2024-01-10"
-  },
-  {
-    "@id": "emp-612",
-    "name": "Kyle Rayner",
-    "role": "Customer Experience Analyst",
-    "department": "team-cx-design",
-    "reports_to": "emp-610",
-    "hire_date": "2024-01-20"
-  },
-  {
-    "@id": "emp-613",
-    "name": "Yao Ming",
-    "role": "Asia Support Lead",
-    "department": "team-asia-support",
-    "reports_to": null,
-    "hire_date": "2023-12-01"
-  },
-  {
-    "@id": "emp-614",
-    "name": "Liu Bei",
-    "role": "Senior Support Engineer",
-    "department": "team-asia-support",
-    "reports_to": "emp-613",
-    "hire_date": "2023-12-15"
-  },
-  {
-    "@id": "emp-615",
-    "name": "Sun Quan",
-    "role": "Support Specialist",
-    "department": "team-asia-support",
-    "reports_to": "emp-613",
-    "hire_date": "2024-01-05"
-  },
-  {
-    "@id": "emp-616",
-    "name": "Bruce Banner",
-    "role": "Senior Cloud Engineer",
-    "department": "team-cloud-1a2b",
-    "reports_to": "emp-456",
-    "hire_date": "2023-02-15"
-  },
-  {
-    "@id": "emp-617",
-    "name": "Natasha Romanova",
-    "role": "Security Operations Specialist",
-    "department": "team-security-7890",
-    "reports_to": "emp-404",
-    "hire_date": "2023-03-01"
-  },
-  {
-    "@id": "emp-618",
-    "name": "Peter Quill",
-    "role": "Mobile Developer",
-    "department": "team-mobile-dev",
-    "reports_to": "emp-951",
-    "hire_date": "2023-04-15"
-  },
-  {
-    "@id": "emp-619",
-    "name": "Gamora Zen",
-    "role": "QA Engineer",
-    "department": "team-quality-1234",
-    "reports_to": "emp-777",
-    "hire_date": "2023-05-01"
-  },
-  {
-    "@id": "emp-620",
-    "name": "Drax the Destroyer",
-    "role": "Network Engineer",
-    "department": "team-network-4567",
-    "reports_to": "emp-135",
-    "hire_date": "2023-06-15"
-  },
-  {
-    "@id": "emp-621",
-    "name": "Rocket Raccoon",
-    "role": "DevOps Engineer",
-    "department": "team-cloud-1a2b",
-    "reports_to": "emp-456",
-    "hire_date": "2023-07-01"
-  },
-  {
-    "@id": "emp-622",
-    "name": "Groot",
-    "role": "Cloud Infrastructure Specialist",
-    "department": "team-cloud-1a2b",
-    "reports_to": "emp-456",
-    "hire_date": "2023-08-15"
-  },
-  {
-    "@id": "emp-623",
-    "name": "Mantis",
-    "role": "UX Designer",
-    "department": "team-mobile-dev",
-    "reports_to": "emp-406",
-    "hire_date": "2023-09-01"
-  },
-  {
-    "@id": "emp-624",
-    "name": "Nebula",
-    "role": "Security Analyst",
-    "department": "team-security-7890",
-    "reports_to": "emp-404",
-    "hire_date": "2023-10-15"
-  },
-  {
-    "@id": "emp-625",
-    "name": "Yondu Udonta",
-    "role": "Senior Network Architect",
-    "department": "team-network-4567",
-    "reports_to": "emp-135",
-    "hire_date": "2023-11-01"
-  }
- ]
-}
- ]
+    ]
 }
