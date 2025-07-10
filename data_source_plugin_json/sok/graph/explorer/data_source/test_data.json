@@ -1,0 +1,343 @@
+{
+    "@id": "corp-root-28dd",
+    "name": "Global Conglomerate",
+    "market_cap": 5000000000.75,
+    "founded_date": "1985-06-15",
+    "stock_price": 156.78,
+    "children": [
+      {
+        "@id": "div-tech-6616",
+        "name": "Technology Division",
+        "revenue": 800000000,
+        "growth_rate": 22.5,
+        "reports_to": "corp-root-28dd",
+        "linked_divisions": ["div-rd-940e", "div-sales-8811", "div-ai-1234"],
+        "children": [
+          {
+            "@id": "subdiv-software-4abc",
+            "name": "Software Solutions",
+            "budget": 250000000,
+            "headcount": 500,
+            "parent": "div-tech-6616",
+            "collaborates_with": ["subdiv-hardware-5def", "team-research-9876", "team-ai-1122"],
+            "children": [
+              {
+                "@id": "team-cloud-1a2b",
+                "name": "Cloud Infrastructure",
+                "project_count": 15,
+                "team_size": 125,
+                "parent": "subdiv-software-4abc",
+                "dependencies": ["team-security-7890", "team-network-4567", "team-ai-1122"],
+                "children": [
+                  {
+                    "@id": "proj-cloud-micro",
+                    "name": "Microservices Platform",
+                    "status": "active",
+                    "progress": 78.5,
+                    "start_date": "2023-08-15",
+                    "parent": "team-cloud-1a2b",
+                    "related_projects": ["proj-cloud-container", "proj-security-auth", "proj-ai-ml"],
+                    "team_members": ["emp-123", "emp-456", "emp-789"]
+                  },
+                  {
+                    "@id": "proj-cloud-container",
+                    "name": "Container Orchestration",
+                    "status": "in_progress",
+                    "progress": 62.3,
+                    "start_date": "2023-09-01",
+                    "parent": "team-cloud-1a2b",
+                    "related_projects": ["proj-cloud-micro", "proj-security-auth"],
+                    "team_members": ["emp-234", "emp-567", "emp-890"]
+                  }
+                ]
+              },
+              {
+                "@id": "team-security-7890",
+                "name": "Security Team",
+                "project_count": 5,
+                "team_size": 50,
+                "parent": "subdiv-software-4abc",
+                "dependencies": ["team-network-4567"],
+                "children": [
+                  {
+                    "@id": "proj-security-auth",
+                    "name": "Authentication System",
+                    "status": "active",
+                    "progress": 90.0,
+                    "start_date": "2023-07-01",
+                    "parent": "team-security-7890",
+                    "related_projects": ["proj-cloud-micro", "proj-cloud-container"],
+                    "team_members": ["emp-321", "emp-654", "emp-987"]
+                  }
+                ]
+              },
+              {
+                "@id": "team-network-4567",
+                "name": "Networking Team",
+                "project_count": 7,
+                "team_size": 60,
+                "parent": "subdiv-software-4abc",
+                "dependencies": [],
+                "children": [
+                  {
+                    "@id": "proj-network-vpn",
+                    "name": "VPN Infrastructure",
+                    "status": "completed",
+                    "progress": 100.0,
+                    "start_date": "2023-06-01",
+                    "parent": "team-network-4567",
+                    "related_projects": ["proj-cloud-micro"],
+                    "team_members": ["emp-135", "emp-246", "emp-357"]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "@id": "subdiv-hardware-5def",
+            "name": "Hardware Development",
+            "budget": 180000000,
+            "headcount": 300,
+            "parent": "div-tech-6616",
+            "collaborates_with": ["subdiv-software-4abc", "team-research-9876"],
+            "children": [
+              {
+                "@id": "team-iot-3344",
+                "name": "IoT Devices",
+                "project_count": 10,
+                "team_size": 80,
+                "parent": "subdiv-hardware-5def",
+                "dependencies": ["team-cloud-1a2b", "team-ai-1122"],
+                "children": [
+                  {
+                    "@id": "proj-iot-smart-home",
+                    "name": "Smart Home Solutions",
+                    "status": "active",
+                    "progress": 85.0,
+                    "start_date": "2023-07-01",
+                    "parent": "team-iot-3344",
+                    "related_projects": ["proj-iot-industrial", "proj-cloud-micro"],
+                    "team_members": ["emp-345", "emp-678", "emp-901"]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@id": "div-rd-940e",
+        "name": "R&D Division",
+        "budget": 600000000,
+        "growth_rate": 18.7,
+        "parent": "corp-root-28dd",
+        "linked_divisions": ["div-tech-6616", "div-prod-3322", "div-ai-1234"],
+        "children": [
+          {
+            "@id": "team-research-9876",
+            "name": "Research Lab Alpha",
+            "budget": 150000000,
+            "project_count": 8,
+            "parent": "div-rd-940e",
+            "collaborates_with": ["subdiv-software-4abc", "team-innovation-5544", "team-ai-1122"],
+            "references": ["div-tech-6616", "team-cloud-1a2b"],
+            "children": [
+              {
+                "@id": "proj-research-ai",
+                "name": "AI Initiative",
+                "status": "in_progress",
+                "completion": 45.7,
+                "start_date": "2023-11-01",
+                "parent": "team-research-9876",
+                "depends_on": ["proj-cloud-micro", "div-tech-6616"]
+              },
+              {
+                "@id": "proj-research-quantum",
+                "name": "Quantum Computing",
+                "status": "planning",
+                "completion": 10.2,
+                "start_date": "2024-02-01",
+                "parent": "team-research-9876",
+                "depends_on": ["proj-research-ai", "team-ai-1122"]
+              }
+            ]
+          },
+          {
+            "@id": "team-innovation-5544",
+            "name": "Innovation Team",
+            "project_count": 6,
+            "team_size": 40,
+            "parent": "div-rd-940e",
+            "collaborates_with": ["team-research-9876", "team-ai-1122"],
+            "children": [
+              {
+                "@id": "proj-innovation-blockchain",
+                "name": "Blockchain Research",
+                "status": "in_progress",
+                "progress": 30.0,
+                "start_date": "2023-12-01",
+                "parent": "team-innovation-5544",
+                "related_projects": ["proj-research-ai"],
+                "team_members": ["emp-111", "emp-222", "emp-333"]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@id": "div-ai-1234",
+        "name": "AI Division",
+        "budget": 400000000,
+        "growth_rate": 30.0,
+        "parent": "corp-root-28dd",
+        "linked_divisions": ["div-tech-6616", "div-rd-940e"],
+        "children": [
+          {
+            "@id": "team-ai-1122",
+            "name": "AI Research Team",
+            "project_count": 12,
+            "team_size": 90,
+            "parent": "div-ai-1234",
+            "collaborates_with": ["team-research-9876", "team-cloud-1a2b"],
+            "children": [
+              {
+                "@id": "proj-ai-ml",
+                "name": "Machine Learning Framework",
+                "status": "active",
+                "progress": 70.0,
+                "start_date": "2023-10-01",
+                "parent": "team-ai-1122",
+                "related_projects": ["proj-research-ai", "proj-cloud-micro"],
+                "team_members": ["emp-111", "emp-222", "emp-333"]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@id": "div-sales-8811",
+        "name": "Sales Division",
+        "revenue": 1200000000,
+        "growth_rate": 15.2,
+        "parent": "corp-root-28dd",
+        "linked_divisions": ["div-tech-6616", "div-marketing-7733", "div-prod-3322"],
+        "children": [
+          {
+            "@id": "region-na-2233",
+            "name": "North America",
+            "revenue": 500000000,
+            "team_size": 250,
+            "parent": "div-sales-8811",
+            "collaborates_with": ["region-eu-4455", "team-cloud-1a2b", "team-ai-1122"],
+            "children": [
+              {
+                "@id": "team-enterprise-6677",
+                "name": "Enterprise Sales",
+                "revenue": 300000000,
+                "deals_closed": 45,
+                "parent": "region-na-2233",
+                "depends_on": ["team-cloud-1a2b", "team-support-8899"],
+                "references": ["proj-cloud-micro", "proj-ai-ml"]
+              },
+              {
+                "@id": "team-support-8899",
+                "name": "Customer Support",
+                "team_size": 100,
+                "parent": "region-na-2233",
+                "collaborates_with": ["team-enterprise-6677"],
+                "children": [
+                  {
+                    "@id": "proj-support-portal",
+                    "name": "Support Portal",
+                    "status": "active",
+                    "progress": 80.0,
+                    "start_date": "2023-09-01",
+                    "parent": "team-support-8899",
+                    "related_projects": ["proj-cloud-micro"],
+                    "team_members": ["emp-444", "emp-555", "emp-666"]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "@id": "region-eu-4455",
+            "name": "Europe",
+            "revenue": 400000000,
+            "team_size": 200,
+            "parent": "div-sales-8811",
+            "collaborates_with": ["region-na-2233", "team-ai-1122"],
+            "children": [
+              {
+                "@id": "team-retail-9988",
+                "name": "Retail Sales",
+                "revenue": 250000000,
+                "deals_closed": 60,
+                "parent": "region-eu-4455",
+                "depends_on": ["team-cloud-1a2b", "team-support-8899"],
+                "references": ["proj-iot-smart-home"]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@id": "div-prod-3322",
+        "name": "Production Division",
+        "revenue": 900000000,
+        "growth_rate": 12.8,
+        "parent": "corp-root-28dd",
+        "linked_divisions": ["div-rd-940e", "div-logistics-9900", "div-sales-8811"],
+        "children": [
+          {
+            "@id": "facility-main-5544",
+            "name": "Main Factory",
+            "output_capacity": 1000000,
+            "efficiency_rate": 92.5,
+            "parent": "div-prod-3322",
+            "supplies_to": ["region-na-2233", "region-eu-4455"],
+            "references": ["team-enterprise-6677", "team-retail-9988"],
+            "children": [
+              {
+                "@id": "line-assembly-7788",
+                "name": "Assembly Line A",
+                "units_per_day": 5000,
+                "defect_rate": 0.5,
+                "parent": "facility-main-5544",
+                "depends_on": ["line-parts-8899", "team-quality-1234"],
+                "last_maintenance": "2024-01-15"
+              },
+              {
+                "@id": "line-parts-8899",
+                "name": "Parts Manufacturing",
+                "units_per_day": 3000,
+                "defect_rate": 0.3,
+                "parent": "facility-main-5544",
+                "depends_on": ["team-quality-1234"],
+                "last_maintenance": "2024-02-01"
+              }
+            ]
+          },
+          {
+            "@id": "team-quality-1234",
+            "name": "Quality Assurance",
+            "team_size": 50,
+            "parent": "div-prod-3322",
+            "collaborates_with": ["line-assembly-7788", "line-parts-8899"],
+            "children": [
+              {
+                "@id": "proj-quality-audit",
+                "name": "Quality Audit System",
+                "status": "active",
+                "progress": 75.0,
+                "start_date": "2023-10-15",
+                "parent": "team-quality-1234",
+                "related_projects": ["line-assembly-7788", "line-parts-8899"],
+                "team_members": ["emp-777", "emp-888", "emp-999"]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }

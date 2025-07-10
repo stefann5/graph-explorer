@@ -1,0 +1,870 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+<div class="workspace-controls">
+  <select id="dataSourceSelect"></select>
+  <input
+      type="text"
+      id="dataSourceFileInput"
+      placeholder="Data source file path..."
+    />
+  <select id="workspaceSelect">
+    <option value="ws">ws</option>
+  </select>
+  <button id="newWorkspace">New Workspace</button>
+  <button id="saveWorkspace">Save Workspace</button>
+</div>
+
+<div class="search-filter-container">
+  <div class="search-box">
+    {% csrf_token %}
+    <input type="text" id="searchInput" placeholder="Search graph..." />
+  </div>
+  <div class="filter-box">
+    {% csrf_token %}
+    <input
+      type="text"
+      id="filterInput"
+      placeholder="Filter (e.g., date > 2022-12-12)"
+    />
+  </div>
+</div>
+
+<div class="visualization-controls">
+  <button id="toggleView">Toggle View (Simple/Block)</button>
+  <button id="resetView">Reset View</button>
+  <button id="clearFilters">Clear Filters</button>
+  <button id="toggle-terminal">Open Terminal</button>
+  <div id="terminal" class="hidden">
+      <textarea id="terminal-output" readonly></textarea>
+      <input id="terminal-input" type="text" placeholder="Enter command...">
+      <button id="close-terminal">Close Terminal</button>
+  </div>
+</div>
+
+<div class="views-container">
+  <div class="tree-view" id="tree-view"></div>
+  <div class="main-view" id="main-view"></div>
+  <div class="bird-view" id="bird-view"></div>
+</div>
+
+{% block extra_css %}
+<style>
+  body {
+    margin: 0;
+    padding: 20px;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #bdfab4;
+    color: #333;
+  }
+
+   #terminal {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          background-color: #1e1e1e;
+          color: #ffffff;
+          padding: 10px;
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+      }
+
+    #terminal.hidden {
+        display: none;
+    }
+
+    #terminal-output {
+        height: 150px;
+        width: 100%;
+        background-color: #1e1e1e;
+        color: #00ff00;
+        border: 1px solid #555;
+        padding: 5px;
+        resize: none;
+        overflow-y: auto;
+    }
+
+    #terminal-input {
+        height: 30px;
+        width: 100%;
+        background-color: #333;
+        color: #fff;
+        border: 1px solid #555;
+        padding: 5px;
+    }
+
+    #close-terminal {
+        position: fixed;
+        bottom: 160px;
+        right: 10px;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+
+  .node rect {
+    fill: white;
+    stroke: #666;
+    stroke-width: 1px;
+  }
+  .node text {
+    text-anchor: middle;
+  }
+
+  .workspace-controls,
+  .visualization-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .workspace-controls select,
+  .workspace-controls button,
+  .visualization-controls button {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    transition: background-color 0.2s;
+    cursor: pointer;
+  }
+
+  .workspace-controls button:hover,
+  .visualization-controls button:hover {
+    background-color: #e0e0e0;
+  }
+
+  .search-filter-container {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .search-box,
+  .filter-box {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .search-box input,
+  .filter-box input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+
+  .views-container {
+    display: grid;
+    width: 1800px;
+    grid-template-columns: 600px 1fr; /* Left column for tree-view, right column for main-view */
+    grid-template-rows: 1fr 600px; /* First row for tree-view and main-view, second row for bird-view */
+    height: 750px;
+    grid-template-areas:
+      "tree-view main-view"
+      "bird-view main-view";
+  }
+
+  .tree-view,
+  .main-view,
+  .bird-view {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: auto;
+  }
+
+  .tree-view {
+    grid-area: tree-view;
+  }
+
+  .main-view {
+    grid-area: main-view;
+  }
+    .tooltip {
+            position: absolute;
+            padding: 10px;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            pointer-events: none;
+            font-size: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            max-width: 300px;
+            z-index: 1000;
+            top: 50px;
+        }
+</style>
+{% include "birdview.html" %} {% endblock %} {% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+<script>
+  {{ code|safe }}
+ </script>
+<script>
+  const terminalButton = document.getElementById('toggle-terminal');
+  const terminal = document.getElementById('terminal');
+  const inputField = document.getElementById('terminal-input');
+  const outputArea = document.getElementById('terminal-output');
+  const closeButton = document.getElementById('close-terminal');
+
+  // Toggle terminal visibility
+  terminalButton.addEventListener('click', () => {
+      terminal.classList.toggle('hidden');
+  });
+
+  // Close terminal
+  closeButton.addEventListener('click', () => {
+      terminal.classList.add('hidden');
+  });
+
+
+  // Function to append output to the terminal
+  function appendOutput(text) {
+      const outputArea = document.getElementById('terminal-output');
+      outputArea.value += text + '\n';
+      outputArea.scrollTop = outputArea.scrollHeight;
+  }
+
+  async function deleteNode(nodeId) {
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+      try {
+          const response = await fetch('/api/delete_node/', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': csrfToken
+              },
+              body: JSON.stringify({ id: nodeId }) // Prosledi ID čvora koji se briše
+          });
+
+          if (response.ok) {
+              const result = await response.json();
+              console.log("Server response:", result);
+
+              // Prikaz poruke sa servera
+              if (result.message) {
+                  appendOutput(result.message);
+              } else {
+                  appendOutput("Error: No message received from server.");
+              }
+
+              // Osveti ažurirani graf
+              if (result.visualization_js) {
+                  const script = document.createElement('script');
+                  script.type = 'text/javascript';
+                  script.text = result.visualization_js;
+                  document.body.appendChild(script);
+              }
+          } else {
+              const error = await response.json();
+              appendOutput(`Error: ${error.message}`);
+          }
+      } catch (error) {
+          appendOutput(`Error: ${error.message}`);
+      }
+  }
+  async function updateNode(args) {
+      const [id, ...attributes] = args;
+      const nodeId = parseInt(id);
+      const data = {};
+
+      // Parse attributes into a key-value object
+      attributes.forEach(attr => {
+          const [key, value] = attr.split('=');
+          data[key] = value;
+      });
+
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+      try {
+          // Make a POST request to the update_node API endpoint
+          const response = await fetch('/api/update_node/', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': csrfToken
+              },
+              body: JSON.stringify({ id: nodeId, data })
+          });
+
+          if (response.ok) {
+              const result = await response.json();
+              console.log("Server response:", result);
+
+              if (result.message) {
+                  appendOutput(result.message); // Display the server message
+              } else {
+                  appendOutput("Error: No message received from server.");
+              }
+
+              // Dynamically execute visualization JavaScript code
+              if (result.visualization_js) {
+                  const script = document.createElement('script');
+                  script.type = 'text/javascript';
+                  script.text = result.visualization_js;
+                  document.body.appendChild(script);
+              }
+          } else {
+              const error = await response.json();
+              appendOutput(`Error: ${error.message}`);
+          }
+      } catch (error) {
+          appendOutput(`Error: ${error.message}`);
+      }
+  }
+
+  async function addNode(args) {
+      const [id, ...attributes] = args;
+      const nodeId = parseInt(id);
+      const data = {};
+
+      // Parse attributes into a key-value object
+      attributes.forEach(attr => {
+          const [key, value] = attr.split('=');
+          data[key] = value;
+      });
+
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+      try {
+          // Make a POST request to the add_node API endpoint
+          const response = await fetch('/api/add_node/', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': csrfToken
+              },
+              body: JSON.stringify({ id: nodeId, data })
+          });
+
+          if (response.ok) {
+              const result = await response.json();
+              console.log("Server response:", result);
+
+              // Provera da li postoji poruka
+              if (result.message) {
+                  appendOutput(result.message); // Prikaz poruke
+              } else {
+                  appendOutput("Error: No message received from server.");
+              }
+
+              // Dynamically execute the visualization JavaScript code
+              if (result.visualization_js) {
+                  const script = document.createElement('script');
+                  script.type = 'text/javascript';
+                  script.text = result.visualization_js;
+                  document.body.appendChild(script);
+              }
+          } else {
+              const error = await response.json();
+              appendOutput(`Error: ${error.message}`);
+          }
+      } catch (error) {
+          appendOutput(`Error: ${error.message}`);
+      }
+  }
+
+  async function addEdge(args) {
+      const [source, target, ...attributes] = args;
+      let edgeName = '';
+
+      attributes.forEach(attribute => {
+        const [key, value] = attribute.split('=');
+        if (key === 'name') {
+          edgeName = value;
+        }
+      });
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+      try {
+          const response = await fetch('/api/add_edge/', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': csrfToken
+              },
+              body: JSON.stringify({ source: parseInt(source), target: parseInt(target), name: edgeName })
+          });
+
+          if (response.ok) {
+              const result = await response.json();
+              appendOutput(result.message);
+
+              if (result.visualization_js) {
+                  const script = document.createElement('script');
+                  script.type = 'text/javascript';
+                  script.text = result.visualization_js;
+                  document.body.appendChild(script);
+              }
+          } else {
+              const error = await response.json();
+              appendOutput(`Error: ${error.message}`);
+          }
+      } catch (error) {
+          appendOutput(`Error: ${error.message}`);
+      }
+  }
+
+  async function updateEdge(args) {
+      const [source, target, ...attributes] = args;
+      let edgeName = '';
+
+      attributes.forEach(attribute => {
+        const [key, value] = attribute.split('=');
+        if (key === 'name') {
+          edgeName = value;
+        }
+      });
+
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+      try {
+          const response = await fetch('/api/update_edge/', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': csrfToken
+              },
+              body: JSON.stringify({ source:source, target:target, name:edgeName })
+          });
+
+          if (response.ok) {
+              const result = await response.json();
+              appendOutput(result.message);
+
+              if (result.visualization_js) {
+                  const script = document.createElement('script');
+                  script.type = 'text/javascript';
+                  script.text = result.visualization_js;
+                  document.body.appendChild(script);
+              }
+          } else {
+              const error = await response.json();
+              appendOutput(`Error: ${error.message}`);
+          }
+      } catch (error) {
+          appendOutput(`Error: ${error.message}`);
+      }
+  }
+    async function deleteEdge(args) {
+      const [source, target] = args;
+
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+      try {
+          const response = await fetch('/api/delete_edge/', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': csrfToken
+              },
+              body: JSON.stringify({ source: source, target: target })
+          });
+
+          if (response.ok) {
+              const result = await response.json();
+              appendOutput(result.message);
+
+              if (result.visualization_js) {
+                  const script = document.createElement('script');
+                  script.type = 'text/javascript';
+                  script.text = result.visualization_js;
+                  document.body.appendChild(script);
+              }
+          } else {
+              const error = await response.json();
+              appendOutput(`Error: ${error.message}`);
+          }
+      } catch (error) {
+          appendOutput(`Error: ${error.message}`);
+      }
+  }
+
+    async function deleteGraph() {
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+      try {
+          const response = await fetch('/api/delete_graph/', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': csrfToken
+              }
+          });
+
+          if (response.ok) {
+              const result = await response.json();
+              appendOutput(result.message);
+
+              if (result.visualization_js) {
+                  const script = document.createElement('script');
+                  script.type = 'text/javascript';
+                  script.text = result.visualization_js;
+                  document.body.appendChild(script);
+              }
+          } else {
+              const error = await response.json();
+              appendOutput(`Error: ${error.message}`);
+          }
+      } catch (error) {
+          appendOutput(`Error: ${error.message}`);
+      }
+  }
+
+  async function searchGraph(query) {
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+      try {
+          const response = await fetch('/api/search_graph/', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': csrfToken
+              },
+              body: JSON.stringify({ query:query })
+          });
+
+          if (response.ok) {
+              const result = await response.json();
+              appendOutput(result.message);
+
+              if (result.visualization_js) {
+                  const script = document.createElement('script');
+                  script.type = 'text/javascript';
+                  script.text = result.visualization_js;
+                  document.body.appendChild(script);
+              }
+          } else {
+              const error = await response.json();
+              appendOutput(`Error: ${error.message}`);
+          }
+      } catch (error) {
+          appendOutput(`Error: ${error.message}`);
+      }
+  }
+  async function filterGraph(args) {
+
+      const [atr_name,operator, atr_value] = args;
+
+      const query= atr_name + " " + operator + " " + atr_value;
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+      try {
+          const response = await fetch('/api/filter_graph/', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': csrfToken
+              },
+              body: JSON.stringify({ query:query })
+          });
+
+          if (response.ok) {
+              const result = await response.json();
+              appendOutput(result.message);
+
+              if (result.visualization_js) {
+                  const script = document.createElement('script');
+                  script.type = 'text/javascript';
+                  script.text = result.visualization_js;
+                  document.body.appendChild(script);
+              }
+          } else {
+              const error = await response.json();
+              appendOutput(`Error: ${error.message}`);
+          }
+      } catch (error) {
+          appendOutput(`Error: ${error.message}`);
+      }
+  }
+  function executeCommand(command) {
+        const args = command.split(' ');
+        const cmd = args.shift();
+
+        switch (cmd) {
+            case 'add_node':
+                addNode(args);
+                break;
+            case 'update_node':
+                updateNode(args);
+                break;
+            case 'delete_node':
+                deleteNode(args);
+                break;
+            case 'add_edge':
+                addEdge(args);
+                break;
+            case 'update_edge':
+                updateEdge(args);
+                break;
+            case 'delete_edge':
+                deleteEdge(args);
+                break;
+            case 'delete_graph':
+                deleteGraph();
+                break;
+            case 'search':
+                searchGraph(args);
+                break;
+            case 'filter':
+                filterGraph(args);
+                break;
+            default:
+                appendOutput(`Unknown command: ${cmd}`);
+        }
+    }
+  inputField.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+              const command = inputField.value.trim();
+              executeCommand(command);
+              inputField.value = '';
+          }
+      });
+  document.addEventListener("DOMContentLoaded", function () {
+    fetch("/get-installed-plugins/")
+      .then((response) => response.json())
+      .then((data) => {
+        // Clear any existing options
+        document.getElementById("dataSourceSelect").innerHTML = "";
+        // Populate options
+        data.data_source_plugins.forEach((plugin) => {
+          const option = document.createElement("option");
+          option.value = plugin.name;
+          option.textContent = plugin.name;
+
+          // Select the current plugin if it matches
+          if (plugin.name === data.selected_plugin) {
+            option.selected = true;
+          }
+
+          document.getElementById("dataSourceSelect").appendChild(option);
+        });
+      })
+      .catch((error) => {
+        console.error("Error fetching plugins:", error);
+      });
+
+
+    // Function to get CSRF token
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === name + "=") {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+  });
+
+
+
+document
+  .getElementById("dataSourceFileInput")
+  .addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+      const file = document.getElementById("dataSourceFileInput").value;
+
+      fetch("/select-file/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0]
+            .value,
+        },
+        body: `file=${encodeURIComponent(file)}`,
+      })
+        .then((response) => {
+          // Check for errors in the response
+          if (!response.ok) {
+            return response.json().then((errorData) => {
+              throw new Error(errorData.message || "An error occurred");
+            });
+          }
+          return response.text();
+        })
+        .then((html) => {
+          // Extract the graph visualization code from the response
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, "text/html");
+          const scripts = doc.getElementsByTagName("script");
+          let graphCode = "";
+
+          // Find the script containing the graph visualization code
+          for (let script of scripts) {
+            if (script.textContent.includes("var nodes =")) {
+              graphCode = script.textContent;
+              break;
+            }
+          }
+
+          // Clear existing graph and run the new visualization
+          document.querySelector(".main-view").innerHTML = "";
+          const script = document.createElement("script");
+          script.textContent = graphCode;
+          document.body.appendChild(script);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert(error.message); // Display error in an alert
+        });
+    }
+  });
+
+  document
+    .getElementById("dataSourceSelect")
+    .addEventListener("change", function () {
+      const query = document.getElementById("dataSourceSelect").value;
+      fetch("/select-plugin/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0]
+            .value,
+        },
+        body: `query=${encodeURIComponent(query)}`,
+      })
+        .then((response) => response.text())
+        .then((html) => {
+          // Extract the graph visualization code from the response
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, "text/html");
+          const scripts = doc.getElementsByTagName("script");
+          let graphCode = "";
+
+          // Find the script containing the graph visualization code
+          for (let script of scripts) {
+            if (script.textContent.includes("var nodes =")) {
+              graphCode = script.textContent;
+              break;
+            }
+          }
+
+          // Clear existing graph and run the new visualization
+          document.querySelector(".main-view").innerHTML = "";
+          const script = document.createElement("script");
+          script.textContent = graphCode;
+          document.body.appendChild(script);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    });
+
+  document
+    .getElementById("clearFilters")
+    .addEventListener("click", function () {
+      fetch("/", {
+        method: "GET",
+        headers: {
+          "X-Requested-With": "XMLHttpRequest",
+        },
+      })
+        .then((response) => response.text())
+        .then((html) => {
+          // Extract the graph visualization code from the response
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, "text/html");
+          const scripts = doc.getElementsByTagName("script");
+          let graphCode = "";
+
+          document.getElementById("searchInput").value = "";
+          document.getElementById("filterInput").value = "";
+
+          // Find the script containing the graph visualization code
+          for (let script of scripts) {
+            if (script.textContent.includes("var nodes =")) {
+              graphCode = script.textContent;
+              break;
+            }
+          }
+
+          // Clear existing graph and run the new visualization
+          document.querySelector(".main-view").innerHTML = "";
+          const script = document.createElement("script");
+          script.textContent = graphCode;
+          document.body.appendChild(script);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    });
+
+  document
+    .getElementById("searchInput")
+    .addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        const query = this.value;
+        fetch("/search/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0]
+              .value,
+          },
+          body: `query=${encodeURIComponent(query)}`,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            document.querySelector(".main-view").innerHTML = "";
+
+            const script = document.createElement("script");
+            script.textContent = data.code;
+            document.body.appendChild(script);
+          });
+      }
+    });
+
+  document
+    .getElementById("filterInput")
+    .addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        const query = this.value;
+        fetch("/filter/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0]
+              .value,
+          },
+          body: `query=${encodeURIComponent(query)}`,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            document.querySelector(".main-view").innerHTML = "";
+
+            const script = document.createElement("script");
+            script.textContent = data.code;
+            document.body.appendChild(script);
+          });
+      }
+    });
+
+  // Helper function to get CSRF token
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === name + "=") {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+</script>
+
+{% endblock %} {% endblock content %} {% csrf_token %}

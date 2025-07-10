@@ -1,0 +1,185 @@
+<script>
+var miniMapLinks;
+var miniMapNodes;
+var miniMap;
+var viewport;
+var isMiniMapScaled = false;
+
+function initializeMiniMap(links, force, makeSimpleViewFunc) {
+    // Reset the mini-map
+    d3.select("#bird-view").selectAll("svg").remove();
+    isMiniMapScaled = false;
+    // Create new SVG container with viewBox for better scaling
+    miniMap = d3.select("#bird-view")
+        .append("svg")
+        .attr("opacity", 0)
+        .attr("width", "100%")
+        .attr("height", "100%")
+        .attr("preserveAspectRatio", "xMidYMid meet")
+        .append("g")
+        .attr("id", "mini-map");
+    // Initialize curved links
+    miniMapLinks = miniMap.selectAll(".link")
+        .data(links)
+        .enter()
+        .append("path")
+        .attr("class", "link")
+        .style("fill", "none")
+        .style("stroke", "#999")
+        .style("stroke-width", "4px");
+    // Initialize nodes
+    miniMapNodes = miniMap.selectAll(".node")
+        .data(force.nodes())
+        .enter().append('g')
+        .attr("class", "node")
+        .attr("id", function(d) { 
+            
+            return "bird-view-node-" + d.id; 
+        });
+        
+
+    // Use the passed makeSimpleView function for mini map nodes
+    //console.log(miniMapNodes);
+    miniMapNodes.each(function(d) {
+         // Log the data bound to each node
+        makeSimpleViewFunc(d, ".bird-view");
+});
+    // Initialize viewport
+    viewport = miniMap.append("rect")
+        .attr("class", "viewport")
+        .attr("fill", "none")
+        .attr("stroke", "#2563eb")
+        .attr("stroke-width", "10px")
+        .attr("pointer-events", "none")
+        .style("opacity", 1);
+    // Add resize observer to handle container size changes
+    const resizeObserver = new ResizeObserver(() => {
+        if (!isMiniMapScaled) return;
+        requestAnimationFrame(() => scaleAndPositionMiniMap());
+    });
+   
+    resizeObserver.observe(d3.select("#bird-view").node());
+    // Listen for force simulation end
+    const transform = { x: 0, y: 0, k: 1 };
+    updateViewport(transform, 1200, 750);
+    force.on("end", scaleAndPositionMiniMap);
+}
+
+function updateMiniMap() {
+    miniMapNodes.attr("transform", function(d) {
+        if (d.fx !== undefined && d.fx != null) {{
+            d.x = d.fx;
+            d.y = d.fy;
+        }}
+        return "translate(" + d.x + "," + d.y + ")";
+    });
+
+    // Apply collision only to nodes not being dragged
+
+    // Update links with curved paths
+    miniMapLinks.attr('d', function(d) {
+        var dx = d.target.x - d.source.x,
+            dy = d.target.y - d.source.y,
+            dr = Math.sqrt(dx * dx + dy * dy);
+        return "M" + d.source.x + "," + d.source.y +
+            "A" + dr + "," + dr + " 0 0,1 " +
+            d.target.x + "," + d.target.y;
+    });
+}
+
+function updateViewport(transform, mainViewWidth, mainViewHeight) {
+    if (!viewport) return;
+
+    // Get the current mini-map transformation
+    const miniMapTransform = d3.behavior.zoom().on("zoom", () => {
+        const transform1 = d3.event.translate; // Translation values
+        const scale = d3.event.scale; // Scale value
+        return { x: transform1[0], y: transform1[1], k: scale };
+    });
+
+    
+    // Calculate viewport dimensions based on main view dimensions and zoom level
+    const viewportWidth = mainViewWidth / transform.k;
+    const viewportHeight = mainViewHeight / transform.k;
+
+    // Calculate viewport position based on main view translation
+    const viewportX = -transform.x / transform.k;
+    const viewportY = -transform.y / transform.k;
+
+    // console.log("Viewport attributes:", {
+    //     x: viewportX,
+    //     y: viewportY,
+    //     width: viewportWidth,
+    //     height: viewportHeight,
+    // });
+    // Update viewport rectangle
+    viewport
+        .attr("x", viewportX)
+        .attr("y", viewportY)
+        .attr("width", viewportWidth)
+        .attr("height", viewportHeight);
+}
+
+function scaleAndPositionMiniMap() {
+    // Get the bounds of all nodes to determine the graph size
+    const bounds = getGraphBounds();
+    
+    // Get container dimensions
+    const containerDimensions = getDimensions("#bird-view");
+    
+    // Add padding
+    const padding = 40;
+    const graphWidth = bounds.maxX - bounds.minX + padding * 2;
+    const graphHeight = bounds.maxY - bounds.minY + padding * 2;
+
+    // Calculate scale to fit entire graph
+    const scale = Math.min(
+        containerDimensions.width / graphWidth,
+        containerDimensions.height / graphHeight
+    ) * 0.9; // 90% of available space to add margin
+
+    // Calculate translation to center the graph
+    const translateX = (containerDimensions.width - graphWidth * scale) / 2 - bounds.minX * scale + padding * scale;
+    const translateY = (containerDimensions.height - graphHeight * scale) / 2 - bounds.minY * scale + padding * scale;
+
+    // Apply transformation smoothly
+    d3.select("#mini-map")
+        .transition()
+        .duration(750)
+        .attr("transform", `translate(${translateX}, ${translateY}) scale(${scale})`);
+
+    // Show the mini-map
+    d3.select("#bird-view svg")
+        .transition()
+        .duration(750)
+        .attr("opacity", 1.0);
+
+    isMiniMapScaled = true;
+}
+
+function getGraphBounds() {
+    // Calculate the bounds of all nodes
+    const nodes = miniMapNodes.data();
+    const bounds = {
+        minX: Infinity,
+        minY: Infinity,
+        maxX: -Infinity,
+        maxY: -Infinity
+    };
+
+    nodes.forEach(node => {
+        bounds.minX = Math.min(bounds.minX, node.x);
+        bounds.minY = Math.min(bounds.minY, node.y);
+        bounds.maxX = Math.max(bounds.maxX, node.x);
+        bounds.maxY = Math.max(bounds.maxY, node.y);
+    });
+
+    return bounds;
+}
+
+function getDimensions(selector) {
+    const rect = d3.select(selector).node().getBoundingClientRect();
+    return { width: rect.width, height: rect.height };
+}
+    
+</script>
