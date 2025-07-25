@@ -164,7 +164,7 @@
     width: 1800px;
     grid-template-columns: 600px 1fr; /* Left column for tree-view, right column for main-view */
     grid-template-rows: 1fr 600px; /* First row for tree-view and main-view, second row for bird-view */
-    height: 750px;
+    height: 950px;
     grid-template-areas:
       "tree-view main-view"
       "bird-view main-view";
@@ -201,12 +201,14 @@
             top: 50px;
         }
 </style>
-{% include "birdview.html" %} {% endblock %} {% block extra_js %}
+{% include "birdview.html" %} {% include "treeview.html" %} {% endblock %} {% block extra_js %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
 <script>
   {{ code|safe }}
  </script>
 <script>
+  let currentView = "simple"; // Default view
+
   const terminalButton = document.getElementById('toggle-terminal');
   const terminal = document.getElementById('terminal');
   const inputField = document.getElementById('terminal-input');
@@ -625,6 +627,7 @@
               inputField.value = '';
           }
       });
+
   document.addEventListener("DOMContentLoaded", function () {
     fetch("/get-installed-plugins/")
       .then((response) => response.json())
@@ -759,6 +762,33 @@ document
         .catch((error) => {
           console.error("Error:", error);
         });
+    });
+
+  document
+    .getElementById("toggleView")
+    .addEventListener("click", function () {
+      currentView = currentView === "simple" ? "block" : "simple";
+      
+      fetch("/toggle-view/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0].value,
+        },
+        body: `view_type=${encodeURIComponent(currentView)}`,
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        // Clear existing graph
+        document.querySelector(".main-view").innerHTML = "";
+        
+        const script = document.createElement("script");
+        script.textContent = data.code;
+        document.body.appendChild(script);
+      })
+      .catch((error) => {
+        console.error("Error toggling view:", error);
+      });
     });
 
   document

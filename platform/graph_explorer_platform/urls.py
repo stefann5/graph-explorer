@@ -11,6 +11,7 @@ urlpatterns = [
     path('search/', views.search, name="search_graph"),
     path('filter/', views.filter, name="filter_graph"),
     path('get-installed-plugins/', views.get_available_plugins, name="get_installed_plugins"),
+    path('toggle-view/', views.toggle_view, name="toggle_view"),
     path('api/add_node/', views.add_node, name='add_node'),
     path('api/update_node/', views.update_node, name='update_node'),
     path('api/delete_node/', views.delete_node, name='delete_node'),
