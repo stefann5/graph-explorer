@@ -32,6 +32,12 @@
   <button id="toggleView">Toggle View (Simple/Block)</button>
   <button id="resetView">Reset View</button>
   <button id="clearFilters">Clear Filters</button>
+  <button id="toggle-terminal">Open Terminal</button>
+  <div id="terminal" class="hidden">
+      <textarea id="terminal-output" readonly></textarea>
+      <input id="terminal-input" type="text" placeholder="Enter command...">
+      <button id="close-terminal">Close Terminal</button>
+  </div>
 </div>
 
 <div class="views-container">
@@ -49,6 +55,54 @@
     background-color: #bdfab4;
     color: #333;
   }
+
+   #terminal {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          background-color: #1e1e1e;
+          color: #ffffff;
+          padding: 10px;
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+      }
+
+    #terminal.hidden {
+        display: none;
+    }
+
+    #terminal-output {
+        height: 150px;
+        width: 100%;
+        background-color: #1e1e1e;
+        color: #00ff00;
+        border: 1px solid #555;
+        padding: 5px;
+        resize: none;
+        overflow-y: auto;
+    }
+
+    #terminal-input {
+        height: 30px;
+        width: 100%;
+        background-color: #333;
+        color: #fff;
+        border: 1px solid #555;
+        padding: 5px;
+    }
+
+    #close-terminal {
+        position: fixed;
+        bottom: 160px;
+        right: 10px;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
 
   .node rect {
     fill: white;
@@ -154,6 +208,426 @@
  </script>
 <script>
   let currentView = "simple"; // Default view
+
+  const terminalButton = document.getElementById('toggle-terminal');
+  const terminal = document.getElementById('terminal');
+  const inputField = document.getElementById('terminal-input');
+  const outputArea = document.getElementById('terminal-output');
+  const closeButton = document.getElementById('close-terminal');
+
+  // Toggle terminal visibility
+  terminalButton.addEventListener('click', () => {
+      terminal.classList.toggle('hidden');
+  });
+
+  // Close terminal
+  closeButton.addEventListener('click', () => {
+      terminal.classList.add('hidden');
+  });
+
+
+  // Function to append output to the terminal
+  function appendOutput(text) {
+      const outputArea = document.getElementById('terminal-output');
+      outputArea.value += text + '\n';
+      outputArea.scrollTop = outputArea.scrollHeight;
+  }
+
+  async function deleteNode(nodeId) {
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+      try {
+          const response = await fetch('/api/delete_node/', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': csrfToken
+              },
+              body: JSON.stringify({ id: nodeId }) // Prosledi ID čvora koji se briše
+          });
+
+          if (response.ok) {
+              const result = await response.json();
+              console.log("Server response:", result);
+
+              // Prikaz poruke sa servera
+              if (result.message) {
+                  appendOutput(result.message);
+              } else {
+                  appendOutput("Error: No message received from server.");
+              }
+
+              // Osveti ažurirani graf
+              if (result.visualization_js) {
+                  const script = document.createElement('script');
+                  script.type = 'text/javascript';
+                  script.text = result.visualization_js;
+                  document.body.appendChild(script);
+              }
+          } else {
+              const error = await response.json();
+              appendOutput(`Error: ${error.message}`);
+          }
+      } catch (error) {
+          appendOutput(`Error: ${error.message}`);
+      }
+  }
+  async function updateNode(args) {
+      const [id, ...attributes] = args;
+      const nodeId = parseInt(id);
+      const data = {};
+
+      // Parse attributes into a key-value object
+      attributes.forEach(attr => {
+          const [key, value] = attr.split('=');
+          data[key] = value;
+      });
+
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+      try {
+          // Make a POST request to the update_node API endpoint
+          const response = await fetch('/api/update_node/', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': csrfToken
+              },
+              body: JSON.stringify({ id: nodeId, data })
+          });
+
+          if (response.ok) {
+              const result = await response.json();
+              console.log("Server response:", result);
+
+              if (result.message) {
+                  appendOutput(result.message); // Display the server message
+              } else {
+                  appendOutput("Error: No message received from server.");
+              }
+
+              // Dynamically execute visualization JavaScript code
+              if (result.visualization_js) {
+                  const script = document.createElement('script');
+                  script.type = 'text/javascript';
+                  script.text = result.visualization_js;
+                  document.body.appendChild(script);
+              }
+          } else {
+              const error = await response.json();
+              appendOutput(`Error: ${error.message}`);
+          }
+      } catch (error) {
+          appendOutput(`Error: ${error.message}`);
+      }
+  }
+
+  async function addNode(args) {
+      const [id, ...attributes] = args;
+      const nodeId = parseInt(id);
+      const data = {};
+
+      // Parse attributes into a key-value object
+      attributes.forEach(attr => {
+          const [key, value] = attr.split('=');
+          data[key] = value;
+      });
+
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+      try {
+          // Make a POST request to the add_node API endpoint
+          const response = await fetch('/api/add_node/', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': csrfToken
+              },
+              body: JSON.stringify({ id: nodeId, data })
+          });
+
+          if (response.ok) {
+              const result = await response.json();
+              console.log("Server response:", result);
+
+              // Provera da li postoji poruka
+              if (result.message) {
+                  appendOutput(result.message); // Prikaz poruke
+              } else {
+                  appendOutput("Error: No message received from server.");
+              }
+
+              // Dynamically execute the visualization JavaScript code
+              if (result.visualization_js) {
+                  const script = document.createElement('script');
+                  script.type = 'text/javascript';
+                  script.text = result.visualization_js;
+                  document.body.appendChild(script);
+              }
+          } else {
+              const error = await response.json();
+              appendOutput(`Error: ${error.message}`);
+          }
+      } catch (error) {
+          appendOutput(`Error: ${error.message}`);
+      }
+  }
+
+  async function addEdge(args) {
+      const [source, target, ...attributes] = args;
+      let edgeName = '';
+
+      attributes.forEach(attribute => {
+        const [key, value] = attribute.split('=');
+        if (key === 'name') {
+          edgeName = value;
+        }
+      });
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+      try {
+          const response = await fetch('/api/add_edge/', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': csrfToken
+              },
+              body: JSON.stringify({ source: parseInt(source), target: parseInt(target), name: edgeName })
+          });
+
+          if (response.ok) {
+              const result = await response.json();
+              appendOutput(result.message);
+
+              if (result.visualization_js) {
+                  const script = document.createElement('script');
+                  script.type = 'text/javascript';
+                  script.text = result.visualization_js;
+                  document.body.appendChild(script);
+              }
+          } else {
+              const error = await response.json();
+              appendOutput(`Error: ${error.message}`);
+          }
+      } catch (error) {
+          appendOutput(`Error: ${error.message}`);
+      }
+  }
+
+  async function updateEdge(args) {
+      const [source, target, ...attributes] = args;
+      let edgeName = '';
+
+      attributes.forEach(attribute => {
+        const [key, value] = attribute.split('=');
+        if (key === 'name') {
+          edgeName = value;
+        }
+      });
+
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+      try {
+          const response = await fetch('/api/update_edge/', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': csrfToken
+              },
+              body: JSON.stringify({ source:source, target:target, name:edgeName })
+          });
+
+          if (response.ok) {
+              const result = await response.json();
+              appendOutput(result.message);
+
+              if (result.visualization_js) {
+                  const script = document.createElement('script');
+                  script.type = 'text/javascript';
+                  script.text = result.visualization_js;
+                  document.body.appendChild(script);
+              }
+          } else {
+              const error = await response.json();
+              appendOutput(`Error: ${error.message}`);
+          }
+      } catch (error) {
+          appendOutput(`Error: ${error.message}`);
+      }
+  }
+    async function deleteEdge(args) {
+      const [source, target] = args;
+
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+      try {
+          const response = await fetch('/api/delete_edge/', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': csrfToken
+              },
+              body: JSON.stringify({ source: source, target: target })
+          });
+
+          if (response.ok) {
+              const result = await response.json();
+              appendOutput(result.message);
+
+              if (result.visualization_js) {
+                  const script = document.createElement('script');
+                  script.type = 'text/javascript';
+                  script.text = result.visualization_js;
+                  document.body.appendChild(script);
+              }
+          } else {
+              const error = await response.json();
+              appendOutput(`Error: ${error.message}`);
+          }
+      } catch (error) {
+          appendOutput(`Error: ${error.message}`);
+      }
+  }
+
+    async function deleteGraph() {
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+      try {
+          const response = await fetch('/api/delete_graph/', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': csrfToken
+              }
+          });
+
+          if (response.ok) {
+              const result = await response.json();
+              appendOutput(result.message);
+
+              if (result.visualization_js) {
+                  const script = document.createElement('script');
+                  script.type = 'text/javascript';
+                  script.text = result.visualization_js;
+                  document.body.appendChild(script);
+              }
+          } else {
+              const error = await response.json();
+              appendOutput(`Error: ${error.message}`);
+          }
+      } catch (error) {
+          appendOutput(`Error: ${error.message}`);
+      }
+  }
+
+  async function searchGraph(query) {
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+      try {
+          const response = await fetch('/api/search_graph/', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': csrfToken
+              },
+              body: JSON.stringify({ query:query })
+          });
+
+          if (response.ok) {
+              const result = await response.json();
+              appendOutput(result.message);
+
+              if (result.visualization_js) {
+                  const script = document.createElement('script');
+                  script.type = 'text/javascript';
+                  script.text = result.visualization_js;
+                  document.body.appendChild(script);
+              }
+          } else {
+              const error = await response.json();
+              appendOutput(`Error: ${error.message}`);
+          }
+      } catch (error) {
+          appendOutput(`Error: ${error.message}`);
+      }
+  }
+  async function filterGraph(args) {
+
+      const [atr_name,operator, atr_value] = args;
+
+      const query= atr_name + " " + operator + " " + atr_value;
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+      try {
+          const response = await fetch('/api/filter_graph/', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': csrfToken
+              },
+              body: JSON.stringify({ query:query })
+          });
+
+          if (response.ok) {
+              const result = await response.json();
+              appendOutput(result.message);
+
+              if (result.visualization_js) {
+                  const script = document.createElement('script');
+                  script.type = 'text/javascript';
+                  script.text = result.visualization_js;
+                  document.body.appendChild(script);
+              }
+          } else {
+              const error = await response.json();
+              appendOutput(`Error: ${error.message}`);
+          }
+      } catch (error) {
+          appendOutput(`Error: ${error.message}`);
+      }
+  }
+  function executeCommand(command) {
+        const args = command.split(' ');
+        const cmd = args.shift();
+
+        switch (cmd) {
+            case 'add_node':
+                addNode(args);
+                break;
+            case 'update_node':
+                updateNode(args);
+                break;
+            case 'delete_node':
+                deleteNode(args);
+                break;
+            case 'add_edge':
+                addEdge(args);
+                break;
+            case 'update_edge':
+                updateEdge(args);
+                break;
+            case 'delete_edge':
+                deleteEdge(args);
+                break;
+            case 'delete_graph':
+                deleteGraph();
+                break;
+            case 'search':
+                searchGraph(args);
+                break;
+            case 'filter':
+                filterGraph(args);
+                break;
+            default:
+                appendOutput(`Unknown command: ${cmd}`);
+        }
+    }
+  inputField.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+              const command = inputField.value.trim();
+              executeCommand(command);
+              inputField.value = '';
+          }
+      });
+
   document.addEventListener("DOMContentLoaded", function () {
     fetch("/get-installed-plugins/")
       .then((response) => response.json())
@@ -177,6 +651,7 @@
       .catch((error) => {
         console.error("Error fetching plugins:", error);
       });
+
 
     // Function to get CSRF token
     function getCookie(name) {
