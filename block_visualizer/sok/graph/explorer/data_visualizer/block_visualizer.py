@@ -11,7 +11,7 @@ class BlockVisualizer(DataVisualizerBase):
         return "Block graph visualizer"
     
     def visualize_graph(self, graph: Graph):
-        return "block visalizing"
+        return self.sw_str(graph)
     
     #Takes graph nodes and converts them into dictionary
     #It returns JSON string of all nodes with their attributes
@@ -62,6 +62,13 @@ class BlockVisualizer(DataVisualizerBase):
             // Create main view with zoom container
             createGraphView(".main-view", 1200, 750, true);
 
+            // Function to calculate text width
+            function getTextWidth(text, fontSize, fontFamily) {{
+                var canvas = document.createElement("canvas");
+                var context = canvas.getContext("2d");
+                context.font = fontSize + "px " + fontFamily;
+                return context.measureText(text).width;
+            }}
 
             function createGraphView(container, width, height, enableZoom) {{
                 d3.select(container).selectAll("svg").remove();
@@ -138,7 +145,7 @@ class BlockVisualizer(DataVisualizerBase):
 
                 //Collision Detection - prevents nodes from overlapping
                 function collide(node) {{
-                    var r = 120,
+                    var r = node.width ? node.width / 2 + 20 : 120,
                         nx1 = node.x - r,
                         nx2 = node.x + r,
                         ny1 = node.y - r,
@@ -148,7 +155,7 @@ class BlockVisualizer(DataVisualizerBase):
                             var x = node.x - quad.point.x,
                                 y = node.y - quad.point.y,
                                 l = Math.sqrt(x * x + y * y),
-                                r = 240;
+                                r = (node.width || 240) / 2 + (quad.point.width || 240) / 2 + 40;
                             if (l < r) {{
                                 l = (l - r) / l * 0.5;
                                 node.x -= x *= l;
@@ -269,14 +276,52 @@ class BlockVisualizer(DataVisualizerBase):
                     let numAttributes = Object.keys(attributes).length;
                     let baseHeight = 40;
                     let attributeHeight = 20;
-                    let padding = 10;
-    
-                    let width = 220 * scale;
+                    let padding = 20;
+                    
+                    // Calculate required width based on content
+                    let fontFamily = "system-ui, sans-serif";
+                    let titleSize = 13 * scale;
+                    let textSize = 11 * scale;
+                    
+                    // Minimum width for the node ID (title)
+                    let titleWidth = getTextWidth(d.id, titleSize, fontFamily) + 40;
+                    
+                    // Calculate width needed for attributes - use fixed layout approach
+                    let maxKeyWidth = 0;
+                    let maxValueWidth = 0;
+                    
+                    for (let key in attributes) {{
+                        let value = attributes[key];
+                        let displayValue = value;
+                        
+                        // Truncate long values for display
+                        if (typeof value === 'string' && value.length > 35) {{
+                            displayValue = value.substring(0, 35) + '...';
+                        }}
+                        
+                        let keyWidth = getTextWidth(key + ":", textSize, fontFamily);
+                        let valueWidth = getTextWidth(displayValue, textSize, fontFamily);
+                        
+                        if (keyWidth > maxKeyWidth) {{
+                            maxKeyWidth = keyWidth;
+                        }}
+                        if (valueWidth > maxValueWidth) {{
+                            maxValueWidth = valueWidth;
+                        }}
+                    }}
+                    
+                    // Calculate total width: left margin + max key width + spacing + max value width + right margin
+                    let calculatedWidth = 20 + Math.max(maxKeyWidth, 80) + 10 + maxValueWidth + 20;
+                    
+                    // Use the maximum of title width and calculated width, with minimum of 220px
+                    let width = Math.max(titleWidth, calculatedWidth, 220) * scale;
                     let height = (baseHeight + numAttributes * attributeHeight + padding * 2) * scale;
                     let headerHeight = 30 * scale;
-                    let textSize = 11 * scale;
-                    let titleSize = 13 * scale;
-    
+                    
+                    // Store width in node data for collision detection
+                    d.width = width;
+                    d.height = height;
+
                     var gradient = defs.append("linearGradient")
                         .attr("id", "block-gradient-" + d.id)
                         .attr("x1", "0%")
@@ -375,22 +420,26 @@ class BlockVisualizer(DataVisualizerBase):
                         .text(d.id);
 
                     // Add attributes text
-                    let yOffset = headerHeight + 5;
+                    let yOffset = headerHeight + 15;
                     let attributeKeys = Object.keys(attributes);
+                    let leftMargin = 30;
+                    let keyValueSpacing = 5;
     
                     attributeKeys.forEach(function(key, index) {{
                         let value = attributes[key];
                         let displayValue = value;
                     
                         // Truncate long values
-                        if (typeof value === 'string' && value.length > 25) {{
-                            displayValue = value.substring(0, 25) + '...';
+                        if (typeof value === 'string' && value.length > 35) {{
+                            displayValue = value.substring(0, 35) + '...';
                         }}
         
+                        let yPosition = -height / 2 + yOffset + index * attributeHeight;
+                        
                         // Attribute key
                         nodeGroup.append("text")
-                            .attr("x", -width / 2 + 10)
-                            .attr("y", -height / 2 + yOffset + index * attributeHeight)
+                            .attr("x", -width / 2 + leftMargin)
+                            .attr("y", yPosition)
                             .attr("text-anchor", "start")
                             .attr("dominant-baseline", "middle")
                             .attr("font-size", textSize)
@@ -400,10 +449,10 @@ class BlockVisualizer(DataVisualizerBase):
                             .attr("class", "attribute-key")
                             .text(key + ":");
 
-                        // Attribute value
+                        // Attribute value - fixed position from left margin
                         nodeGroup.append("text")
-                            .attr("x", -width / 2 + 70)
-                            .attr("y", -height / 2 + yOffset + index * attributeHeight)
+                            .attr("x", -width / 2 + leftMargin + 80)
+                            .attr("y", yPosition)
                             .attr("text-anchor", "start")
                             .attr("dominant-baseline", "middle")
                             .attr("font-size", textSize)

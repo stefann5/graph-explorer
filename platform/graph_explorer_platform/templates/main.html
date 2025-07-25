@@ -153,6 +153,7 @@
   {{ code|safe }}
  </script>
 <script>
+  let currentView = "simple"; // Default view
   document.addEventListener("DOMContentLoaded", function () {
     fetch("/get-installed-plugins/")
       .then((response) => response.json())
@@ -286,6 +287,33 @@ document
         .catch((error) => {
           console.error("Error:", error);
         });
+    });
+
+  document
+    .getElementById("toggleView")
+    .addEventListener("click", function () {
+      currentView = currentView === "simple" ? "block" : "simple";
+      
+      fetch("/toggle-view/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0].value,
+        },
+        body: `view_type=${encodeURIComponent(currentView)}`,
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        // Clear existing graph
+        document.querySelector(".main-view").innerHTML = "";
+        
+        const script = document.createElement("script");
+        script.textContent = data.code;
+        document.body.appendChild(script);
+      })
+      .catch((error) => {
+        console.error("Error toggling view:", error);
+      });
     });
 
   document

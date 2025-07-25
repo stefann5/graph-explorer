@@ -88,3 +88,19 @@ def filter(request):
         graph_data = {"code": simple_visualizer.visualize_graph(apps.get_app_config('graph_explorer_platform').graph)}
 
         return JsonResponse(graph_data)
+    
+def toggle_view(request):
+    if request.method == 'POST':
+        view_type = request.POST.get('view_type', 'simple')
+        app_config = apps.get_app_config('graph_explorer_platform')
+        
+        if view_type == 'simple':
+            visualizer = app_config.data_visalizer_plugins[0]
+        else:
+            if len(app_config.data_visalizer_plugins) > 1:
+                visualizer = app_config.data_visalizer_plugins[1]
+            else:
+                visualizer = app_config.data_visalizer_plugins[0]
+        graph_data = {"code": visualizer.visualize_graph(app_config.graph)}
+        return JsonResponse(graph_data)
+    return JsonResponse({"error": "Invalid request"}, status=400)
