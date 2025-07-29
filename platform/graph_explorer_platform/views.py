@@ -1,9 +1,9 @@
-
+from .models import Workspace
 import json
 import logging
 import os
 from pathlib import Path
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 import xml.etree.ElementTree as ET
 from django.apps.registry import apps
 from django.views.decorators.csrf import csrf_exempt
@@ -13,7 +13,6 @@ from sok.graph.explorer.api.services.graph import(
     DataVisualizerBase
 )
 from sok.graph.explorer.api.model.graph import Graph,Node,Edge
-from datetime import datetime
 from django.http import JsonResponse
 
 def index(request):
@@ -25,9 +24,10 @@ def index(request):
     }
     apps.get_app_config('graph_explorer_platform').graph=plugin.load_graph(params)
     graph=apps.get_app_config('graph_explorer_platform').graph
-    simple_visualizer=apps.get_app_config('graph_explorer_platform').data_visalizer_plugins[0]
+
+    visualizer = apps.get_app_config('graph_explorer_platform').get_current_visualizer()
     graph_data={"code":''}
-    graph_data["code"]=simple_visualizer.visualize_graph(apps.get_app_config('graph_explorer_platform').graph)
+    graph_data["code"]=visualizer.visualize_graph(apps.get_app_config('graph_explorer_platform').graph)
     return render(request, 'main.html', graph_data)
 
 
@@ -80,8 +80,8 @@ def delete_node(request):
             print(graph.edges)
 
             # Osvježavanje vizualizacije
-            simple_visualizer = apps.get_app_config('graph_explorer_platform').data_visalizer_plugins[0]
-            visualization_js = simple_visualizer.visualize_graph(graph)
+            visualizer = apps.get_app_config('graph_explorer_platform').get_current_visualizer()
+            visualization_js = visualizer.visualize_graph(graph)
 
             return JsonResponse({"message": "Node deleted successfully.", "visualization_js": visualization_js},
                                 status=200)
@@ -133,8 +133,8 @@ def update_node(request):
                 graph = apps.get_app_config('graph_explorer_platform').graph
 
                 # Visualize the updated graph
-                simple_visualizer = apps.get_app_config('graph_explorer_platform').data_visalizer_plugins[0]
-                visualization_js = simple_visualizer.visualize_graph(graph)
+                visualizer = apps.get_app_config('graph_explorer_platform').get_current_visualizer()
+                visualization_js = visualizer.visualize_graph(graph)
 
                 return JsonResponse({
                     "message": "Node updated successfully.",
@@ -185,8 +185,8 @@ def update_node(request):
                 graph = apps.get_app_config('graph_explorer_platform').graph
 
                 # Visualize the updated graph
-                simple_visualizer = apps.get_app_config('graph_explorer_platform').data_visalizer_plugins[0]
-                visualization_js = simple_visualizer.visualize_graph(graph)
+                visualizer = apps.get_app_config('graph_explorer_platform').get_current_visualizer()
+                visualization_js = visualizer.visualize_graph(graph)
 
                 return JsonResponse({
                     "message": "Node updated successfully.",
@@ -264,8 +264,8 @@ def add_node(request):
                 graph.add_node(new_node)
 
                 # Visualize the updated graph
-                simple_visualizer = apps.get_app_config('graph_explorer_platform').data_visalizer_plugins[0]
-                visualization_js = simple_visualizer.visualize_graph(graph)
+                visualizer = apps.get_app_config('graph_explorer_platform').get_current_visualizer()
+                visualization_js = visualizer.visualize_graph(graph)
 
                 return JsonResponse({
                     "message": "Node added successfully.",
@@ -355,8 +355,8 @@ def add_node(request):
                 graph.add_node(new_node)
 
                 # Visualize the updated graph
-                simple_visualizer = apps.get_app_config('graph_explorer_platform').data_visalizer_plugins[0]
-                visualization_js = simple_visualizer.visualize_graph(graph)
+                visualizer = apps.get_app_config('graph_explorer_platform').get_current_visualizer()
+                visualization_js = visualizer.visualize_graph(graph)
 
                 return JsonResponse({
                     "message": "Node added successfully.",
@@ -390,8 +390,8 @@ def add_edge(request):
             edge = Edge(source, target, name)
             graph.add_edge(edge)
 
-            simple_visualizer = apps.get_app_config('graph_explorer_platform').data_visalizer_plugins[0]
-            visualization_js = simple_visualizer.visualize_graph(graph)
+            visualizer = apps.get_app_config('graph_explorer_platform').get_current_visualizer()
+            visualization_js = visualizer.visualize_graph(graph)
             print(graph.edges)
 
             return JsonResponse({"message": "Edge added successfully.", "visualization_js": visualization_js}, status=200)
@@ -426,8 +426,8 @@ def update_edge(request):
             else:
                 return JsonResponse({"message": "Edge not found."}, status=404)
 
-            simple_visualizer = apps.get_app_config('graph_explorer_platform').data_visalizer_plugins[0]
-            visualization_js = simple_visualizer.visualize_graph(graph)
+            visualizer = apps.get_app_config('graph_explorer_platform').get_current_visualizer()
+            visualization_js = visualizer.visualize_graph(graph)
             print(graph.edges)
             return JsonResponse({"message": "Edge updated successfully.", "visualization_js": visualization_js}, status=200)
         except Exception as e:
@@ -454,8 +454,8 @@ def delete_edge(request):
 
             graph.edges = [edge for edge in graph.edges if not (edge.source == source and edge.target == target)]
 
-            simple_visualizer = apps.get_app_config('graph_explorer_platform').data_visalizer_plugins[0]
-            visualization_js = simple_visualizer.visualize_graph(graph)
+            visualizer = apps.get_app_config('graph_explorer_platform').get_current_visualizer()
+            visualization_js = visualizer.visualize_graph(graph)
             print(graph.edges)
 
             return JsonResponse({"message": "Edge deleted successfully.", "visualization_js": visualization_js}, status=200)
@@ -484,8 +484,8 @@ def delete_graph(request):
             graph.adjacency_list.clear()
 
             # Generiši novu vizualizaciju
-            simple_visualizer = apps.get_app_config('graph_explorer_platform').data_visalizer_plugins[0]
-            visualization_js = simple_visualizer.visualize_graph(graph)
+            visualizer = apps.get_app_config('graph_explorer_platform').get_current_visualizer()
+            visualization_js = visualizer.visualize_graph(graph)
 
             return JsonResponse({"message": "Graph deleted successfully.", "visualization_js": visualization_js}, status=200)
         except Exception as e:
@@ -511,8 +511,8 @@ def search_graph(request):
             filter_service = GraphSearchFilter()
             graph = filter_service.search(graph,query)
 
-            simple_visualizer = apps.get_app_config('graph_explorer_platform').data_visalizer_plugins[0]
-            visualization_js = simple_visualizer.visualize_graph(graph)
+            visualizer = apps.get_app_config('graph_explorer_platform').get_current_visualizer()
+            visualization_js = visualizer.visualize_graph(graph)
 
 
             return JsonResponse({"message": "Search done successfully.", "visualization_js": visualization_js}, status=200)
@@ -538,8 +538,8 @@ def filter_graph(request):
             filter_service = GraphSearchFilter()
             graph = filter_service.filter(graph,query)
 
-            simple_visualizer = apps.get_app_config('graph_explorer_platform').data_visalizer_plugins[0]
-            visualization_js = simple_visualizer.visualize_graph(graph)
+            visualizer = apps.get_app_config('graph_explorer_platform').get_current_visualizer()
+            visualization_js = visualizer.visualize_graph(graph)
 
 
             return JsonResponse({"message": "Filter done successfully.", "visualization_js": visualization_js}, status=200)
@@ -594,8 +594,8 @@ def search(request):
         
         filter_service = GraphSearchFilter()
         apps.get_app_config('graph_explorer_platform').graph = filter_service.search(apps.get_app_config('graph_explorer_platform').graph, search_query)
-        simple_visualizer = apps.get_app_config('graph_explorer_platform').data_visalizer_plugins[0]
-        graph_data = {"code": simple_visualizer.visualize_graph(apps.get_app_config('graph_explorer_platform').graph)}
+        visualizer = apps.get_app_config('graph_explorer_platform').get_current_visualizer()
+        graph_data = {"code": visualizer.visualize_graph(apps.get_app_config('graph_explorer_platform').graph)}
 
         return JsonResponse(graph_data)
 
@@ -606,7 +606,144 @@ def filter(request):
         filter_service = GraphSearchFilter()
         apps.get_app_config('graph_explorer_platform').graph = filter_service.filter(apps.get_app_config('graph_explorer_platform').graph, filter_query)
         
-        simple_visualizer = apps.get_app_config('graph_explorer_platform').data_visalizer_plugins[0]
-        graph_data = {"code": simple_visualizer.visualize_graph(apps.get_app_config('graph_explorer_platform').graph)}
+        visualizer = apps.get_app_config('graph_explorer_platform').get_current_visualizer()
+        graph_data = {"code": visualizer.visualize_graph(apps.get_app_config('graph_explorer_platform').graph)}
 
         return JsonResponse(graph_data)
+    
+def toggle_view(request):
+    if request.method == 'POST':
+        app_config = apps.get_app_config('graph_explorer_platform')
+        #switch between 'simple' and 'block'
+        #if current view type is 'block', switch to 'simple', otherwise switch to 'block'
+        view_type = 'simple' if app_config.view_type == 'block' else 'block' 
+        
+        # Set the view type in the app config
+        app_config.set_view_type(view_type)
+
+        # Get the current visualizer based on the view type
+        visualizer = app_config.get_current_visualizer()
+        graph_data = {"code": visualizer.visualize_graph(app_config.graph)}
+        return JsonResponse(graph_data)
+    return JsonResponse({"error": "Invalid request"}, status=400)
+
+@csrf_exempt
+def get_workspaces(request):
+    try:
+        workspaces = Workspace.objects.all().order_by('-updated_at')
+        workspace_list = []
+        for ws in workspaces:
+            workspace_list.append({
+                'id': ws.id,
+                'name': ws.name,
+                'data_source_plugin': ws.data_source_plugin,
+                'data_source_file': ws.data_source_file,
+                'created_at': ws.created_at.isoformat(),
+                'updated_at': ws.updated_at.isoformat()
+            })
+        
+        return JsonResponse({
+            'success': True,
+            'workspaces': workspace_list
+            })
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': str(e)})
+    
+@csrf_exempt
+def create_workspace(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            name = data.get('name')
+            data_source_plugin = data.get('data_source_plugin')
+            data_source_file = data.get('data_source_file', '')
+            search = data.get('search', '')
+            filters = data.get('filters', {})
+            view_type = apps.get_app_config('graph_explorer_platform').view_type
+
+            if not name or not data_source_plugin:
+                return JsonResponse({'success': False, 'message': 'Name and data source plugin are required.'})
+
+            if Workspace.objects.filter(name=name).exists():
+                return JsonResponse({'success': False, 'message': 'Workspace with this name already exists.'})
+            
+            workspace = Workspace.objects.create(
+                name=name,
+                data_source_plugin=data_source_plugin,
+                data_source_file=data_source_file,
+                filters=filters,
+                search=search,
+                view_type=view_type
+            )
+
+            return JsonResponse({'success': True, 'workspace_id': workspace.id})
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': str(e)})
+    
+    return JsonResponse({'success': False, 'message': 'Invalid request method.'})
+
+@csrf_exempt
+def save_workspace(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            workspace_id = data.get('workspace_id')
+            
+            if not workspace_id:
+                return JsonResponse({'success': False, 'message': 'Workspace ID is required.'})
+            
+            workspace = get_object_or_404(Workspace, id=workspace_id)
+            workspace.filters = data.get('filters', {})
+            workspace.search = data.get('search', '')
+            workspace.view_type = apps.get_app_config('graph_explorer_platform').view_type
+            workspace.data_source_file = data.get('data_source_file', workspace.data_source_file)
+            workspace.save()
+
+            return JsonResponse({
+                'success': True, 
+                'message': 'Workspace saved successfully.',
+                'workspace': {
+                    'id': workspace.id,
+                    'name': workspace.name,
+                    'data_source_plugin': workspace.data_source_plugin,
+                    'data_source_file': workspace.data_source_file,
+                    'filters': workspace.filters,
+                    'search': workspace.search,
+                    'view_type': workspace.view_type,
+                }
+            })
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': str(e)})
+    
+    return JsonResponse({'success': False, 'message': 'Invalid request method.'})
+
+@csrf_exempt
+def load_workspace(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            workspace_id = data.get('workspace_id')
+            
+            if not workspace_id:
+                return JsonResponse({'success': False, 'message': 'Workspace ID is required.'})
+            
+            workspace = get_object_or_404(Workspace, id=workspace_id)
+            app_config = apps.get_app_config('graph_explorer_platform')
+            app_config.set_view_type(workspace.view_type)
+            
+            return JsonResponse({
+                'success': True,
+                'workspace': {
+                    'id': workspace.id,
+                    'name': workspace.name,
+                    'data_source_plugin': workspace.data_source_plugin,
+                    'data_source_file': workspace.data_source_file,
+                    'filters': workspace.filters,
+                    'search': workspace.search,
+                    'view_type': workspace.view_type
+                }
+            })
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': str(e)})
+    
+    return JsonResponse({'success': False, 'message': 'Invalid request method.'})

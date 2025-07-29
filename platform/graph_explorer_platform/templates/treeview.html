@@ -1,0 +1,294 @@
+<!-- treeview.html -->
+<script>
+// Simple Tree View Implementation - shows node data like in the sketch
+var treeViewData = {};
+var treeViewContainer;
+var rootNode = null;
+const visitedNodes = new Set();
+
+function initializeTreeView(nodes, links) {
+    // Clear existing tree view
+    d3.select("#tree-view").selectAll("*").remove();
+    
+    // Add simple CSS styles
+    addTreeViewStyles();
+    
+    // Create tree view container
+    treeViewContainer = d3.select("#tree-view")
+        .append("div")
+        .attr("class", "tree-container")
+        .style("padding", "10px")
+        .style("overflow-y", "auto")
+        .style("height", "100%")
+        .style("font-family", "monospace")
+        .style("font-size", "12px");
+    
+    // Build tree structure from graph data
+    buildTreeStructure(nodes, links);
+    
+    // Render the tree immediately
+    renderTreeView();
+}
+
+function addTreeViewStyles() {
+    if (document.getElementById('tree-view-styles')) return;
+    
+    const style = document.createElement('style');
+    style.id = 'tree-view-styles';
+    style.textContent = `
+        .tree-container {
+            font-family: monospace;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .tree-node {
+            margin: 2px 0;
+            cursor: pointer;
+            padding: 2px 5px;
+            border-radius: 3px;
+            transition: background-color 0.2s;
+        }
+
+        .tree-node:hover {
+            background-color: #f0f0f0;
+        }
+
+        .tree-node.highlighted {
+            background-color: #e3f2fd;
+        }
+
+        .tree-level-0 { margin-left: 0px; }
+        .tree-level-1 { margin-left: 20px; }
+        .tree-level-2 { margin-left: 40px; }
+        .tree-level-3 { margin-left: 60px; }
+        .tree-level-4 { margin-left: 80px; }
+
+        .expand-collapse {
+            display: inline-block;
+            width: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #666;
+        }
+
+        .node-id {
+            font-weight: bold;
+            color: #000;
+            border: 1px solid #999;
+            padding: 1px 4px;
+            margin-right: 5px;
+            background: white;
+        }
+
+        .node-details {
+            margin-left: 15px;
+            color: #666;
+            font-size: 11px;
+        }
+
+        .detail-line {
+            margin: 1px 0;
+            padding: 1px 4px;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+        }
+
+        .children-container {
+            border-left: 1px solid #ccc;
+            margin-left: 6px;
+            padding-left: 0;
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+function buildTreeStructure(nodes, links) {
+    // Create a map of nodes for quick lookup
+    if(!Array.isArray(nodes)) {
+        nodes = Object.values(nodes);
+    }
+    if(!Array.isArray(links)) {
+        links = Object.values(links);
+    }
+    const nodeMap = {};
+    nodes.forEach(node => {
+        nodeMap[node.id] = {
+            ...node,
+            children: [],
+            parents: [],
+            expanded: false,
+            level: 0
+        };
+    });
+    
+    // Build parent-child relationships from links
+    links.forEach(link => {
+        const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
+        const targetId = typeof link.target === 'object' ? link.target.id : link.target;
+        
+        if (nodeMap[sourceId] && nodeMap[targetId]) {
+            if(sourceId !== targetId) { // Prevent self-links
+                if(!nodeMap[sourceId].children.includes(nodeMap[targetId])) {
+                    nodeMap[sourceId].children.push(nodeMap[targetId]);
+                }
+                if(!nodeMap[targetId].parents.includes(nodeMap[sourceId])) {
+                    nodeMap[targetId].parents.push(nodeMap[sourceId]);
+                }
+            }
+        }
+    });
+    
+    // Find root node (node with no parents) or pick the first node
+    const nodesArray = Object.values(nodeMap);
+    rootNode = nodesArray.find(node => node.parents.length === 0) || nodesArray[0];
+    
+    // Set levels for hierarchy visualization
+    if (rootNode) {
+        setNodeLevels(rootNode, 0, new Set());
+    }
+    
+    treeViewData = nodeMap;
+}
+
+function setNodeLevels(node, level, visited) {
+    if (visited.has(node.id)) return;
+    
+    visited.add(node.id);
+    node.level = level;
+    
+    node.children.forEach(child => {
+        setNodeLevels(child, level + 1, visited);
+    });
+}
+
+function renderTreeView() {
+    if (!treeViewContainer) return;
+    
+    // Clear existing content
+    treeViewContainer.selectAll("*").remove();
+    
+    // Add title
+    treeViewContainer.append("div")
+        .style("font-weight", "bold")
+        .style("margin-bottom", "10px")
+        .style("padding-bottom", "5px")
+        .style("border-bottom", "1px solid #ccc")
+        .text("Tree View");
+    
+    visitedNodes.clear();
+    // Render all nodes in tree structure
+    if (rootNode) {
+        renderTreeNode(rootNode, treeViewContainer, 0);
+        
+        // Also render any orphaned nodes
+        Object.values(treeViewData).forEach(node => {
+            if (node.level === 0 && node !== rootNode) {
+                renderTreeNode(node, treeViewContainer, 0);
+            }
+        });
+    } else {
+        // If no clear hierarchy, just show all nodes
+        Object.values(treeViewData).forEach(node => {
+            renderTreeNode(node, treeViewContainer, 0);
+        });
+    }
+}
+
+function renderTreeNode(node, container, indentLevel) {
+    if(visitedNodes.has(node.id)) return; // Prevent duplicate rendering
+    visitedNodes.add(node.id);
+    // Main node container
+    const nodeDiv = container.append("div")
+        .attr("class", `tree-node tree-level-${indentLevel}`)
+        .attr("data-node-id", node.id)
+        .on("click", function() {
+            d3.event.stopPropagation();
+            toggleNodeExpansion(node);
+        });
+    
+    // Node header with expand/collapse and ID
+    const headerDiv = nodeDiv.append("div")
+        .style("display", "flex")
+        .style("align-items", "center");
+    
+    // Add expand/collapse button if has children
+    if (node.children.length > 0) {
+        headerDiv.append("span")
+            .attr("class", "expand-collapse")
+            .text(node.expanded ? "−" : "+")
+            .on("click", function() {
+                d3.event.stopPropagation();
+                toggleNodeExpansion(node);
+            });
+    } else {
+        headerDiv.append("span")
+            .attr("class", "expand-collapse")
+            .text(" ");
+    }
+    
+    // Node ID (like in your sketch)
+    headerDiv.append("span")
+        .attr("class", "node-id")
+        .text("ID " + node.id);
+    
+    // Show node details (like in your sketch)
+    const detailsDiv = nodeDiv.append("div")
+        .attr("class", "node-details");
+    
+    // Show node properties
+    Object.keys(node).forEach(key => {
+        if (key !== 'id' && key !== 'children' && key !== 'parents' && 
+            key !== 'expanded' && key !== 'level' && key !== 'x' && key !== 'y' && 
+            key !== 'px' && key !== 'py' && key !== 'fixed' && key !== 'weight' && key !== 'index') {
+            
+            const value = node[key];
+            if(key === 'attributes' && typeof value === 'object' && value !== null) {
+                Object.entries(value).forEach(([attrKey, attrValue]) => {
+                    detailsDiv.append("div")
+                        .attr("class", "detail-line")
+                        .text(`${attrKey}: ${attrValue}`);
+                });
+            } else {
+                detailsDiv.append("div")
+                    .attr("class", "detail-line")
+                    .text(`${key}: ${JSON.stringify(value)}`);
+            }
+        }
+    });
+    
+    // Render children if expanded
+    if (node.expanded && node.children.length > 0) {
+        const childrenContainer = container.append("div")
+            .attr("class", "children-container");
+        
+        node.children.forEach(child => {
+            renderTreeNode(child, childrenContainer, indentLevel + 1);
+        });
+    }
+}
+
+function toggleNodeExpansion(node) {
+    node.expanded = !node.expanded;
+    renderTreeView();
+}
+
+window.refreshTreeView = function() {
+    if (typeof nodes !== "undefined" && typeof links !== "undefined") {
+        initializeTreeView(nodes, links);
+    } else {
+        console.warn("TreeView: Cannot refresh - nodes or links not defined globally");
+        showEmptyTreeView();
+    }
+}
+
+// Listen for DOMContentLoaded to ensure the tree view is initialized after the page loads
+document.addEventListener('DOMContentLoaded', function() {
+            if (typeof nodes !== "undefined" && typeof links !== "undefined") {
+                initializeTreeView(nodes, links);
+            }else {
+                console.warn("Nodes or links data is not defined for tree view initialization.");
+            }
+        });
+
+</script>
