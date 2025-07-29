@@ -8,6 +8,7 @@ class GraphExplorerPlatformConfig(AppConfig):
     selected_plugin = None
     data_source = None
     data_visalizer_plugins = []
+    view_type = 'simple'
 
     def ready(self):
         self.data_source_plugins = load_plugins("graph.data_source")
@@ -42,7 +43,23 @@ class GraphExplorerPlatformConfig(AppConfig):
         if file != '':
             self.data_source = file
     
-        
+    def set_view_type(self, view_type):
+        """ Set the current view type"""
+        if view_type in ['simple', 'block']:
+            self.view_type = view_type
+            return True
+        return False
+    
+    def get_view_type(self):
+        """ Return currently selected view type"""
+        return self.view_type
+    
+    def get_current_visualizer(self):
+        """Get the appropriate visualizer plugin based on the current view type"""
+        if self.view_type == 'simple' and len(self.data_visalizer_plugins) > 1:
+            return self.data_visalizer_plugins[1]
+        return self.data_visalizer_plugins[0]
+
     def get_current_plugin(self):
             """Return currently selected plugin"""
             return self.selected_plugin

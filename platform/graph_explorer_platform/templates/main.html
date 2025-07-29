@@ -7,7 +7,7 @@
       placeholder="Data source file path..."
     />
   <select id="workspaceSelect">
-    <option value="ws">ws</option>
+    <option value="">Select Workspace</option>
   </select>
   <button id="newWorkspace">New Workspace</button>
   <button id="saveWorkspace">Save Workspace</button>
@@ -207,8 +207,6 @@
   {{ code|safe }}
  </script>
 <script>
-  let currentView = "simple"; // Default view
-
   const terminalButton = document.getElementById('toggle-terminal');
   const terminal = document.getElementById('terminal');
   const inputField = document.getElementById('terminal-input');
@@ -231,6 +229,12 @@
       const outputArea = document.getElementById('terminal-output');
       outputArea.value += text + '\n';
       outputArea.scrollTop = outputArea.scrollHeight;
+  }
+
+  function refreshTreeView() {
+    if (typeof nodes !== 'undefined' && typeof links !== 'undefined') {
+      initializeTreeView(nodes, links);
+    }
   }
 
   async function deleteNode(nodeId) {
@@ -263,6 +267,10 @@
                   script.type = 'text/javascript';
                   script.text = result.visualization_js;
                   document.body.appendChild(script);
+
+                  setTimeout(() => {
+                    refreshTreeView();
+                  }, 100);
               }
           } else {
               const error = await response.json();
@@ -312,6 +320,10 @@
                   script.type = 'text/javascript';
                   script.text = result.visualization_js;
                   document.body.appendChild(script);
+
+                  setTimeout(() => {
+                    refreshTreeView();
+                  }, 100);
               }
           } else {
               const error = await response.json();
@@ -363,6 +375,10 @@
                   script.type = 'text/javascript';
                   script.text = result.visualization_js;
                   document.body.appendChild(script);
+
+                  setTimeout(() => {
+                    refreshTreeView();
+                  }, 100);
               }
           } else {
               const error = await response.json();
@@ -652,6 +668,7 @@
         console.error("Error fetching plugins:", error);
       });
 
+    handleWorkspaces();
 
     // Function to get CSRF token
     function getCookie(name) {
@@ -670,7 +687,298 @@
     }
   });
 
+  async function handleWorkspaces() {
+    await loadWorkspaces();
+    populateWorkspaceSelect();
 
+    document.getElementById("newWorkspace").addEventListener("click", createNewWorkspace);
+    document.getElementById("saveWorkspace").addEventListener("click", saveCurrentWorkspace);
+    document.getElementById("workspaceSelect").addEventListener("change", loadSelectedWorkspace);
+  }
+
+  async function loadWorkspaces() {
+    try {
+      const reponse = await fetch('/api/get_workspaces/', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      const result = await reponse.json();
+      workspaces = result.workspaces || [];
+    } catch (error) {
+      console.error("Error loading workspaces:", error);
+    }
+  }
+
+  function populateWorkspaceSelect() {
+    const workspaceSelect = document.getElementById("workspaceSelect");
+    workspaceSelect.innerHTML = '<option value="">Select Workspace</option>';
+
+    workspaces.forEach(workspace => {
+      const option = document.createElement("option");
+      option.value = workspace.id;
+      option.textContent = `${workspace.name} (${workspace.data_source_plugin})`;
+      workspaceSelect.appendChild(option);
+    });
+  }
+
+  async function createNewWorkspace() {
+    const name = prompt("Enter workspace name:");
+    if (!name) return;
+
+    const dataSource = document.getElementById("dataSourceSelect").value;
+    const dataFile = document.getElementById("dataSourceFileInput").value;
+    const search = document.getElementById("searchInput").value;
+    const filters = getCurrentFilters();
+
+    if(!dataSource) {
+      alert("Please select a data source plugin.");
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/create_workspace/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({
+          name: name,
+          data_source_plugin: dataSource,
+          data_source_file: dataFile,
+          search: search,
+          filters: filters
+        })
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        appendOutput(`Workspace "${name}" created successfully.`);
+        await loadWorkspaces();
+
+        document.getElementById("workspaceSelect").value = result.workspace_id;
+      } 
+      else {
+        alert(`${result.message}`);
+      }
+    } catch (error) {
+      console.error("Error creating workspace:", error);
+    }
+  }
+
+  async function saveCurrentWorkspace() {
+    const currentWorkspace = document.getElementById("workspaceSelect").value;
+    if(!currentWorkspace) {
+      alert("No workspace selected.");
+      return;
+    }
+
+    const currentState = {
+      workspace_id: currentWorkspace,
+      data_source_file: document.getElementById("dataSourceFileInput").value,
+      filters: getCurrentFilters(),
+      search: document.getElementById("searchInput").value
+    };
+    try {
+      const response = await fetch('/api/save_workspace/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify(currentState)
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        appendOutput(`Workspace "${currentWorkspace}" saved successfully.`);
+        const existingIndex = workspaces.findIndex(ws => ws.id === currentWorkspace.id);
+        if(existingIndex !== -1) {
+          workspaces[existingIndex] = result.workspace;
+        } else {
+          workspaces.push(result.workspace);
+        }
+        populateWorkspaceSelect();
+      } else {
+        alert(`${result.message}`);
+      }
+    }
+    catch(error) {
+      console.error("Error saving workspace:", error);
+    }
+  }
+
+  async function loadSelectedWorkspace() {
+    const workspaceId = document.getElementById("workspaceSelect").value;
+    if (!workspaceId) {
+        currentWorkspace = null;
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/load_workspace/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                workspace_id: workspaceId
+            })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            const workspace = result.workspace;
+            // Apply workspace state to UI
+            document.getElementById("dataSourceSelect").value = workspace.data_source_plugin;
+            document.getElementById("dataSourceFileInput").value = workspace.data_source_file || '';
+            document.getElementById("searchInput").value = workspace.search;
+            document.getElementById("filterInput").value = formatFiltersForDisplay(workspace.filters);
+
+            appendOutput(`Loaded workspace: ${workspace.name}`);
+
+            // Trigger data source change to load the graph
+            if (workspace.data_source_file) {
+                await loadWorkspaceGraph(workspace);
+            } else {
+                // Just change the plugin
+                const event = new Event('change');
+                document.getElementById("dataSourceSelect").dispatchEvent(event);
+            }
+
+            setTimeout(async() => {
+              // Apply saved filters and search
+              if (workspace.search) {
+                applySavedSearch(workspace.search);
+              }
+              if (workspace.filters && Object.keys(workspace.filters).length > 0) {
+                applySavedFilters(workspace.filters);
+              }
+            }, 500);
+            
+        } else {
+            alert(result.message);
+        }
+    } catch (error) {
+        console.error('Error loading workspace:', error);
+        alert('Error loading workspace');
+    }
+  }
+
+  async function loadWorkspaceGraph(workspace) {
+    try {
+        // First set the data source plugin
+        const pluginResponse = await fetch("/select-plugin/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "X-CSRFToken": getCookie('csrftoken'),
+            },
+            body: `query=${encodeURIComponent(workspace.data_source_plugin)}`,
+        });
+        
+        if (workspace.data_source_file) {
+            // Then load the specific file
+            const fileResponse = await fetch("/select-file/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "X-CSRFToken": getCookie('csrftoken'),
+                },
+                body: `file=${encodeURIComponent(workspace.data_source_file)}`,
+            });
+            if (fileResponse.ok) {
+                const html = await fileResponse.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, "text/html");
+                const scripts = doc.getElementsByTagName("script");
+                let graphCode = "";
+                
+                for (let script of scripts) {
+                    if (script.textContent.includes("var nodes =")) {
+                        graphCode = script.textContent;
+                        break;
+                    }
+                }
+                
+                document.querySelector(".main-view").innerHTML = "";
+                const script = document.createElement("script");
+                script.textContent = graphCode;
+                document.body.appendChild(script);
+            }
+        }
+    } catch (error) {
+        console.error('Error loading workspace graph:', error);
+    }
+  }
+
+  function getCurrentFilters() {
+      // Extract current filter state from UI
+      const filterInput = document.getElementById("filterInput").value;
+      if (!filterInput) return {};
+      
+      // Parse filter string and convert to object
+      // This depends on your filter format
+      return { filter_query: filterInput };
+  }
+
+  function formatFiltersForDisplay(filters) {
+      // Convert filter object to string for display
+      if (!filters || Object.keys(filters).length === 0) return '';
+      return filters.filter_query || '';
+  }
+
+  function applySavedSearch(query) {
+    fetch("/search/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0]
+              .value,
+          },
+          body: `query=${encodeURIComponent(query)}`,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            document.querySelector(".main-view").innerHTML = "";
+            
+            const script = document.createElement("script");
+            script.textContent = data.code;
+            document.body.appendChild(script);
+
+            setTimeout(() => {
+                    refreshTreeView();
+                  }, 100);
+          });
+  }
+  function applySavedFilters() {
+    fetch("/filter/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0]
+              .value,
+          },
+          body: `query=${encodeURIComponent(query)}`,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            document.querySelector(".main-view").innerHTML = "";
+
+            const script = document.createElement("script");
+            script.textContent = data.code;
+            document.body.appendChild(script);
+
+            setTimeout(() => {
+                    refreshTreeView();
+                  }, 100);
+          });
+  } 
 
 document
   .getElementById("dataSourceFileInput")
@@ -716,6 +1024,10 @@ document
           const script = document.createElement("script");
           script.textContent = graphCode;
           document.body.appendChild(script);
+
+          setTimeout(() => {
+                    refreshTreeView();
+                  }, 100);
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -758,6 +1070,10 @@ document
           const script = document.createElement("script");
           script.textContent = graphCode;
           document.body.appendChild(script);
+
+          setTimeout(() => {
+                    refreshTreeView();
+                  }, 100);
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -767,15 +1083,12 @@ document
   document
     .getElementById("toggleView")
     .addEventListener("click", function () {
-      currentView = currentView === "simple" ? "block" : "simple";
-      
       fetch("/toggle-view/", {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
             "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0].value,
         },
-        body: `view_type=${encodeURIComponent(currentView)}`,
       })
       .then((response) => response.json())
       .then((data) => {
@@ -824,6 +1137,10 @@ document
           const script = document.createElement("script");
           script.textContent = graphCode;
           document.body.appendChild(script);
+
+          setTimeout(() => {
+                    refreshTreeView();
+                  }, 100);
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -847,10 +1164,14 @@ document
           .then((response) => response.json())
           .then((data) => {
             document.querySelector(".main-view").innerHTML = "";
-
+            
             const script = document.createElement("script");
             script.textContent = data.code;
             document.body.appendChild(script);
+
+            setTimeout(() => {
+                    refreshTreeView();
+                  }, 100);
           });
       }
     });
@@ -876,6 +1197,10 @@ document
             const script = document.createElement("script");
             script.textContent = data.code;
             document.body.appendChild(script);
+
+            setTimeout(() => {
+                    refreshTreeView();
+                  }, 100);
           });
       }
     });

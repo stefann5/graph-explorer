@@ -20,5 +20,9 @@ urlpatterns = [
     path('api/delete_edge/', views.delete_edge, name='delete_edge'),
     path('api/delete_graph/', views.delete_graph, name='delete_graph'),
     path('api/search_graph/', views.search_graph, name='search_graph'),
-    path('api/filter_graph/', views.filter_graph, name='filter_graph')
+    path('api/filter_graph/', views.filter_graph, name='filter_graph'),
+    path('api/get_workspaces/', views.get_workspaces, name='get_workspaces'),
+    path('api/create_workspace/', views.create_workspace, name='create_workspace'),
+    path('api/save_workspace/', views.save_workspace, name='save_workspace'),
+    path('api/load_workspace/', views.load_workspace, name='load_workspace'),
 ]

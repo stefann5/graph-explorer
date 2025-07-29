@@ -273,6 +273,15 @@ function toggleNodeExpansion(node) {
     renderTreeView();
 }
 
+window.refreshTreeView = function() {
+    if (typeof nodes !== "undefined" && typeof links !== "undefined") {
+        initializeTreeView(nodes, links);
+    } else {
+        console.warn("TreeView: Cannot refresh - nodes or links not defined globally");
+        showEmptyTreeView();
+    }
+}
+
 // Listen for DOMContentLoaded to ensure the tree view is initialized after the page loads
 document.addEventListener('DOMContentLoaded', function() {
             if (typeof nodes !== "undefined" && typeof links !== "undefined") {
